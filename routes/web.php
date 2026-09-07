@@ -12,7 +12,6 @@ Route::get('/products', [PageController::class, 'products'])->name('products');
 Route::get('/showrooms', [PageController::class, 'showrooms'])->name('showrooms');
 
 Route::get('/build-your-own', [ConfiguratorController::class, 'show'])->name('configurator');
-Route::post('/build-your-own/price', [ConfiguratorController::class, 'price'])->name('configurator.price');
 Route::post('/build-your-own/submit', [ConfiguratorController::class, 'submit'])->name('configurator.submit');
 
 Route::get('/get-a-quote', [QuoteController::class, 'create'])->name('quote.create');

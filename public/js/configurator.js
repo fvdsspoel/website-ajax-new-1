@@ -1,8 +1,8 @@
 (function () {
     const script = document.currentScript;
-    const priceUrl = script.dataset.priceUrl;
     const submitUrl = script.dataset.submitUrl;
     const csrf = script.dataset.csrf;
+    const moduleLm = JSON.parse(document.getElementById('module-lm-data').textContent);
 
     const MODULE_LABELS = {
         base: 'Base cabinet',
@@ -15,12 +15,14 @@
     let counter = 0;
 
     const listEl = document.getElementById('module-list');
-    const lmOut = document.getElementById('lm-out');
-    const priceOut = document.getElementById('price-out');
+    const countOut = document.getElementById('lm-out');
     const substrateEl = document.getElementById('substrate');
     const form = document.getElementById('submit-form');
     const formMessage = document.getElementById('form-message');
 
+    // No price shown to the customer — this is a design/lead-capture
+    // tool, not a checkout. The estimate is still computed server-side
+    // on submit and attached for the sales team's reference only.
     function renderModules() {
         listEl.innerHTML = '';
         if (modules.length === 0) {
@@ -28,60 +30,33 @@
             empty.className = 'module-empty';
             empty.textContent = 'No modules yet — add one below.';
             listEl.appendChild(empty);
-            return;
-        }
-        modules.forEach((m) => {
-            const row = document.createElement('div');
-            row.className = 'module-row';
-            row.innerHTML = `<span>${MODULE_LABELS[m.type]}</span>`;
-            const remove = document.createElement('button');
-            remove.type = 'button';
-            remove.className = 'module-remove';
-            remove.setAttribute('aria-label', 'Remove module');
-            remove.textContent = '×';
-            remove.addEventListener('click', () => {
-                modules = modules.filter((x) => x.id !== m.id);
-                renderModules();
-                fetchPrice();
+        } else {
+            modules.forEach((m) => {
+                const row = document.createElement('div');
+                row.className = 'module-row';
+                row.innerHTML = `<span>${MODULE_LABELS[m.type]}</span>`;
+                const remove = document.createElement('button');
+                remove.type = 'button';
+                remove.className = 'module-remove';
+                remove.setAttribute('aria-label', 'Remove module');
+                remove.textContent = '×';
+                remove.addEventListener('click', () => {
+                    modules = modules.filter((x) => x.id !== m.id);
+                    renderModules();
+                });
+                row.appendChild(remove);
+                listEl.appendChild(row);
             });
-            row.appendChild(remove);
-            listEl.appendChild(row);
-        });
-    }
-
-    async function fetchPrice() {
-        try {
-            const res = await fetch(priceUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf,
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    modules: modules.map((m) => ({ type: m.type })),
-                    substrate: substrateEl.value,
-                }),
-            });
-            if (!res.ok) return;
-            const data = await res.json();
-            lmOut.textContent = data.total_lm.toFixed(1) + ' lm';
-            priceOut.textContent = '₱' + Math.round(data.estimated_price).toLocaleString();
-        } catch (e) {
-            // Network hiccup — leave the last known figures on screen
-            // rather than showing an error for a non-critical live estimate.
         }
+        countOut.textContent = modules.length;
     }
 
     document.querySelectorAll('.add-module').forEach((btn) => {
         btn.addEventListener('click', () => {
             modules.push({ id: counter++, type: btn.dataset.type });
             renderModules();
-            fetchPrice();
         });
     });
-
-    substrateEl.addEventListener('change', fetchPrice);
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -90,6 +65,11 @@
 
         if (!name || !contact) {
             formMessage.textContent = 'Please fill in your name and contact details first.';
+            formMessage.className = 'form-error';
+            return;
+        }
+        if (modules.length === 0) {
+            formMessage.textContent = 'Add at least one module so we know what to quote.';
             formMessage.className = 'form-error';
             return;
         }

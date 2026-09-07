@@ -2,6 +2,10 @@
 
 Rebuild of ajaxtradingcorp.com, built against `ATC-Website-Rebuild-Spec.md`.
 
+## Decision log
+
+**No online prices or checkout.** Ajax hasn't sold a single product online yet, so a live-pricing/e-commerce site would be solving a problem that doesn't exist. This site's job is to look credible to both customers and technical/business partners, and to turn a visitor into a phone call or CRM lead — not to transact. Concretely: the configurator lets a customer design a kitchen and request a quote, but never shows a price. The price is still computed server-side (via the ERP pricing bridge) and attached to the CRM inquiry so the sales team has real numbers before they call back — it's just never shown in the browser.
+
 ## What's built in this first pass
 
 - **Fixed SEO/OG metadata** (`resources/views/layouts/app.blade.php`) — the live site's title/description read "Ajax Trading Corporation. - Property Business"; this is corrected everywhere, plus a `LocalBusiness` JSON-LD schema that didn't exist before.
@@ -10,7 +14,7 @@ Rebuild of ajaxtradingcorp.com, built against `ATC-Website-Rebuild-Spec.md`.
 - **Get a Quote form** (`/get-a-quote`) — also posts directly into the CRM, tagged `website_quote_form`.
 - **Homepage highlights** condensed to a 6-item strip (`Highlight` model/migration) instead of the old 30+-post feed dump.
 - Page shells for About, Portfolio, Products, and Showrooms — structured and routed, content/data wiring still to come (see below).
-- **ERP pricing bridge** — the configurator's live rates now come from the ERP's own `/api/public/substrate-prices` feed (`App\Services\ConfiguratorPricingService::substrateRates()`), cached for an hour, with an automatic fallback to placeholder rates if the ERP is unreachable. This required a small addition on the ERP side too — see the `Ajax-erp` repo: `public_substrate_prices` table, `PublicPricingController`, and `VerifyPublicPricingApiKey` middleware. That table is admin-maintained on the ERP side, deliberately separate from job-specific production costing.
+- **ERP pricing bridge** — rates come from the ERP's own `/api/public/substrate-prices` feed (`App\Services\ConfiguratorPricingService::substrateRates()`), cached for an hour, with an automatic fallback to placeholder rates if the ERP is unreachable. Used only server-side now (see Decision log above) — never displayed to the customer. This required a small addition on the ERP side too — see the `Ajax-erp` repo: `public_substrate_prices` table, `PublicPricingController`, and `VerifyPublicPricingApiKey` middleware. That table is admin-maintained on the ERP side, deliberately separate from job-specific production costing.
 
 ## Setup (run these on a machine with normal internet access — this environment can't reach packagist.org)
 

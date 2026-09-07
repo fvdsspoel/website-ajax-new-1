@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
 @section('title', 'Build Your Own Kitchen — Ajax Trading Corporation')
-@section('meta_description', 'Design your own modular kitchen online. Add cabinet modules, choose your board finish, and see a live price estimate before you talk to a designer.')
+@section('meta_description', 'Design your own modular kitchen online, then request a quote and talk to our sales team — no online pricing or checkout, just a starting point for a real conversation.')
 
 @section('content')
 <section class="configurator">
     <h1>Build your own kitchen</h1>
-    <p class="lead">Add modules, pick a finish, and see your estimate update live. This is a starting point for your designer, not a final quote.</p>
+    <p class="lead">Add modules and pick a finish to sketch out your idea. When you're ready, send it to us and a designer will call you with a real quote — no price shown here, this is just a starting point.</p>
 
     <div class="configurator-layout">
         <div class="configurator-controls">
-            <label for="substrate">Board substrate</label>
+            <label for="substrate">Board finish</label>
             <select id="substrate" name="substrate">
                 @foreach ($substrates as $key => $substrate)
-                    <option value="{{ $key }}">{{ $substrate['label'] }} — ₱{{ number_format($substrate['rate_per_lm']) }}/lm</option>
+                    <option value="{{ $key }}">{{ $substrate['label'] }}</option>
                 @endforeach
             </select>
 
@@ -28,18 +28,17 @@
         </div>
 
         <div class="configurator-summary">
-            <div class="summary-row"><span>Total run length</span><span id="lm-out">0.0 lm</span></div>
-            <div class="summary-row summary-price"><span>Estimated price</span><span id="price-out">₱0</span></div>
-            <p class="disclaimer">Live estimate only — final price confirmed with a designer.</p>
+            <div class="summary-row"><span>Modules in your design</span><span id="lm-out">0</span></div>
+            <p class="disclaimer">We'll follow up with a proper quote — nothing is charged or ordered here.</p>
 
             <form id="submit-form">
                 <label for="name">Your name</label>
                 <input type="text" id="name" name="name" required>
 
-                <label for="contact">Phone or email</label>
+                <label for="contact">Email or phone number</label>
                 <input type="text" id="contact" name="contact" required>
 
-                <button type="submit">Request this design</button>
+                <button type="submit">Request a quote — talk to sales</button>
                 <p id="form-message" role="status"></p>
             </form>
         </div>
@@ -48,5 +47,6 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/configurator.js') }}" data-price-url="{{ route('configurator.price') }}" data-submit-url="{{ route('configurator.submit') }}" data-csrf="{{ csrf_token() }}"></script>
+<script id="module-lm-data" type="application/json">{!! json_encode(collect($moduleTypes)->map(fn($t) => $t['lm']))->toJson() !!}</script>
+<script src="{{ asset('js/configurator.js') }}" data-submit-url="{{ route('configurator.submit') }}" data-csrf="{{ csrf_token() }}"></script>
 @endpush
