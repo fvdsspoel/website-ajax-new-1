@@ -17,7 +17,23 @@ Route::post('/build-your-own/submit', [ConfiguratorController::class, 'submit'])
 Route::get('/get-a-quote', [QuoteController::class, 'create'])->name('quote.create');
 Route::post('/get-a-quote', [QuoteController::class, 'store'])->name('quote.store');
 
-// Admin login intentionally lives off the public nav (report Section 2).
-// Point this at whatever admin panel package/route the eventual
-// backend uses — kept as a placeholder here.
-// Route::get('/admin/login', ...)->name('admin.login');
+// Admin login intentionally lives off the public nav (report Section 2) —
+// no link to it anywhere in the site's visible UI.
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\HighlightController as AdminHighlightController;
+use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\ShowroomController as AdminShowroomController;
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login')->middleware('guest');
+    Route::post('/login', [AdminAuthController::class, 'login'])->middleware('guest');
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+    Route::middleware('auth')->group(function () {
+        Route::resource('portfolio', AdminPortfolioController::class)->except('show');
+        Route::resource('products', AdminProductController::class)->except('show');
+        Route::resource('showrooms', AdminShowroomController::class)->except('show');
+        Route::resource('highlights', AdminHighlightController::class)->except('show');
+    });
+});

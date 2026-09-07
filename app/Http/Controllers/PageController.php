@@ -40,7 +40,10 @@ class PageController extends Controller
     public function showrooms()
     {
         return view('pages.showrooms', [
-            'locations' => ShowroomLocation::where('is_active', true)->get(),
+            'locations' => ShowroomLocation::where('is_showroom', true)
+                ->where('is_active', true)
+                ->orderBy('is_upcoming')
+                ->get(),
         ]);
     }
 }

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->boolean('is_headquarters')->default(false);
             $table->boolean('is_factory')->default(false);
+            $table->boolean('is_showroom')->default(false);
+            $table->boolean('is_upcoming')->default(false);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
