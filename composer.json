@@ -1,0 +1,30 @@
+{
+    "name": "ajaxtradingcorp/website",
+    "type": "project",
+    "description": "Ajax Trading Corporation public website — furniture/melamine board manufacturer, with the Build Your Own configurator and direct CRM inquiry integration.",
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^11.0",
+        "guzzlehttp/guzzle": "^7.8"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.13",
+        "laravel/sail": "^1.26",
+        "phpunit/phpunit": "^11.0",
+        "fakerphp/faker": "^1.23"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
