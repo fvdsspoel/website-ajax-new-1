@@ -54,3 +54,31 @@ body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 
 .site-footer { display: flex; justify-content: space-between; padding: 2rem; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
 .site-footer .copyright { width: 100%; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+
+/* About / Portfolio / Products / Showrooms */
+.about-page, .portfolio-page, .products-page, .showrooms-page { padding: 2rem; max-width: 1100px; margin: 0 auto; }
+.about-page .lead, .portfolio-page .lead, .products-page .lead { color: var(--text-muted); max-width: 700px; }
+
+.about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+.about-block { border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
+.about-cta { display: flex; gap: 1rem; align-items: center; margin-top: 2rem; }
+.about-cta a { background: var(--brand); color: #fff; padding: 0.65rem 1.25rem; border-radius: 6px; text-decoration: none; font-weight: 600; }
+.about-cta a:last-child { background: none; color: var(--brand); border: 1px solid var(--brand); }
+
+.portfolio-filters { display: flex; gap: 0.5rem; margin: 1.5rem 0; flex-wrap: wrap; }
+.filter-btn { border: 1px solid var(--border); background: #fff; padding: 0.5rem 1rem; border-radius: 999px; cursor: pointer; }
+.filter-btn.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+.portfolio-grid, .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+.portfolio-card, .product-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.portfolio-card img, .product-card img { width: 100%; height: 160px; object-fit: cover; display: block; }
+.portfolio-card-body, .product-card { padding: 0.75rem 1rem; }
+.portfolio-card-body h3, .product-card h3 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+.portfolio-card-body p, .product-card p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
+
+.product-category { margin-bottom: 2.5rem; }
+.products-cta { margin-top: 1.5rem; }
+.products-cta a { background: var(--brand); color: #fff; padding: 0.65rem 1.25rem; border-radius: 6px; text-decoration: none; font-weight: 600; }
+
+.showroom-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+.showroom-card { border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
+.showroom-card .badge { display: inline-block; background: var(--bg-alt); border-radius: 999px; padding: 0.2rem 0.75rem; font-size: 0.8rem; margin-top: 0.5rem; margin-right: 0.5rem; }

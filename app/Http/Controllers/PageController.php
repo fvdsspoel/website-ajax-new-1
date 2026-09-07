@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Highlight;
+use App\Models\PortfolioItem;
+use App\Models\Product;
+use App\Models\ShowroomLocation;
 
 class PageController extends Controller
 {
@@ -20,16 +23,24 @@ class PageController extends Controller
 
     public function portfolio()
     {
-        return view('pages.portfolio');
+        return view('pages.portfolio', [
+            'items' => PortfolioItem::latest()->get(),
+            'categories' => PortfolioItem::CATEGORIES,
+        ]);
     }
 
     public function products()
     {
-        return view('pages.products');
+        return view('pages.products', [
+            'products' => Product::orderBy('category')->get(),
+            'categories' => Product::CATEGORIES,
+        ]);
     }
 
     public function showrooms()
     {
-        return view('pages.showrooms');
+        return view('pages.showrooms', [
+            'locations' => ShowroomLocation::where('is_active', true)->get(),
+        ]);
     }
 }

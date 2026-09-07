@@ -13,7 +13,7 @@ Rebuild of ajaxtradingcorp.com, built against `ATC-Website-Rebuild-Spec.md`.
 - **"Build Your Own" configurator** (`/build-your-own`) — real, working: add/remove cabinet modules, pick a board substrate, live price recalculation via `POST /build-your-own/price`, and submission goes straight to the CRM's `Inquiry` API (`App\Services\CrmInquiryService`) instead of Messenger.
 - **Get a Quote form** (`/get-a-quote`) — also posts directly into the CRM, tagged `website_quote_form`.
 - **Homepage highlights** condensed to a 6-item strip (`Highlight` model/migration) instead of the old 30+-post feed dump.
-- Page shells for About, Portfolio, Products, and Showrooms — structured and routed, content/data wiring still to come (see below).
+- **About, Portfolio, Products, Showrooms — now real, not shells.** About has actual company content (HQ, San Pablo City production facility, 3,000 lm/month capacity). Portfolio has a working category filter (`PortfolioItem` model) — deliberately left unseeded, since real project photos need to come from the company, not placeholder claims. Products lists actual product categories (`Product` model, seeded). Showrooms pulls from `ShowroomLocation`, seeded ONLY with confirmed locations (head office, San Pablo production facility) — the two showroom sites still under lease review (Bamberton Center/Arca South, near SM San Pablo) are deliberately not listed as open; add them once a lease is actually signed.
 - **ERP pricing bridge** — rates come from the ERP's own `/api/public/substrate-prices` feed (`App\Services\ConfiguratorPricingService::substrateRates()`), cached for an hour, with an automatic fallback to placeholder rates if the ERP is unreachable. Used only server-side now (see Decision log above) — never displayed to the customer. This required a small addition on the ERP side too — see the `Ajax-erp` repo: `public_substrate_prices` table, `PublicPricingController`, and `VerifyPublicPricingApiKey` middleware. That table is admin-maintained on the ERP side, deliberately separate from job-specific production costing.
 
 ## Setup (run these on a machine with normal internet access — this environment can't reach packagist.org)
@@ -35,7 +35,7 @@ Then set in `.env`:
 
 - True 3D/photorealistic rendering in the configurator — deliberately deferred to v2; a fast, accurate 2D module layout beats a slow 3D tool
 - ~~Live product/board pricing pulled from the ERP~~ — done, see "ERP pricing bridge" above. Still needed: the ERP admin needs to actually populate/maintain `public_substrate_prices` with real current rates (seeded with placeholder values for now) and rotate `ERP_PUBLIC_PRICING_API_KEY` to a real secret before this goes live
-- Full Products/Portfolio/Showrooms data and admin CRUD — page shells and routes exist, content management doesn't yet
+- Full Products/Portfolio/Showrooms **admin CRUD** — the models, migrations, and seeders exist and the public pages read from them, but there's no admin UI yet to add/edit entries without touching the database directly
 - Framework upgrade path details beyond "use Laravel 11" — this project is scaffolded fresh on 11, so this only matters if content/data is being migrated from the old Laravel 7.2 codebase rather than re-entered
 - The CRM's Inquiry API endpoint itself — `CrmInquiryService` assumes a REST endpoint accepting the Inquiry model's fields; confirm the actual route/auth scheme on the CRM side and adjust the service if it differs
 
