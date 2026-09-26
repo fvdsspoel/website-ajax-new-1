@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\HighlightController as AdminHighlightController;
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ShowroomController as AdminShowroomController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ConfiguratorController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\QuoteController;
@@ -23,6 +24,10 @@ Route::post('/build-your-own/submit', [ConfiguratorController::class, 'submit'])
 
 Route::get('/get-a-quote', [QuoteController::class, 'create'])->name('quote.create');
 Route::post('/get-a-quote', [QuoteController::class, 'store'])->name('quote.store');
+
+// Live chat window → Maya in the CRM (see ChatController).
+Route::post('/chat/send', [ChatController::class, 'send'])->middleware('throttle:20,1')->name('chat.send');
+Route::get('/chat/poll', [ChatController::class, 'poll'])->middleware('throttle:60,1')->name('chat.poll');
 
 // EN / TL toggle — stores the choice and returns the visitor to the same page.
 Route::get('/lang/{locale}', function (Request $request, string $locale) {

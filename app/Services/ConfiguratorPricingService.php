@@ -43,6 +43,10 @@ class ConfiguratorPricingService
      */
     public function substrateRates(): array
     {
+        if (! config('services.erp.public_pricing_url')) {
+            return self::FALLBACK_RATES; // ERP feed not configured yet
+        }
+
         return Cache::remember('erp.public_substrate_prices', now()->addHour(), function () {
             try {
                 $client = new Client(['timeout' => 3]);

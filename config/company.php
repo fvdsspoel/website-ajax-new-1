@@ -23,6 +23,9 @@ return [
         'shopee' => 'https://shopee.ph/shop/1355732891',
     ],
 
+    // true on the temporary test site so Google doesn't index it.
+    'noindex' => (bool) env('SITE_NOINDEX', false),
+
     'catalog_url' => env('COMPANY_CATALOG_URL', ''),
 
     // Public-site languages (SetLocale middleware + header toggle).

@@ -23,22 +23,137 @@
         });
     }
 
-    // Floating chat menu
-    var chat = document.getElementById('float-chat');
+    // Live chat with Maya (via /chat/send and /chat/poll → CRM)
+    var chat = document.getElementById('chat');
     if (chat) {
-        var btn = chat.querySelector('.float-chat-btn');
-        btn.addEventListener('click', function (e) {
-            e.stopPropagation();
-            var open = !chat.classList.contains('open');
-            chat.classList.toggle('open', open);
-            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
-        document.addEventListener('click', function (e) {
-            if (!chat.contains(e.target)) {
-                chat.classList.remove('open');
-                btn.setAttribute('aria-expanded', 'false');
+        var panel = document.getElementById('chat-panel');
+        var toggleBtn = document.getElementById('chat-toggle');
+        var closeBtn = document.getElementById('chat-close');
+        var log = document.getElementById('chat-log');
+        var form = document.getElementById('chat-form');
+        var input = document.getElementById('chat-input');
+        var typing = document.getElementById('chat-typing');
+        var errorEl = document.getElementById('chat-error');
+        var dot = document.getElementById('chat-dot');
+        var t = JSON.parse(document.getElementById('chat-i18n').textContent);
+        var started = chat.dataset.started === '1';
+        var lastId = 0;
+        var seen = {};
+        var pollTimer = null;
+        var sending = false;
+        var humanShown = false;
+
+        var store = {
+            get: function (k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } },
+            set: function (k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
+        };
+
+        function addMessage(m) {
+            if (m.id) {
+                lastId = Math.max(lastId, m.id);
+                if (seen[m.id]) return;
+                seen[m.id] = true;
             }
+            var div = document.createElement('div');
+            div.className = 'msg ' + (m.from === 'visitor' ? 'msg--me' : 'msg--ajax');
+            var name = document.createElement('span');
+            name.className = 'msg-name';
+            name.textContent = m.from === 'visitor' ? t.you : (m.name || 'Ajax');
+            var p = document.createElement('p');
+            p.textContent = m.text;
+            div.appendChild(name);
+            div.appendChild(p);
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+            if (m.from !== 'visitor' && panel.hidden) dot.hidden = false;
+        }
+
+        function note(text) {
+            var div = document.createElement('div');
+            div.className = 'msg-note';
+            div.textContent = text;
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function handle(data) {
+            (data.messages || []).forEach(addMessage);
+            if (data.human && !humanShown) { humanShown = true; note(t.human); }
+        }
+
+        function poll() {
+            fetch(chat.dataset.pollUrl + '?after=' + lastId, { headers: { 'Accept': 'application/json' }, credentials: 'same-origin' })
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .then(function (d) { if (d) { errorEl.hidden = true; handle(d); } })
+                .catch(function () {});
+        }
+
+        function startPolling() {
+            if (pollTimer || !started) return;
+            poll();
+            pollTimer = setInterval(function () {
+                // poll quickly while the panel is open, slowly while closed
+                if (!panel.hidden || Date.now() % 20000 < 4000) poll();
+            }, 4000);
+        }
+
+        function setOpen(open) {
+            panel.hidden = !open;
+            toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            chat.classList.toggle('is-open', open);
+            store.set('ajaxChatOpen', open ? '1' : '0');
+            if (open) { dot.hidden = true; log.scrollTop = log.scrollHeight; setTimeout(function () { input.focus(); }, 50); }
+        }
+
+        toggleBtn.addEventListener('click', function () { setOpen(panel.hidden); });
+        closeBtn.addEventListener('click', function () { setOpen(false); toggleBtn.focus(); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) setOpen(false); });
+
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit')); }
         });
+        input.addEventListener('input', function () {
+            input.style.height = 'auto';
+            input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+        });
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var text = input.value.trim();
+            if (!text || sending) return;
+            sending = true;
+            errorEl.hidden = true;
+            // show the visitor's message straight away
+            addMessage({ from: 'visitor', text: text });
+            input.value = '';
+            input.style.height = 'auto';
+            typing.hidden = false;
+
+            var body = new URLSearchParams();
+            body.set('text', text);
+            body.set('after', String(lastId));
+            body.set('page', location.pathname);
+
+            fetch(chat.dataset.sendUrl, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': chat.dataset.csrf, 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: body.toString()
+            })
+                .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+                .then(function (d) {
+                    // server echoes the visitor's message with its id; skip re-drawing it
+                    (d.messages || []).forEach(function (m) { if (m.from === 'visitor' && m.text === text) seen[m.id] = true; });
+                    handle(d);
+                    started = true;
+                    startPolling();
+                })
+                .catch(function () { errorEl.hidden = false; })
+                .then(function () { typing.hidden = true; sending = false; });
+        });
+
+        if (started) startPolling();
+        if (store.get('ajaxChatOpen') === '1') setOpen(true);
     }
 
     // Filter chips (portfolio + accessories): <button data-filter="x"> over [data-category] items

@@ -7,6 +7,9 @@
     <title>@yield('title', __('site.meta.title'))</title>
     <meta name="description" content="@yield('meta_description', __('site.meta.description'))">
     <meta name="theme-color" content="#1e2a4a">
+    @if (config('company.noindex'))
+        <meta name="robots" content="noindex, nofollow">
+    @endif
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Ajax Trading Corporation">
@@ -16,6 +19,7 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:locale" content="{{ app()->getLocale() === 'tl' ? 'tl_PH' : 'en_PH' }}">
 
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     <link rel="canonical" href="{{ url()->current() }}">
     <link rel="alternate" hreflang="en" href="{{ url()->current() }}?lang=en">
     <link rel="alternate" hreflang="tl" href="{{ url()->current() }}?lang=tl">
@@ -24,7 +28,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=2">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=3">
     <script>document.documentElement.classList.add('js')</script>
 
     <script type="application/ld+json">
@@ -150,20 +154,47 @@
         </div>
     </footer>
 
-    {{-- Floating chat: the fastest way for a phone visitor to reach sales --}}
-    <div class="float-chat" id="float-chat">
-        <div class="float-chat-menu" id="float-chat-menu">
-            <a href="{{ config('company.messenger_url') }}" target="_blank" rel="noopener">@include('partials.icon', ['name' => 'messenger']) {{ __('site.common.messenger') }}</a>
-            <a href="viber://chat?number=%2B{{ config('company.viber_number') }}">@include('partials.icon', ['name' => 'viber']) {{ __('site.common.viber') }}</a>
-            <a href="https://wa.me/{{ config('company.whatsapp_number') }}" target="_blank" rel="noopener">@include('partials.icon', ['name' => 'whatsapp']) {{ __('site.common.whatsapp') }}</a>
-            <a href="tel:{{ preg_replace('/\D+/', '', config('company.phone_primary')) }}">@include('partials.icon', ['name' => 'phone']) {{ __('site.common.call') }}</a>
-        </div>
-        <button type="button" class="float-chat-btn" aria-expanded="false" aria-controls="float-chat-menu">
-            @include('partials.icon', ['name' => 'chat']) <span class="float-chat-label">{{ __('site.common.chat_with_us') }}</span>
+    {{-- Live chat with Maya (answers via the CRM; staff can take over there) --}}
+    <div class="chat" id="chat"
+         data-send-url="{{ route('chat.send') }}"
+         data-poll-url="{{ route('chat.poll') }}"
+         data-csrf="{{ csrf_token() }}"
+         data-started="{{ session()->has('chat_token') ? '1' : '0' }}">
+        <section class="chat-panel" id="chat-panel" role="dialog" aria-modal="false" aria-labelledby="chat-title" hidden>
+            <header class="chat-head">
+                <span class="chat-avatar" aria-hidden="true">M</span>
+                <div>
+                    <h2 id="chat-title">{{ __('site.chat.title') }}</h2>
+                    <p>{{ __('site.chat.subtitle') }}</p>
+                </div>
+                <button type="button" class="chat-close" id="chat-close" aria-label="{{ __('site.chat.close') }}">@include('partials.icon', ['name' => 'close'])</button>
+            </header>
+            <div class="chat-log" id="chat-log" aria-live="polite">
+                <div class="msg msg--ajax"><span class="msg-name">Ajax</span><p>{{ __('site.chat.greeting') }}</p></div>
+            </div>
+            <p class="chat-typing" id="chat-typing" hidden>{{ __('site.chat.typing') }}</p>
+            <p class="chat-error" id="chat-error" role="alert" hidden>{{ __('site.chat.error') }}</p>
+            <form class="chat-form" id="chat-form">
+                <label for="chat-input" class="visually-hidden">{{ __('site.chat.placeholder') }}</label>
+                <textarea id="chat-input" rows="1" maxlength="2000" placeholder="{{ __('site.chat.placeholder') }}" autocomplete="off"></textarea>
+                <button type="submit" class="chat-send" aria-label="{{ __('site.chat.send') }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+                </button>
+            </form>
+            <p class="chat-foot">
+                {{ __('site.chat.or') }}
+                <a href="tel:{{ preg_replace('/\D+/', '', config('company.phone_primary')) }}">{{ config('company.phone_primary') }}</a>
+                · <a href="{{ config('company.messenger_url') }}" target="_blank" rel="noopener">Messenger</a>
+            </p>
+        </section>
+        <button type="button" class="float-chat-btn" id="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
+            @include('partials.icon', ['name' => 'chat']) <span class="float-chat-label">{{ __('site.chat.open') }}</span>
+            <span class="chat-dot" id="chat-dot" hidden></span>
         </button>
     </div>
+    <script type="application/json" id="chat-i18n">{!! json_encode(['you' => __('site.chat.you'), 'human' => __('site.chat.human')], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 
-    <script src="{{ asset('js/app.js') }}?v=2" defer></script>
+    <script src="{{ asset('js/app.js') }}?v=3" defer></script>
     @stack('scripts')
 </body>
 </html>

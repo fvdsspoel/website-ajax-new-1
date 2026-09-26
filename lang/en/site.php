@@ -270,6 +270,21 @@ return [
         'error' => 'We couldn’t send that right now — please call or message us directly.',
     ],
 
+    'chat' => [
+        'open' => 'Chat with us',
+        'title' => 'Maya · Ajax Sales',
+        'subtitle' => 'Ask about kitchens, wardrobes, prices or a visit',
+        'greeting' => 'Hi! Welcome to Ajax. Ask us anything about kitchens, wardrobes or custom furniture — you can type in English or Tagalog.',
+        'placeholder' => 'Type your message…',
+        'send' => 'Send',
+        'typing' => 'Maya is typing…',
+        'error' => 'The chat isn’t connecting right now. Please call us or message us on Messenger.',
+        'human' => 'An Ajax sales specialist has joined the chat.',
+        'close' => 'Close chat',
+        'or' => 'Prefer to call?',
+        'you' => 'You',
+    ],
+
     'footer' => [
         'tagline' => 'Premium modular kitchens, wardrobes and custom furniture — designed with you and built in our own factory in San Pablo City, Laguna.',
         'explore' => 'Explore',

@@ -8,6 +8,14 @@ Rebuild of ajaxtradingcorp.com, built against `ATC-Website-Rebuild-Spec.md`.
 
 **Only one showroom is real right now.** San Pablo City, co-located with the factory. Manila is a genuine upcoming location but is NOT open yet — it's seeded with `is_upcoming = true` and shows an "Opening soon" badge rather than being presented as available.
 
+## Deploying
+
+**See `DEPLOY_CJ.md`** — step-by-step for GoDaddy cPanel: test site on `new.ajaxtradingcorp.com` first, then go-live. Runs on **Laravel 12 / PHP 8.2+** (same framework version as the CRM). `composer.lock` pins every package; the release zip already contains `vendor/`.
+
+## Website chat (Maya)
+
+"Chat with us" is a live chat window, not a link to WhatsApp. `ChatController` forwards messages server-to-server to the CRM (`/api/webchat/*`, key `CRM_WEBCHAT_API_KEY` = CRM `WEBCHAT_API_KEY`). Maya answers instantly; chats show in CRM Inquiries as **Website chat** and staff can take over with Reply. Quote form and kitchen builder post to the CRM's existing `/api/inquiry` (channel `web`).
+
 ## Redesign — September 2026
 
 **Positioning changed.** The site no longer sells wholesale boards. It presents Ajax as a manufacturer of modular kitchens, wardrobes and custom furniture, with three entry points on the homepage: homeowners (→ kitchen builder), projects/developers (→ quote form tagged `project`), and kitchen accessories. The factory (CNC, six-sided drilling, edge banding, hot press) is shown as proof of quality, not as a board shop.
@@ -55,7 +63,7 @@ Optional `.env`: `COMPANY_EMAIL`, `COMPANY_MESSENGER_URL`, `COMPANY_WHATSAPP`, `
   - Showrooms: only the San Pablo location is listed as open; Manila is listed as "Opening soon" — see Decision log
 - **ERP pricing bridge** — the configurator's server-side price estimate (sent to the CRM, never shown to the customer) comes from the ERP's own `/api/public/substrate-prices` feed, cached for an hour, with automatic fallback to placeholder rates if the ERP is unreachable. Companion change lives in the `Ajax-erp` repo: `public_substrate_prices` table, `PublicPricingController`, `VerifyPublicPricingApiKey` middleware.
 - **Admin panel** (`/admin`) — session-auth-protected CRUD for Portfolio, Products, Showrooms, and Highlights, including photo upload (stored via Laravel's public disk, not committed to git). This is how real portfolio photos, new products, and showroom updates should be added going forward — not by editing seeders or the database directly.
-- **Full Laravel framework scaffolding** — `bootstrap/`, `public/index.php`, `artisan`, and the standard `config/*.php` files, pulled from the official Laravel skeleton (currently tracking Laravel ^13.17) since earlier commits had only the application layer (controllers/models/views/routes) without the framework bootstrap itself.
+- **Full Laravel framework scaffolding** — `bootstrap/`, `public/index.php`, `artisan`, and the standard `config/*.php` files, pulled from the official Laravel skeleton (now Laravel ^12 to match the CRM and GoDaddy's PHP 8.2) since earlier commits had only the application layer (controllers/models/views/routes) without the framework bootstrap itself.
 
 ## Setup (run on a machine with normal internet access — this sandbox can't reach packagist.org)
 

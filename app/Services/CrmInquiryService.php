@@ -2,38 +2,32 @@
 
 namespace App\Services;
 
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Posts every lead-capturing form on the site (quote requests,
- * configurator submissions) directly into the CRM's Inquiry model,
- * tagged with the originating channel — replacing the previous
- * Messenger-only hand-off (see report Section 7).
+ * Posts every lead-capturing form on the site (quote requests, kitchen
+ * builder designs) into the CRM as a new Inquiry, via the CRM's existing
+ * public endpoint POST /api/inquiry (SalesToolController::storeInquiry).
  *
- * The CRM's Inquiry model already has a `design_config` JSON column
- * sitting unused for exactly the configurator's module list — see
- * CrmInquiryService::submitConfiguratorDesign().
+ * Everything arrives on the CRM's 'web' channel, so it lands in the same
+ * Inquiries inbox as Facebook and WhatsApp, is labelled "Website" when
+ * converted to a deal, and Maya / the no-reply timer take over as usual.
  */
 class CrmInquiryService
 {
-    private Client $client;
-
-    public function __construct()
-    {
-        $this->client = new Client([
-            'base_uri' => config('services.crm.inquiry_api_url'),
-            'timeout' => 5,
-        ]);
-    }
-
     public function submitQuoteRequest(array $data): bool
     {
         return $this->post([
             'name' => $data['name'],
             'contact' => $data['contact'],
-            'channel' => 'website_quote_form',
-            'message' => $data['message'] ?? null,
+            'channel' => 'web',
+            'message' => "[Website quote form]\n" . ($data['message'] ?? ''),
+            'design_config' => array_filter([
+                'source' => 'website_quote_form',
+                'section' => $data['interest'] ?? null,
+                'city' => $data['city'] ?? null,
+            ]),
         ]);
     }
 
@@ -42,12 +36,20 @@ class CrmInquiryService
      */
     public function submitConfiguratorDesign(array $data): bool
     {
+        $modules = collect($data['modules'])->countBy('type')
+            ->map(fn ($n, $type) => "{$n}× {$type}")->implode(', ');
+
         return $this->post([
             'name' => $data['name'],
             'contact' => $data['contact'],
-            'channel' => 'website_configurator',
-            'message' => 'Design submitted via the website kitchen builder'.(!empty($data['layout']) ? ' ('.$data['layout'].')' : '').'.',
+            'channel' => 'web',
+            'message' => "[Website kitchen builder] Layout: " . ($data['layout'] ?? '—')
+                . ", material: {$data['substrate']}, colour: " . ($data['colour'] ?? '—')
+                . ", cabinets: {$modules}"
+                . (! empty($data['accessories']) ? ', accessories: ' . implode(', ', $data['accessories']) : ''),
             'design_config' => [
+                'source' => 'website_kitchen_builder',
+                'section' => 'kitchen',
                 'modules' => $data['modules'],
                 'substrate' => $data['substrate'],
                 'total_lm' => $data['total_lm'],
@@ -62,22 +64,29 @@ class CrmInquiryService
 
     private function post(array $payload): bool
     {
-        try {
-            $response = $this->client->post('', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . config('services.crm.inquiry_api_key'),
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => $payload,
-            ]);
+        $url = config('services.crm.inquiry_api_url');
+        if (! $url) {
+            Log::error('CRM inquiry URL not set (CRM_INQUIRY_API_URL) — lead not sent', ['payload' => $payload]);
+            return false;
+        }
 
-            return $response->getStatusCode() < 300;
+        try {
+            $response = Http::acceptJson()
+                ->timeout(10)
+                ->withToken((string) config('services.crm.inquiry_api_key'))
+                ->post($url, $payload);
+
+            if (! $response->successful()) {
+                Log::error('CRM inquiry rejected', ['status' => $response->status(), 'body' => mb_substr($response->body(), 0, 500), 'payload' => $payload]);
+                return false;
+            }
+
+            return true;
         } catch (\Throwable $e) {
-            // A failed CRM post should never break the customer's
-            // experience — log it for follow-up and let the caller
-            // decide how to degrade (e.g. show a "we'll be in touch"
-            // message and email the team as a fallback).
-            Log::error('CRM inquiry submission failed', ['error' => $e->getMessage()]);
+            // A failed CRM post never breaks the visitor's page. The lead is
+            // kept in the log so nothing is lost; the visitor is asked to
+            // call or message instead.
+            Log::error('CRM inquiry submission failed', ['error' => $e->getMessage(), 'payload' => $payload]);
             return false;
         }
     }

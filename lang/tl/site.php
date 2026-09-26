@@ -272,6 +272,21 @@ return [
         'error' => 'Hindi namin ito maipadala ngayon — pakitawagan o i-message kami nang direkta.',
     ],
 
+    'chat' => [
+        'open' => 'Mag-chat sa amin',
+        'title' => 'Maya · Ajax Sales',
+        'subtitle' => 'Magtanong tungkol sa kitchen, wardrobe, presyo o pagbisita',
+        'greeting' => 'Hi po! Welcome sa Ajax. Magtanong lang tungkol sa kitchen, wardrobe o custom furniture — puwede sa Tagalog o English.',
+        'placeholder' => 'I-type ang mensahe mo…',
+        'send' => 'Ipadala',
+        'typing' => 'Nagta-type si Maya…',
+        'error' => 'Hindi makakonekta ang chat ngayon. Pakitawagan kami o i-message sa Messenger.',
+        'human' => 'May Ajax sales specialist na sumali sa chat.',
+        'close' => 'Isara ang chat',
+        'or' => 'Mas gusto mong tumawag?',
+        'you' => 'Ikaw',
+    ],
+
     'footer' => [
         'tagline' => 'De-kalidad na modular kitchen, wardrobe at custom furniture — dinisenyo kasama ka at ginawa sa sarili naming factory sa San Pablo City, Laguna.',
         'explore' => 'Tuklasin',
