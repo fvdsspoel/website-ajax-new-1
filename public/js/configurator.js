@@ -1,105 +1,137 @@
+// "Design your kitchen" — lead-capture builder. No price is ever shown;
+// the server prices the design for the sales team only (see README).
 (function () {
-    const script = document.currentScript;
-    const submitUrl = script.dataset.submitUrl;
-    const csrf = script.dataset.csrf;
-    const moduleLm = JSON.parse(document.getElementById('module-lm-data').textContent);
+    var script = document.currentScript;
+    var submitUrl = script.dataset.submitUrl;
+    var csrf = script.dataset.csrf;
+    var t = JSON.parse(document.getElementById('builder-i18n').textContent);
 
-    const MODULE_LABELS = {
-        base: 'Base cabinet',
-        wall: 'Wall cabinet',
-        drawer: 'Drawer unit',
-        corner: 'Corner unit',
-    };
+    var modules = [];
+    var counter = 0;
 
-    let modules = [];
-    let counter = 0;
+    var wallRow = document.getElementById('elev-wall');
+    var baseRow = document.getElementById('elev-base');
+    var counterEl = document.getElementById('elev-counter');
+    var emptyEl = document.getElementById('elev-empty');
+    var listEl = document.getElementById('module-list');
+    var countEl = document.getElementById('module-count');
+    var elev = document.getElementById('elev');
+    var form = document.getElementById('submit-form');
+    var msg = document.getElementById('form-message');
 
-    const listEl = document.getElementById('module-list');
-    const countOut = document.getElementById('lm-out');
-    const substrateEl = document.getElementById('substrate');
-    const form = document.getElementById('submit-form');
-    const formMessage = document.getElementById('form-message');
-
-    // No price shown to the customer — this is a design/lead-capture
-    // tool, not a checkout. The estimate is still computed server-side
-    // on submit and attached for the sales team's reference only.
-    function renderModules() {
-        listEl.innerHTML = '';
-        if (modules.length === 0) {
-            const empty = document.createElement('p');
-            empty.className = 'module-empty';
-            empty.textContent = 'No modules yet — add one below.';
-            listEl.appendChild(empty);
-        } else {
-            modules.forEach((m) => {
-                const row = document.createElement('div');
-                row.className = 'module-row';
-                row.innerHTML = `<span>${MODULE_LABELS[m.type]}</span>`;
-                const remove = document.createElement('button');
-                remove.type = 'button';
-                remove.className = 'module-remove';
-                remove.setAttribute('aria-label', 'Remove module');
-                remove.textContent = '×';
-                remove.addEventListener('click', () => {
-                    modules = modules.filter((x) => x.id !== m.id);
-                    renderModules();
-                });
-                row.appendChild(remove);
-                listEl.appendChild(row);
-            });
-        }
-        countOut.textContent = modules.length;
+    function checked(name) {
+        var el = document.querySelector('input[name="' + name + '"]:checked');
+        return el ? el.value : null;
     }
 
-    document.querySelectorAll('.add-module').forEach((btn) => {
-        btn.addEventListener('click', () => {
+    function applyColour() {
+        var el = document.querySelector('input[name="colour"]:checked');
+        if (el) elev.style.setProperty('--finish', el.dataset.hex);
+    }
+
+    function cabinet(m) {
+        var div = document.createElement('div');
+        div.className = 'cab cab--' + m.type;
+        div.title = t.modules[m.type];
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = '×';
+        btn.setAttribute('aria-label', t.remove + ': ' + t.modules[m.type]);
+        btn.addEventListener('click', function () {
+            modules = modules.filter(function (x) { return x.id !== m.id; });
+            render();
+        });
+        div.appendChild(btn);
+        return div;
+    }
+
+    function render() {
+        wallRow.innerHTML = '';
+        baseRow.innerHTML = '';
+        listEl.innerHTML = '';
+        var hasBase = false;
+        var tally = {};
+
+        modules.forEach(function (m) {
+            if (m.type === 'wall') {
+                wallRow.appendChild(cabinet(m));
+            } else {
+                baseRow.appendChild(cabinet(m));
+                hasBase = true;
+            }
+            tally[m.type] = (tally[m.type] || 0) + 1;
+        });
+
+        Object.keys(tally).forEach(function (type) {
+            var li = document.createElement('li');
+            li.textContent = tally[type] + ' × ' + t.modules[type];
+            listEl.appendChild(li);
+        });
+
+        // Counter top spans the base run
+        counterEl.hidden = !hasBase;
+        if (hasBase) counterEl.style.width = baseRow.scrollWidth + 'px';
+
+        emptyEl.hidden = modules.length > 0;
+        countEl.textContent = modules.length;
+    }
+
+    document.querySelectorAll('.module-add').forEach(function (btn) {
+        btn.addEventListener('click', function () {
             modules.push({ id: counter++, type: btn.dataset.type });
-            renderModules();
+            render();
         });
     });
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const name = document.getElementById('name').value.trim();
-        const contact = document.getElementById('contact').value.trim();
-
-        if (!name || !contact) {
-            formMessage.textContent = 'Please fill in your name and contact details first.';
-            formMessage.className = 'form-error';
-            return;
-        }
-        if (modules.length === 0) {
-            formMessage.textContent = 'Add at least one module so we know what to quote.';
-            formMessage.className = 'form-error';
-            return;
-        }
-
-        formMessage.textContent = 'Sending…';
-        formMessage.className = '';
-
-        try {
-            const res = await fetch(submitUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf,
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    name,
-                    contact,
-                    modules: modules.map((m) => ({ type: m.type })),
-                    substrate: substrateEl.value,
-                }),
-            });
-            const data = await res.json();
-            formMessage.textContent = data.message;
-            formMessage.className = data.success ? 'form-success' : 'form-error';
-        } catch (e) {
-            formMessage.textContent = "We couldn't send that right now — please call us or try again.";
-            formMessage.className = 'form-error';
-        }
+    document.querySelectorAll('input[name="colour"]').forEach(function (el) {
+        el.addEventListener('change', applyColour);
     });
 
-    renderModules();
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = document.getElementById('name').value.trim();
+        var contact = document.getElementById('contact').value.trim();
+
+        if (modules.length === 0) { msg.textContent = t.needModule; msg.style.color = 'var(--err)'; return; }
+        if (!name || !contact) { msg.textContent = t.needContact; msg.style.color = 'var(--err)'; return; }
+
+        var accessories = Array.prototype.map.call(
+            document.querySelectorAll('input[name="accessories[]"]:checked'),
+            function (el) { return el.value; }
+        );
+
+        var button = form.querySelector('button[type="submit"]');
+        button.disabled = true;
+        msg.textContent = t.sending;
+        msg.style.color = '';
+
+        fetch(submitUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
+            body: JSON.stringify({
+                name: name,
+                contact: contact,
+                modules: modules.map(function (m) { return { type: m.type }; }),
+                substrate: checked('substrate'),
+                layout: checked('layout'),
+                colour: checked('colour'),
+                accessories: accessories,
+            }),
+        })
+            .then(function (res) { return res.json().then(function (d) { return { ok: res.ok, d: d }; }); })
+            .then(function (r) {
+                var ok = r.ok && r.d.success;
+                msg.textContent = ok ? t.success : t.error;
+                msg.style.color = ok ? 'var(--ok)' : 'var(--err)';
+                if (ok) form.reset(); else button.disabled = false;
+            })
+            .catch(function () {
+                msg.textContent = t.error;
+                msg.style.color = 'var(--err)';
+                button.disabled = false;
+            });
+    });
+
+    applyColour();
+    render();
 })();

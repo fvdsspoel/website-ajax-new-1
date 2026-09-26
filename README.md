@@ -8,7 +8,40 @@ Rebuild of ajaxtradingcorp.com, built against `ATC-Website-Rebuild-Spec.md`.
 
 **Only one showroom is real right now.** San Pablo City, co-located with the factory. Manila is a genuine upcoming location but is NOT open yet — it's seeded with `is_upcoming = true` and shows an "Opening soon" badge rather than being presented as available.
 
-## What's built
+## Redesign — September 2026
+
+**Positioning changed.** The site no longer sells wholesale boards. It presents Ajax as a manufacturer of modular kitchens, wardrobes and custom furniture, with three entry points on the homepage: homeowners (→ kitchen builder), projects/developers (→ quote form tagged `project`), and kitchen accessories. The factory (CNC, six-sided drilling, edge banding, hot press) is shown as proof of quality, not as a board shop.
+
+**What's new**
+- New visual design (`public/css/app.css`): warm stone / Ajax navy / oak palette, Fraunces + Instrument Sans (Google Fonts), fully responsive, mobile menu, floating chat button (Messenger, Viber, WhatsApp, call).
+- **English / Tagalog toggle** — `lang/en/site.php`, `lang/tl/site.php`, `lang/tl/catalog.php`; `App\Http\Middleware\SetLocale`; switch via `/lang/tl` or `?lang=tl` (shareable). Add every new string to both files.
+- New **Our Factory** page (`/machines`).
+- **Products → Accessories** (`/accessories`): spice rack, pull-out basket, pull-down pantry, magic corner, bin set, cutlery tray, smart sink, soft-close hardware… New categories in `App\Models\Product::CATEGORIES`. `ProductSeeder` deletes old `boards` rows.
+- Kitchen builder redesigned: layout, material, colour, cabinets (live elevation drawing), optional accessories — all sent to the CRM in `design_config`. Still no price shown.
+- Quote form: interest, city and language are added to the CRM message.
+- 301 redirects from old live URLs (`/portfolios`, `/show-rooms`, `/products/list`, `/inquiries`, `/contact-us`).
+- Fixed: `auth` middleware now redirects guests to `/admin/login` (there was no `login` route).
+
+**Photos CJ should drop into `public/images/`** (the design shows neat placeholders until they exist):
+| File | Used on |
+|---|---|
+| `logo.webp` | header (text logo shown until it exists) |
+| `hero.jpg` | homepage hero (a kitchen elevation drawing shows until it exists) — best finished kitchen photo, landscape |
+| `factory.jpg` | homepage factory band |
+| `machine-1.jpg` … `machine-5.jpg` | Our Factory page: CNC cutting, six-sided drill, edge banding, 10-layer hot press, assembly |
+| `og-cover.jpg` | Facebook/Viber link preview, 1200×630 |
+
+Portfolio, accessory and highlight photos are uploaded per item in `/admin`.
+
+**Deploy (after pulling)**
+```bash
+php artisan migrate
+php artisan db:seed --class=ProductSeeder   # replaces boards with accessories
+php artisan view:clear && php artisan config:clear
+```
+Optional `.env`: `COMPANY_EMAIL`, `COMPANY_MESSENGER_URL`, `COMPANY_WHATSAPP`, `COMPANY_VIBER` (defaults: primary number 0994 364 8582).
+
+## What's built (first rebuild)
 
 - **Fixed SEO/OG metadata** — the live site's title/description read "Ajax Trading Corporation. - Property Business"; corrected everywhere, plus a `LocalBusiness` JSON-LD schema that didn't exist before.
 - **Admin login removed from the public nav.**

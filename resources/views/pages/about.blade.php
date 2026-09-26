@@ -1,32 +1,59 @@
 @extends('layouts.app')
 
-@section('title', 'About Us — Ajax Trading Corporation')
-@section('meta_description', 'Ajax Trading Corporation is a Philippine manufacturer of melamine boards and custom modular kitchen cabinets, headquartered in Makati City with a CNC production facility in San Pablo City, Laguna.')
+@section('title', __('site.about.eyebrow').' — Ajax Trading Corporation')
+@section('meta_description', __('site.about.lead'))
 
 @section('content')
-<section class="about-page">
-    <h1>About Ajax Trading Corporation</h1>
-    <p class="lead">Ajax Trading Corporation is a premium modular furniture manufacturer and materials trading company, headquartered in Makati City with a dedicated CNC production facility in San Pablo City, Laguna.</p>
+<section class="page-head">
+    <div class="wrap">
+        <span class="eyebrow">{{ __('site.about.eyebrow') }}</span>
+        <h1>{{ __('site.about.title') }}</h1>
+        <p class="lead">{{ __('site.about.lead') }}</p>
+    </div>
+</section>
 
-    <div class="about-grid">
-        <div class="about-block">
-            <h2>What we make</h2>
-            <p>Modular kitchens, wardrobes, cabinets, and custom furniture, produced at up to 3,000 linear meters per month. We also produce our own melamine and pressed boards in-house.</p>
-        </div>
-        <div class="about-block">
-            <h2>Quality control</h2>
-            <p>We import our own materials rather than relying on third-party suppliers — this keeps quality control in our hands from raw material to finished product.</p>
-        </div>
-        <div class="about-block">
-            <h2>Design</h2>
-            <p>Our design team works with every client from concept to execution, blending aesthetics with functionality for every modular kitchen we build.</p>
+<section class="section" style="padding-top: 0">
+    <div class="wrap">
+        <div class="about-blocks">
+            @foreach (__('site.about.blocks') as $block)
+                <div class="about-block reveal">
+                    <h2 style="font-size: 1.35rem">{{ $block['title'] }}</h2>
+                    <p>{{ $block['body'] }}</p>
+                </div>
+            @endforeach
         </div>
     </div>
+</section>
 
-    <div class="about-cta">
-        <p>Want to see what we can build for your space?</p>
-        <a href="{{ route('configurator') }}">Build your own kitchen</a>
-        <a href="{{ route('quote.create') }}">Get in touch</a>
+<section class="section section--paper">
+    <div class="wrap">
+        <h2 class="reveal">{{ __('site.home.process_title') }}</h2>
+        <ol class="process" style="margin-top: 32px">
+            @foreach (__('site.home.process') as $step)
+                <li class="reveal">
+                    <h3>{{ $step['title'] }}</h3>
+                    <p>{{ $step['body'] }}</p>
+                </li>
+            @endforeach
+        </ol>
+    </div>
+</section>
+
+<section class="section">
+    <div class="wrap">
+        <h2 class="reveal">{{ __('site.about.locations_title') }}</h2>
+        <div class="locations" style="margin-top: 24px">
+            @foreach (__('site.about.locations') as $loc)
+                <div class="location reveal">
+                    <h3>{{ $loc['title'] }}</h3>
+                    <p>{{ $loc['body'] }}</p>
+                </div>
+            @endforeach
+        </div>
+        <div class="btn-row" style="margin-top: 36px">
+            <a href="{{ route('configurator') }}" class="btn btn--primary">{{ __('site.nav.build') }}</a>
+            <a href="{{ route('machines') }}" class="btn btn--ghost">{{ __('site.home.factory_cta') }}</a>
+        </div>
     </div>
 </section>
 @endsection

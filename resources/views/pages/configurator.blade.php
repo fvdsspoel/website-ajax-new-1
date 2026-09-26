@@ -1,52 +1,139 @@
 @extends('layouts.app')
 
-@section('title', 'Build Your Own Kitchen — Ajax Trading Corporation')
-@section('meta_description', 'Design your own modular kitchen online, then request a quote and talk to our sales team — no online pricing or checkout, just a starting point for a real conversation.')
+@section('title', __('site.builder.title').' — Ajax Trading Corporation')
+@section('meta_description', __('site.builder.lead'))
+
+@php
+    // Visual swatches only — the chosen colour is sent to sales with the design.
+    $colours = [
+        'white' => '#f4f2ee',
+        'latte' => '#d8c3a5',
+        'oak' => '#c89a64',
+        'walnut' => '#7a5436',
+        'grey' => '#4a4d55',
+        'navy' => '#1e2a4a',
+    ];
+    $firstSubstrate = array_key_first($substrates);
+@endphp
 
 @section('content')
-<section class="configurator">
-    <h1>Build your own kitchen</h1>
-    <p class="lead">Add modules and pick a finish to sketch out your idea. When you're ready, send it to us and a designer will call you with a real quote — no price shown here, this is just a starting point.</p>
+<section class="page-head" style="padding-bottom: 24px">
+    <div class="wrap">
+        <h1>{{ __('site.builder.title') }}</h1>
+        <p class="lead">{{ __('site.builder.lead') }}</p>
+    </div>
+</section>
 
-    <div class="configurator-layout">
-        <div class="configurator-controls">
-            <label for="substrate">Board finish</label>
-            <select id="substrate" name="substrate">
-                @foreach ($substrates as $key => $substrate)
-                    <option value="{{ $key }}">{{ $substrate['label'] }}</option>
-                @endforeach
-            </select>
+<section class="section" style="padding-top: 0">
+    <div class="wrap builder">
+        {{-- ---------- Controls ---------- --}}
+        <div>
+            <fieldset class="builder-step" style="border: 0; padding: 0; margin: 0 0 28px">
+                <legend class="field-label"><span class="step-num">1</span> {{ __('site.builder.step_layout') }}</legend>
+                <div class="choice-grid">
+                    @foreach (__('site.builder.layouts') as $key => $label)
+                        <label class="choice">
+                            <input type="radio" name="layout" value="{{ $key }}" @checked($loop->first)>
+                            <span>{{ $label }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </fieldset>
 
-            <p class="section-label">Modules</p>
-            <div id="module-list" aria-live="polite"></div>
+            <fieldset class="builder-step" style="border: 0; padding: 0; margin: 0 0 28px">
+                <legend class="field-label"><span class="step-num">2</span> {{ __('site.builder.step_material') }}</legend>
+                <div class="choice-grid">
+                    @foreach ($substrates as $key => $substrate)
+                        <label class="choice">
+                            <input type="radio" name="substrate" value="{{ $key }}" @checked($key === $firstSubstrate)>
+                            <span>{{ trans()->has('site.builder.materials.'.$key) ? __('site.builder.materials.'.$key) : $substrate['label'] }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </fieldset>
 
-            <div class="module-buttons">
-                @foreach ($moduleTypes as $key => $type)
-                    <button type="button" class="add-module" data-type="{{ $key }}">+ {{ $type['label'] }}</button>
-                @endforeach
+            <fieldset class="builder-step" style="border: 0; padding: 0; margin: 0 0 28px">
+                <legend class="field-label"><span class="step-num">3</span> {{ __('site.builder.step_colour') }}</legend>
+                <div class="swatches">
+                    @foreach ($colours as $key => $hex)
+                        <label class="swatch">
+                            <input type="radio" name="colour" value="{{ $key }}" data-hex="{{ $hex }}" @checked($loop->first)>
+                            <span><i style="background: {{ $hex }}"></i>{{ __('site.builder.colours.'.$key) }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </fieldset>
+
+            <div class="builder-step">
+                <p class="field-label"><span class="step-num">4</span> {{ __('site.builder.step_modules') }}</p>
+                <div class="module-buttons">
+                    @foreach ($moduleTypes as $key => $type)
+                        <button type="button" class="module-add" data-type="{{ $key }}">+ {{ __('site.builder.modules.'.$key) }}</button>
+                    @endforeach
+                </div>
             </div>
+
+            @if ($accessories->isNotEmpty())
+                <fieldset class="builder-step" style="border: 0; padding: 0; margin: 0 0 28px">
+                    <legend class="field-label"><span class="step-num">5</span> {{ __('site.builder.step_accessories') }} <span class="muted" style="font-weight: 400">({{ __('site.builder.optional') }})</span></legend>
+                    <div class="choice-grid">
+                        @foreach ($accessories as $product)
+                            <label class="choice">
+                                <input type="checkbox" name="accessories[]" value="{{ $product->name }}">
+                                <span>{{ $product->localizedName() }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+                </fieldset>
+            @endif
         </div>
 
-        <div class="configurator-summary">
-            <div class="summary-row"><span>Modules in your design</span><span id="lm-out">0</span></div>
-            <p class="disclaimer">We'll follow up with a proper quote — nothing is charged or ordered here.</p>
+        {{-- ---------- Live preview + send ---------- --}}
+        <div class="builder-preview">
+            <div class="preview-card">
+                <div class="preview-head">
+                    <h2>{{ __('site.builder.preview') }}</h2>
+                    <span class="muted"><strong id="module-count">0</strong> {{ __('site.builder.count') }}</span>
+                </div>
 
-            <form id="submit-form">
-                <label for="name">Your name</label>
-                <input type="text" id="name" name="name" required>
+                <div class="elev" id="elev" aria-live="polite">
+                    <div class="elev-row elev-wall" id="elev-wall"></div>
+                    <div class="elev-counter" id="elev-counter" hidden></div>
+                    <div class="elev-row" id="elev-base"></div>
+                    <p class="elev-empty" id="elev-empty">{{ __('site.builder.empty') }}</p>
+                    <div class="elev-floor"></div>
+                </div>
+                <ul class="module-list" id="module-list"></ul>
 
-                <label for="contact">Email or phone number</label>
-                <input type="text" id="contact" name="contact" required>
-
-                <button type="submit">Request a quote — talk to sales</button>
-                <p id="form-message" role="status"></p>
-            </form>
+                <form id="submit-form" novalidate>
+                    <h3>{{ __('site.builder.send_title') }}</h3>
+                    <div class="field">
+                        <label for="name">{{ __('site.builder.name') }}</label>
+                        <input type="text" id="name" name="name" required autocomplete="name">
+                    </div>
+                    <div class="field">
+                        <label for="contact">{{ __('site.builder.contact') }}</label>
+                        <input type="text" id="contact" name="contact" required autocomplete="tel" inputmode="tel">
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--block">{{ __('site.builder.submit') }}</button>
+                    <p id="form-message" role="status" class="form-note"></p>
+                    <p class="form-note">{{ __('site.builder.note') }}</p>
+                </form>
+            </div>
         </div>
     </div>
 </section>
 @endsection
 
 @push('scripts')
-<script id="module-lm-data" type="application/json">{!! json_encode(collect($moduleTypes)->map(fn($t) => $t['lm']))->toJson() !!}</script>
-<script src="{{ asset('js/configurator.js') }}" data-submit-url="{{ route('configurator.submit') }}" data-csrf="{{ csrf_token() }}"></script>
+<script id="builder-i18n" type="application/json">{!! json_encode([
+    'modules' => __('site.builder.modules'),
+    'remove' => __('site.builder.remove'),
+    'needModule' => __('site.builder.need_module'),
+    'needContact' => __('site.quote.name').' / '.__('site.quote.contact'),
+    'sending' => __('site.builder.sending'),
+    'success' => __('site.builder.success'),
+    'error' => __('site.builder.error'),
+], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
+<script src="{{ asset('js/configurator.js') }}?v=2" data-submit-url="{{ route('configurator.submit') }}" data-csrf="{{ csrf_token() }}"></script>
 @endpush

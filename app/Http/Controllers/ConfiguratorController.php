@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Services\ConfiguratorPricingService;
 use App\Services\CrmInquiryService;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ class ConfiguratorController extends Controller
         return view('pages.configurator', [
             'moduleTypes' => ConfiguratorPricingService::MODULE_TYPES,
             'substrates' => $this->pricing->substrateRates(),
+            'accessories' => Product::whereIn('category', array_keys(Product::CATEGORIES))->orderBy('id')->get(),
         ]);
     }
 
@@ -39,6 +41,10 @@ class ConfiguratorController extends Controller
             'modules' => 'required|array|min:1',
             'modules.*.type' => 'required|string|in:' . implode(',', array_keys(ConfiguratorPricingService::MODULE_TYPES)),
             'substrate' => 'required|string|in:' . implode(',', $substrateKeys),
+            'layout' => 'nullable|string|in:straight,l_shape,u_shape,island',
+            'colour' => 'nullable|string|max:40',
+            'accessories' => 'nullable|array|max:30',
+            'accessories.*' => 'string|max:120',
         ]);
 
         // Priced internally for the sales team's reference in the CRM
@@ -52,6 +58,10 @@ class ConfiguratorController extends Controller
             'substrate' => $priced['substrate_label'],
             'total_lm' => $priced['total_lm'],
             'estimated_price' => $priced['estimated_price'],
+            'layout' => $validated['layout'] ?? null,
+            'colour' => $validated['colour'] ?? null,
+            'accessories' => $validated['accessories'] ?? [],
+            'locale' => app()->getLocale(),
         ]);
 
         return response()->json([

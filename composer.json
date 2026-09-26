@@ -1,7 +1,7 @@
 {
     "name": "ajaxtradingcorp/website",
     "type": "project",
-    "description": "Ajax Trading Corporation public website — furniture/melamine board manufacturer, with the Build Your Own configurator and direct CRM inquiry integration.",
+    "description": "Ajax Trading Corporation public website — modular kitchen and furniture manufacturer, with the Build Your Own configurator and direct CRM inquiry integration.",
     "require": {
         "php": "^8.3",
         "laravel/framework": "^13.17",

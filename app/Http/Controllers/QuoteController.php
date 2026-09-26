@@ -20,15 +20,23 @@ class QuoteController extends Controller
             'name' => 'required|string|max:255',
             'contact' => 'required|string|max:255',
             'message' => 'nullable|string|max:2000',
+            'interest' => 'nullable|string|in:kitchen,wardrobe,custom,accessories,project',
+            'city' => 'nullable|string|max:120',
         ]);
+
+        // Interest and city ride along in the CRM message so sales can
+        // route the lead (e.g. project inquiries to the project team)
+        // without needing new CRM columns.
+        $validated['message'] = trim(implode("\n", array_filter([
+            isset($validated['interest']) ? 'Interest: '.$validated['interest'] : null,
+            !empty($validated['city']) ? 'City: '.$validated['city'] : null,
+            'Language: '.app()->getLocale(),
+            $validated['message'] ?? null,
+        ])));
 
         $sent = $this->crm->submitQuoteRequest($validated);
 
-        return back()->with(
-            $sent ? 'success' : 'error',
-            $sent
-                ? "Thanks! We've received your inquiry and will be in touch shortly."
-                : "We couldn't send that right now — please call us directly or try again."
-        );
+        // The view shows the translated message; the flag just says which.
+        return back()->withInput($sent ? [] : $request->all())->with($sent ? 'success' : 'error', true);
     }
 }

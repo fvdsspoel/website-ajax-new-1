@@ -46,12 +46,16 @@ class CrmInquiryService
             'name' => $data['name'],
             'contact' => $data['contact'],
             'channel' => 'website_configurator',
-            'message' => 'Design submitted via Build Your Own configurator.',
+            'message' => 'Design submitted via the website kitchen builder'.(!empty($data['layout']) ? ' ('.$data['layout'].')' : '').'.',
             'design_config' => [
                 'modules' => $data['modules'],
                 'substrate' => $data['substrate'],
                 'total_lm' => $data['total_lm'],
                 'estimated_price' => $data['estimated_price'],
+                'layout' => $data['layout'] ?? null,
+                'colour' => $data['colour'] ?? null,
+                'accessories' => $data['accessories'] ?? [],
+                'locale' => $data['locale'] ?? 'en',
             ],
         ]);
     }

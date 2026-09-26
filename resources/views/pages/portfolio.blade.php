@@ -1,46 +1,63 @@
 @extends('layouts.app')
 
-@section('title', 'Our Portfolio — Ajax Trading Corporation')
-@section('meta_description', 'Browse completed kitchen, wardrobe, and commercial modular furniture projects by Ajax Trading Corporation.')
+@section('title', __('site.portfolio.title').' — Ajax Trading Corporation')
+@section('meta_description', __('site.portfolio.lead'))
 
 @section('content')
-<section class="portfolio-page">
-    <h1>Our portfolio</h1>
-
-    <div class="portfolio-filters">
-        <button type="button" class="filter-btn active" data-filter="all">All</button>
-        @foreach ($categories as $key => $label)
-            <button type="button" class="filter-btn" data-filter="{{ $key }}">{{ $label }}</button>
-        @endforeach
+<section class="page-head">
+    <div class="wrap">
+        <h1>{{ __('site.portfolio.title') }}</h1>
+        <p class="lead">{{ __('site.portfolio.lead') }}</p>
     </div>
+</section>
 
-    <div class="portfolio-grid" id="portfolio-grid">
-        @forelse ($items as $item)
-            <div class="portfolio-card" data-category="{{ $item->category }}">
-                <img src="{{ $item->image_url ?? asset('images/placeholder.webp') }}" alt="{{ $item->title }}">
-                <div class="portfolio-card-body">
-                    <h3>{{ $item->title }}</h3>
-                    <p>{{ $item->description }}</p>
-                </div>
+<section class="section" style="padding-top: 0">
+    <div class="wrap">
+        <div class="chips" role="group" aria-label="{{ __('site.portfolio.title') }}" data-filter-group="portfolio-grid">
+            <button type="button" class="chip" data-filter="all" aria-pressed="true">{{ __('site.portfolio.all') }} ({{ $items->count() }})</button>
+            @foreach ($categories as $key => $label)
+                @php $n = $items->where('category', $key)->count(); @endphp
+                @if ($n)
+                    <button type="button" class="chip" data-filter="{{ $key }}" aria-pressed="false">{{ __('site.portfolio.categories.'.$key) }} ({{ $n }})</button>
+                @endif
+            @endforeach
+        </div>
+
+        @if ($items->isEmpty())
+            <p class="muted">{{ __('site.portfolio.empty') }}</p>
+        @else
+            <div class="grid grid--3" id="portfolio-grid">
+                @foreach ($items as $item)
+                    <article class="card" data-category="{{ $item->category }}">
+                        <div class="card-media">
+                            @include('partials.media', ['src' => $item->image_url, 'alt' => $item->title])
+                        </div>
+                        <div class="card-body">
+                            <span class="card-tag">{{ __('site.portfolio.categories.'.$item->category) }}</span>
+                            <h3>{{ $item->title }}</h3>
+                            @if ($item->description)
+                                <p>{{ $item->description }}</p>
+                            @endif
+                        </div>
+                    </article>
+                @endforeach
             </div>
-        @empty
-            <p class="muted">Portfolio photos coming soon — <a href="{{ route('quote.create') }}">get in touch</a> to see completed projects.</p>
-        @endforelse
+        @endif
+    </div>
+</section>
+
+<section class="section" style="padding-top: 0">
+    <div class="wrap">
+        <div class="cta-band">
+            <div>
+                <h2>{{ __('site.portfolio.cta_title') }}</h2>
+                <p>{{ __('site.portfolio.cta_body') }}</p>
+            </div>
+            <div class="cta-actions">
+                <a href="{{ route('configurator') }}" class="btn btn--oak btn--block">{{ __('site.nav.build') }}</a>
+                <div class="cta-channels">@include('partials.channels')</div>
+            </div>
+        </div>
     </div>
 </section>
 @endsection
-
-@push('scripts')
-<script>
-document.querySelectorAll('.filter-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-        const filter = btn.dataset.filter;
-        document.querySelectorAll('.portfolio-card').forEach((card) => {
-            card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
-        });
-    });
-});
-</script>
-@endpush
