@@ -6,7 +6,7 @@ The old website keeps running untouched until the go-live step (Part E).
 
 **What you received**
 - `ajax-website-full.zip` — the complete new website, ready to upload (the Laravel `vendor` folder is already included, no Composer needed).
-- The CRM update is on GitHub (`crm-sales`, latest commit "Website live chat…"). It adds the website chat with Maya.
+- `crm-website-chat-update.zip` — 10 changed CRM files that add the website chat with Maya (also on GitHub, `crm-sales` commit "Website live chat…").
 
 **Requirements:** PHP **8.2 or newer** for the subdomain (cPanel → *MultiPHP Manager*), MySQL, and the extensions `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`, `curl`, `intl` (normally already on).
 
@@ -72,7 +72,7 @@ This is a **new, separate database**. Do not use the CRM's database.
 
 ## Part D — CRM update (website chat with Maya)
 
-1. Update the CRM code the usual way (`git pull` in the CRM folder, or upload the changed files from the latest `crm-sales` commit).
+1. Back up the CRM folder, then update it: `git pull` in the CRM folder, **or** upload `crm-website-chat-update.zip` into the CRM folder and **Extract** (overwrite = yes).
 2. Terminal:
 
    ```bash
