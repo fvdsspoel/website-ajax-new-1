@@ -1,0 +1,130 @@
+@extends('front-ends.layouts.master')
+@section('page_title', 'PRODUCTS')
+
+@section('intro_section')
+@endsection
+
+@section('main_content')
+    <section class="featured__property section-padding">
+        <div class="container">
+            <div class="row col-md-12">
+                <div class="col-md-3">
+                    <div class="search__area service-search-area">
+                        <div class="search__area-inner">
+                            <div class="product-price text-capitalize">PRODUCTS</div>
+                            <br>
+                            <form action="" method="GET" id="search-form">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 filter-column">
+                                        <div class="form-group">
+                                            <input type="text" placeholder="Enter Product Name" name="keyword" class="form-control" value="{{ $keyword }}">
+                                        </div>
+                                    </div>
+                                    <div class=" col-lg-12 col-md-12 filter-column">
+                                        <div class="form-group">
+                                            <select class="form-control" name="category_id" id="category-id">
+                                                <option value="" data-display="Product Category">All</option>
+                                                @foreach($categories as $category)
+                                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            <input type="hidden" id="category-val" value="{{ $category_id ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class=" col-lg-12 col-md-12 filter-column">
+                                        <div class="form-group">
+                                            <select class="form-control" name="sub_category_id" id="sub-category-id">
+                                                <option value="" data-display="Product Sub Category">All</option>
+                                                @foreach($sub_categories as $sub_category)
+                                                    <option value="{{$sub_category->id}}">{{$sub_category->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            <input type="hidden" id="subcategory-val" value="{{ $sub_category_id ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class=" col-lg-12 col-md-12 filter-column">
+                                        <div class="form-group">
+                                            <p class="center">Price Range</p>
+                                            <div class="range-slider">
+                                                <span class="rangeValues"></span>
+                                                <br>
+                                                <input name ="price_selected_min" value="{{$price_selected_min}}" min="{{$min_property_price}}" max="{{$max_property_price}}" step="10" type="range">
+                                                <input name ="price_selected_max" value="{{$price_selected_max}}" min="{{$min_property_price}}" max="{{$max_property_price}}" step="10" type="range">
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <div class=" col-lg-12 col-md-12 filter-column">
+                                        <div class="form-group">
+                                            <button class="btn btn-primary btn-block text-capitalize" style="border-radius: 20px;">
+                                                <i class="fa fa-search"></i> Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="col-md-12 row">
+                        @if(count($results) == 0)
+                            <div class="product-price text-capitalize mt-5 center" style="font-size: 25px;">
+                                No Products Available
+                            </div>
+                        @else
+                            @foreach($results as $result)
+                                <div class="col-md-4 mt-20 mb-4">
+                                    <div class="item">
+                                        <div class="product-item property-item">
+                                            <a href="/products/show/{{$result->name ?? ''}}/{{$result->id}}" class="product-img">
+                                                <img src="{{$result->image}}"  onerror="this.onerror=null;this.src='/assets/images/default/no_image.png'"alt="">
+                                            </a>
+                                            <div class="card__image__body">
+                                                <div class="product-price text-capitalize">
+                                                    {{ \App\Helpers\CommonHelper::getSubStr($result->name ?? '', 12) }}
+                                                </div>
+                                                <div class="card__image__body-desc">
+                                                    <p class="text-capitalize">
+                                                        <i class="fa fa-info-circle"></i>
+                                                        {{ \App\Helpers\CommonHelper::getSubStr(Strip_tags($result->description ?? ''), 15, '...') }}
+                                                    </p>
+                                                </div>
+                                                <ul class="list-inline card__content">
+                                                    <li class="list-inline-item">
+                                                        <h6>
+                                                            ₱ {{number_format($result->price ?? 0, 2)}}
+                                                            <span class="mt-10">
+                                                                <i class="fa fa-tag property-item-pride-tag" aria-hidden="true"></i> 
+                                                            </span>
+                                                        </h6>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="property-see-more">
+                                                <a href="/products/show/{{$result->name ?? ''}}/{{$result->id}}" class="btn btn-primary mt-3 text-capitalize center"> 
+                                                    Learn more
+                                                    <i class="fa fa-angle-right ml-3 "></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                    <div class="right mt-5">
+                        {!! $results->links() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection
+
+@section('page_css')
+@endsection
+
+@section('page_js')
+    <script type="text/javascript" src="/js/front-ends/products/index.js" ></script>
+@endsection

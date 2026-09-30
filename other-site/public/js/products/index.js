@@ -1,0 +1,86 @@
+function deleteData(id){
+
+    showConfirmAlert(
+        'Deleting Product',
+        'Are you sure you want to delete?',
+        'info',
+        'Yes',
+        'No'
+    ).then((result) => {
+        if (result.value == true) {
+            deleted(id);
+        }
+    });
+}
+
+function deleted(id){
+
+    $.ajax({
+        type: "post",
+        url: "/products/delete",
+        data: {
+          id:id
+        },
+        dataType: 'JSON',
+        success: function (res) {
+            if (res["status"] == "saved") {
+              showSuccessAlert('Success', 'Product successfully delete')
+              .then((result) => {
+                  if (result.value == true) {
+                      location.reload();
+                  }
+              });
+            }
+        },
+        error: function(error) {
+            showHttpErrorAlert(error);
+        } 
+    });
+}
+
+function featureList(id,status){
+
+  if(status == 1){
+    tag = 'add';
+  }else{
+    tag = 'remove';
+  }
+  
+    showConfirmAlert(
+        'Featured Product',
+        `Are you sure you want to ${tag}?`,
+        'info',
+        'Yes',
+        'No'
+    ).then((result) => {
+        if (result.value == true) {
+            featured(id,status);
+        }
+    });
+}
+
+function featured(id,status){
+
+    $.ajax({
+        type: "post",
+        url: "/products/feature",
+        data: {
+          id:id,
+          status:status
+        },
+        dataType: 'JSON',
+        success: function (res) {
+            if (res["status"] == "saved") {
+              showSuccessAlert('Success', `Product successfully ${tag} to featured list`)
+              .then((result) => {
+                  if (result.value == true) {
+                      location.reload();
+                  }
+              });
+            }
+        },
+        error: function(error) {
+            showHttpErrorAlert(error);
+        } 
+    });
+}

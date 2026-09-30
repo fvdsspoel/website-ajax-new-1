@@ -1,0 +1,400 @@
+body {
+  overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    /*margin-left: -250px;
+    width: 250px;*/
+    margin-left: -120px;
+    width: 250px;
+    -webkit-transition: margin .25s ease-out;
+    -moz-transition: margin .25s ease-out;
+    -o-transition: margin .25s ease-out;
+    transition: margin .25s ease-out;
+   /* background-color: #f1f3f9 !important;*/
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    overflow-x: hidden; /* Disable horizontal scroll */
+}
+
+#page-content-wrapper {
+    min-width: 100vw;
+    margin-left: 0px;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    margin-left: 80px;
+}
+
+.list-group-item {
+    border-top: none !important;
+    border-bottom: none !important;
+    border-right: none !important;
+   /* background-color: #f1f3f9 !important;*/
+}
+
+.list-group-item:hover {
+    /*color: #60bb46 !important;*/
+    color: #224d93 !important;
+}
+
+@media (min-width: 990px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+        margin-left: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -300px;
+    }
+}
+
+/*side nav css*/
+.sidenav-home{
+    background-color: #fff !important;
+    color: #142d57 !important;
+}
+.sidenav-home:hover{
+    /*background-color: #142d57 !important;*/
+    color: #FFD700 !important;
+}
+.sidenav-home-active{
+    /*background-color: #142d57 !important;*/
+    color: #FFD700 !important;
+    font-weight: 600;
+}
+
+.sidenav-class{
+    background-color: #eeeeee !important;
+    color: #218B82 !important;
+}
+.sidenav-class:hover{
+    background-color: #218B82 !important;
+    color: white !important;
+}
+.sidenav-class-active{
+    background-color: #218B82 !important;
+    color: white !important;
+}
+
+.sidenav-library{
+    background-color: #eeeeee !important;
+    color: #bd574e !important;
+}
+.sidenav-library:hover{
+    background-color: #bd574e !important;
+    color: white !important;
+}
+.sidenav-library-active{
+    background-color: #bd574e !important;
+    color: white !important;
+}
+
+.sidenav-message{
+    background-color: #eeeeee !important;
+    color: #2CCED2 !important;
+}
+.sidenav-message:hover{
+    background-color: #2CCED2 !important;
+    color: white !important;
+}
+.sidenav-message-active{
+    background-color: #2CCED2 !important;
+    color: white !important;
+}
+
+.sidenav-message{
+    background-color: #eeeeee !important;
+    color: #2CCED2 !important;
+}
+.sidenav-message:hover{
+    background-color: #2CCED2 !important;
+    color: white !important;
+}
+.sidenav-message-active{
+    background-color: #2CCED2 !important;
+    color: white !important;
+}
+
+.sidenav-ebook{
+    background-color: #eeeeee !important;
+    color: #f15a24 !important;
+}
+.sidenav-ebook:hover{
+    background-color: #f15a24 !important;
+    color: white !important;
+}
+.sidenav-ebook-active{
+    background-color: #f15a24 !important;
+    color: white !important;
+}
+
+.sidenav-user{
+    background-color: #eeeeee !important;
+    color: #046582 !important;
+}
+.sidenav-user:hover{
+    background-color: #046582 !important;
+    color: white !important;
+}
+.sidenav-user-active{
+    background-color: #046582 !important;
+    color: white !important;
+}
+
+.sidenav-subject{
+    background-color: #eeeeee !important;
+    color: #f39189 !important;
+}
+.sidenav-subject:hover{
+    background-color: #f39189 !important;
+    color: white !important;
+}
+.sidenav-subject-active{
+    background-color: #f39189 !important;
+    color: white !important;
+}
+
+.sidenav-assessment{
+    background-color: #eeeeee !important;
+    color: #3a6351 !important;
+}
+.sidenav-assessment:hover{
+    background-color: #3a6351 !important;
+    color: white !important;
+}
+.sidenav-assessment-active{
+    background-color: #3a6351 !important;
+    color: white !important;
+}
+
+.sidenav-textbook{
+    background-color: #eeeeee !important;
+    color: #f25287 !important;
+}
+.sidenav-textbook:hover{
+    background-color: #f25287 !important;
+    color: white !important;
+}
+.sidenav-textbook-active{
+    background-color: #f25287 !important;
+    color: white !important;
+}
+
+.sidenav-payment{
+    background-color: #eeeeee !important;
+    color: #822659 !important;
+}
+.sidenav-payment:hover{
+    background-color: #822659 !important;
+    color: white !important;
+}
+.sidenav-payment-active{
+    background-color: #822659 !important;
+    color: white !important;
+}
+
+.sidenav-activationcode{
+    background-color: #eeeeee !important;
+    color: #00917c !important;
+}
+.sidenav-activationcode:hover{
+    background-color: #00917c !important;
+    color: white !important;
+}
+.sidenav-activationcode-active{
+    background-color: #00917c !important;
+    color: white !important;
+}
+
+.sidenav-forum{
+    background-color: #eeeeee !important;
+    color: #e36bae !important;
+}
+.sidenav-forum:hover{
+    background-color: #e36bae !important;
+    color: white !important;
+}
+.sidenav-forum-active{
+    background-color: #e36bae !important;
+    color: white !important;
+}
+
+.sidenav-chat{
+    background-color: #eeeeee !important;
+    color: #7868e6 !important;
+}
+.sidenav-chat:hover{
+    background-color: #7868e6 !important;
+    color: white !important;
+}
+.sidenav-chat-active{
+    background-color: #7868e6 !important;
+    color: white !important;
+}
+
+.sidenav-guide{
+    background-color: #eeeeee !important;
+    color: #cdc733 !important;
+}
+.sidenav-guide:hover{
+    background-color: #cdc733 !important;
+    color: white !important;
+}
+.sidenav-guide-active{
+    background-color: #cdc733 !important;
+    color: white !important;
+}
+
+.sidenav-center{
+    margin: auto;
+    width: 35px;
+    padding: 10px 0 10px 10px;
+    padding-bottom: 0px;
+    margin-left: 10px;
+}
+
+.nav-class{
+    color: white !important;
+    background-color: #142d57;
+}
+
+.home-a{
+   color: white !important;
+   /*background-color: #142d57;*/
+}
+.home-a:hover{
+   color: #fb743e !important;
+}
+
+/*home nav*/
+.navbar {
+  padding:0rem;
+  /*margin-bottom:2rem;*/
+}
+
+.dropdown .dropdown-menu {
+  border-radius:0;
+ }
+
+ .navbar-li{
+    color: white !important;
+ }
+
+/*input inside image*/
+ .fontuser {
+    position: relative;
+
+}
+
+.fontuser i{
+    position: absolute;
+    left: 5px;
+    top: 20px;
+    color: gray;
+}
+
+/* Medium devices (tablets, 768px and up)
+The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+      border-radius:0;
+     }
+}
+
+/*chat*/
+
+.unread {
+	font-weight: bold !important;
+	background-color:#a5b1b7 !important;
+}
+.read{
+
+    font-weight: normal;
+}
+.div-hover:hover {
+	/*background-color: #e6e6e6 !important;*/
+	background-color: #cddde4 !important;
+	cursor: pointer;
+}
+.sent {
+	width: 50%;
+	padding:10px;
+	/*border-radius: 10px 10px 10px 0;*/
+	border-radius: inherit;
+	white-space: pre-wrap;
+	text-align: right;
+	margin-left: 50%;
+	margin-bottom: 10px;
+	background-color: transparent;
+	color: white;
+    font-size: 15px;
+}
+.sent .imsg-box {
+    background-color: #2196f3;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 10px 10px 10px 0;
+    white-space: pre-wrap;
+}
+
+.sent .small {
+    font-size: 11px !important;
+}
+
+.receive {
+	width: 50%;
+	padding:10px;
+	/*border-radius: 10px 10px 10px 0;*/
+	border-radius: inherit;
+	white-space: pre-wrap;
+	margin-bottom: 10px;
+	background-color: transparent;
+	color: white;
+    font-size: 15px;
+}
+.receive .imsg-box {
+    background-color: #2196f3;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 10px 10px 10px 0;
+    white-space: pre-wrap;
+}
+.receive .small {
+    font-size: 11px !important;
+}
+
+.imsg-box.deleted {
+    background-color: #bababa;
+}
+
+.btn-white-c {
+    background-color: #fff !important;
+}
+html, body {
+
+	font-family: var(--poppins-font) !important;
+}
+h1, h2, h3, h4 , h5,p,td,th,tr{
+    font-family: var(--poppins-font) !important;
+}
+input,label {
+    font-family: var(--poppins-font) !important;
+}
+
+

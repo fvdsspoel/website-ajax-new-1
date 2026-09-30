@@ -1,0 +1,84 @@
+.pc-break-div{
+	padding: 40px;
+}
+
+.mobile-break-div{
+	padding: 15px;
+}
+
+.bold-text{
+	font-weight: bold;
+}
+.black-text{
+	color: black !important;
+}
+.white-text{
+	color: #ffffff !important;
+}
+.header1{
+	font-size: 23px;
+}
+.bg-gradient {
+	background: linear-gradient(23deg, #9c762d 0%, #cca84a 34%, #ebcb68 100%);
+}
+.border {
+ 	border: 1px solid #cca84a !important;
+}
+.border-gradient {
+  	border-image-source: linear-gradient(to left, #00C853, #B2FF59);
+}
+.m-logo{
+	min-height: 20px;
+	width: 150px;
+	align-items: center !important;
+}
+.input-form {
+	border: 1px solid #cca84a;
+	-webkit-transition: 0.5s;
+	transition: 0.5s;
+	outline: none;
+}
+.input-form:focus {
+	border: 2px solid #af8c38;
+}
+.content-center{
+	margin: auto;
+	width: 100%;
+	padding: 3px;
+}
+.center {
+  	display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+.btn-grad {
+   	background-image: linear-gradient(to right, #ebcb68 0%, #cca84a  51%, #7c5c21  100%);
+   	margin: 10px;
+   	padding: 10px 50px;
+   	text-align: center;
+   	text-transform: uppercase;
+   	transition: 0.5s;
+   	background-size: 200% auto;
+   	color: white;            
+   	box-shadow: 0 0 20px #eee;
+   	border-radius: 10px;
+   	border:2px solid #cca84a !important;
+   	display: block;
+ }
+
+ .btn-grad:focus{
+  color: #fff;
+  background-color: #af8c38;
+ }
+
+ .btn-grad:active {
+  background-color: #af8c38;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.btn-grad:hover {
+   	background-position: right center; /* change the direction of the change here */
+   	color: #fff;
+   	text-decoration: none;
+}

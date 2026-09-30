@@ -1,0 +1,65 @@
+.geo-primary {
+	background-color: #cca84a !important;
+	color: white !important;
+}
+.btn.geo-primary:hover,.search-btn.geo-primary:hover {
+	background-color: #ebcb68 !important;
+	color: white !important;
+}
+.geo-secondary {
+	background-color: #af8c38 !important;
+	color: white !important;
+}
+.btn.geo-secondary:hover,.search-btn.geo-secondary:hover {
+	background-color: #ebcb68 !important;
+}
+.geo-text-primary {
+	color: #1da634 !important;
+}
+.geo-text-secondary {
+	color: #142d57 !important;
+}
+.geo-border-primary {
+	border-color: #0a0494 !important;
+}
+.geo-border-secondary {
+	border-color: #142d57 !important;
+}
+.pastel-red {
+	background-color: #e98f83 !important;
+}
+.bg-black{
+	background-color: #000000 !important;
+}
+.black-color{
+	color: #000000 !important;
+}
+.neon-gold{
+	color: #FDBD01;
+}
+.bright-gold{
+	color: #cca84a !important;
+}
+.gold-gradient{
+	background: rgb(174,134,38);
+	background: linear-gradient(170deg, #af8c38 0%, #cca84a 37%, #ebcb68 66%, #7c5c21 100%);
+}
+.text-gray{
+	color: #808080!important;
+}
+.see-all{
+	color: #7c5c21 !important;
+}
+.see-all:hover{
+	color: #ebcb68 !important;
+	text-decoration: underline;
+}
+
+@media only screen and (max-width: 768px) {
+    .nav-link {
+        color: #000 !important;
+    }
+    .navbar {
+        margin-top: 15px;
+    }
+}
