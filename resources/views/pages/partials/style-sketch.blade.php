@@ -5,7 +5,7 @@
      $set: kitchen | wardrobe | living | office | bath | other
      $style: handleless | handles | wood | dark | gloss | twotone --}}
 @php
-    $u = 'sk-'.$set.'-'.$style;
+    $u = ($prefix ?? 'sk').'-'.$set.'-'.$style;   // own ids per use, so a copy elsewhere on the page never borrows hidden gradients
     $C = ['line' => '#bfb5a4', 'white' => '#f6f4ef', 'dark' => "url(#$u-dark)", 'darkEdge' => '#151618', 'glass' => "url(#$u-mirror)"];
     $isDark = $style === 'dark';
     $handles = $style === 'handles';
@@ -90,6 +90,35 @@
             $svg .= $counter(56, 202, 288);
             $p = $style === 'twotone' ? 'top' : 'base';
             $svg .= $drawer(56, 212, 70, 40, $p) . $door(128, 212, 70, 40, 'base', true) . $door(200, 212, 70, 40, 'base', false) . $drawer(272, 212, 72, 40, $p);
+            break;
+        case 'bedroom':
+            // headboard wall panel · bed · two floating side tables with a drawer · pendant lights
+            $wallPanel = $style === 'twotone' ? $C['white'] : ($style === 'gloss' ? "url(#$u-gloss)" : $fill('top'));
+            $svg .= "<rect x='98' y='64' width='204' height='140' rx='2' fill='$wallPanel' stroke='$edge' stroke-width='.8'/><rect x='98' y='64' width='204' height='140' fill='url(#$u-".($isDark ? 'shadeDark' : 'shade').")'/>";
+            for ($k = 1; $k < 6; $k++) $svg .= "<rect x='".(98 + $k * 34)."' y='64' width='1' height='140' fill='rgba(0,0,0,.08)'/>";   // panel joints
+            foreach ([76, 324] as $lx) $svg .= "<path d='M$lx 0V104' stroke='#6b6157' stroke-width='1'/><path d='M".($lx - 9)." 116L$lx 104L".($lx + 9)." 116Z' fill='#2c2b29'/><ellipse cx='$lx' cy='118' rx='12' ry='5' fill='rgba(255,214,150,.55)' filter='url(#$u-blur)'/>";
+            $svg .= $floorShadow(108, 264, 184);
+            $svg .= "<rect x='108' y='204' width='184' height='52' rx='3' fill='{$fill('base')}' stroke='$edge'/><rect x='108' y='204' width='184' height='52' rx='3' fill='url(#$u-".($isDark ? 'shadeDark' : 'shade').")'/>";
+            $svg .= "<path d='M104 188Q200 176 296 188V214H104Z' fill='#fbfaf7' stroke='#d9d3c8'/><path d='M104 200Q200 190 296 200' stroke='#e7e1d6' fill='none'/>";
+            $svg .= "<rect x='124' y='168' width='62' height='22' rx='9' fill='#f3efe8' stroke='#d9d3c8'/><rect x='214' y='168' width='62' height='22' rx='9' fill='#f3efe8' stroke='#d9d3c8'/>";
+            $svg .= "<rect x='240' y='200' width='52' height='14' rx='4' fill='".($isDark ? '#5b5f66' : '#c9b9a0')."' opacity='.85'/>";   // throw
+            foreach ([50, 302] as $nx) $svg .= $drawer($nx, 186, 48, 26, 'base') . "<rect x='".($nx + 4)."' y='212' width='40' height='3' fill='rgba(0,0,0,.12)' filter='url(#$u-blur)'/>";
+            break;
+        case 'whole':
+            // a condo in one view: kitchen on the left, TV wall on the right
+            $svg .= "<rect x='32' y='120' width='150' height='58' fill='url(#$u-tile)'/><rect x='32' y='120' width='150' height='12' fill='url(#$u-led)'/>";
+            $svg .= $door(32, 50, 74, 70, 'top', false) . $door(108, 50, 74, 70, 'top', true);
+            $svg .= $floorShadow(32, 268, 150);
+            $svg .= $counter(28, 178, 158);
+            $svg .= "<rect x='60' y='175' width='44' height='4' rx='2' fill='#b9bfc5'/>";
+            $svg .= $door(32, 188, 56, 70, 'base', true) . $door(90, 188, 40, 70, 'base', false);
+            $svg .= $drawer(132, 188, 50, 22) . $drawer(132, 212, 50, 22) . $drawer(132, 236, 50, 22);
+            $svg .= $plinth(32, 258, 150);
+            $svg .= "<rect x='202' y='40' width='1' height='226' fill='rgba(0,0,0,.06)'/>";
+            $svg .= "<rect x='236' y='88' width='112' height='66' rx='3' fill='#0f1113'/><rect x='240' y='92' width='104' height='58' rx='2' fill='url(#$u-screen)'/>";
+            $svg .= $floorShadow(214, 262, 156);
+            $svg .= $counter(214, 202, 156);
+            $svg .= $drawer(214, 212, 51, 40) . $door(267, 212, 51, 40, 'base', true) . $drawer(320, 212, 50, 40);
             break;
         case 'office':
             $svg .= $door(70, 34, 85, 56, 'top', true) . $door(157, 34, 85, 56, 'top', false) . $door(244, 34, 86, 56, 'top', true);

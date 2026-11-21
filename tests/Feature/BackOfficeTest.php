@@ -100,7 +100,7 @@ class BackOfficeTest extends TestCase
         $this->get('/admin/design-pictures')->assertRedirect('/admin/login');
 
         $owner = $this->owner();
-        $this->actingAs($owner)->get('/admin/design-pictures')->assertOk()->assertSee('Wardrobe &amp; bedroom', false)->assertSee('Drawing');
+        $this->actingAs($owner)->get('/admin/design-pictures')->assertOk()->assertSee('Wardrobe / closet', false)->assertSee('Bedroom')->assertSee('Drawing');
 
         $img = \Illuminate\Http\UploadedFile::fake()->image('dark-wardrobe.jpg', 1600, 900);
         $this->actingAs($owner)->post('/admin/design-pictures', ['set' => 'wardrobe', 'style' => 'dark', 'image' => $img])->assertRedirect();

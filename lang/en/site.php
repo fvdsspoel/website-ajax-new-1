@@ -300,6 +300,10 @@ return [
             'kitchen' => ['straight' => 'Straight', 'l_shape' => 'L-shape', 'u_shape' => 'U-shape', 'island' => 'With island', 'parallel' => 'Parallel'],
             'wardrobe' => ['hinged' => 'Hinged doors', 'sliding' => 'Sliding doors', 'walk_in' => 'Walk-in closet', 'open' => 'Open shelving'],
             'living' => ['console' => 'TV console', 'wall' => 'Full TV wall', 'shelves' => 'Shelves & display', 'divider' => 'Room divider'],
+            'bedroom' => ['headboard' => 'Headboard wall', 'bed_storage' => 'Bed with storage', 'bed_wardrobe' => 'Bed + wardrobe wall', 'full_room' => 'Complete bedroom'],
+            'office' => ['desks' => 'Workstations', 'exec' => 'Manager’s desk', 'storage' => 'Storage & filing', 'reception' => 'Reception counter'],
+            'bath' => ['single_vanity' => 'Single vanity', 'double_vanity' => 'Double vanity', 'mirror_cab' => 'Vanity + mirror cabinet', 'tall_cab' => 'Vanity + tall cabinet'],
+            'whole' => ['studio' => 'Studio', 'br1' => '1 bedroom', 'br2' => '2 bedrooms', 'br3' => '3+ bedrooms / house'],
             'other' => ['single' => 'One piece', 'room' => 'A full room', 'several' => 'Several rooms', 'project' => 'A whole project (many units)'],
         ],
         'styles' => [

@@ -716,3 +716,11 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
   .page-design .pane-nav .btn { padding-left: 18px; padding-right: 18px; }
   .page-design .pane-nav .skip { white-space: nowrap; }
 }
+
+/* Every choice is a drawing: rooms, layouts (floor plans), finishes */
+.opt--room .opt-text { padding: 10px 12px 12px; }
+.opt--room .opt-text strong { font-size: 14.5px; }
+.opt--plan .opt-img { display: grid; place-items: center; padding: 10% 8%; background-color: #f4efe6; background-image: linear-gradient(rgba(150,120,80,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(150,120,80,.08) 1px, transparent 1px); background-size: 14px 14px; }
+.opt--plan .layout-svg { height: 100%; width: 100%; fill: #d9b98f; stroke: #8f6c45; color: #8f6c45; stroke-width: 1.6; filter: drop-shadow(0 3px 3px rgba(60,40,20,.18)); }
+.opt--plan label:hover .opt-img svg { transform: none; }
+.opt--plan .opt-text { padding: 10px 12px 12px; }

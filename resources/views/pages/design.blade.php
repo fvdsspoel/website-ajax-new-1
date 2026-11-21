@@ -36,9 +36,9 @@
                     <legend class="q">{{ $d['q_room'] }}</legend>
                     <div class="options">
                         @foreach ($d['rooms'] as $key => $label)
-                            <div class="opt">
+                            <div class="opt opt--img opt--room">
                                 <input type="radio" name="room" value="{{ $key }}" id="room-{{ $key }}" data-label="{{ $label }}">
-                                <label for="room-{{ $key }}"><span class="oi">@include('partials.icon', ['name' => config('ajax.room_icons.'.$key)])</span><strong>{{ $label }}</strong></label>
+                                <label for="room-{{ $key }}"><span class="opt-img">@include('pages.partials.style-sketch', ['set' => $key, 'style' => 'twotone', 'prefix' => 'rm'])</span><span class="opt-text"><strong>{{ $label }}</strong></span></label>
                             </div>
                         @endforeach
                     </div>
@@ -50,9 +50,9 @@
                     @foreach ($layoutSets as $set => $layouts)
                         <div class="options {{ count($layouts) === 4 ? 'options--4' : 'options--3' }}" data-layouts="{{ $set }}" @if ($set !== 'kitchen') hidden @endif>
                             @foreach ($layouts as $key => $label)
-                                <div class="opt">
+                                <div class="opt opt--img opt--plan">
                                     <input type="radio" name="layout" value="{{ $key }}" id="layout-{{ $set }}-{{ $key }}" data-label="{{ $label }}" @if ($set !== 'kitchen') disabled @endif>
-                                    <label for="layout-{{ $set }}-{{ $key }}">@include('pages.partials.layout-icon', ['set' => $set, 'key' => $key])<strong>{{ $label }}</strong></label>
+                                    <label for="layout-{{ $set }}-{{ $key }}"><span class="opt-img">@include('pages.partials.layout-icon', ['set' => $set, 'key' => $key])</span><span class="opt-text"><strong>{{ $label }}</strong></span></label>
                                 </div>
                             @endforeach
                         </div>
@@ -96,9 +96,9 @@
                     <legend class="q">{{ $d['q_finish'] }}</legend>
                     <div class="options options--3">
                         @foreach ($d['finishes'] as $key => $f)
-                            <div class="opt">
+                            <div class="opt opt--img">
                                 <input type="radio" name="finish" value="{{ $key }}" id="finish-{{ $key }}" data-label="{{ $f['name'] }}">
-                                <label for="finish-{{ $key }}"><strong>{{ $f['name'] }}</strong><small>{{ $f['text'] }}</small></label>
+                                <label for="finish-{{ $key }}"><span class="opt-img">@include('pages.partials.finish-swatch', ['key' => $key])</span><span class="opt-text"><strong>{{ $f['name'] }}</strong><small>{{ $f['text'] }}</small></span></label>
                             </div>
                         @endforeach
                     </div>

@@ -56,7 +56,7 @@ class DesignController extends Controller
         // The CRM message is written in English for the sales team, whatever language the visitor used.
         $en = fn (string $path, ?string $key) => $key ? (trans('site.design.'.$path.'.'.$key, [], 'en')) : null;
         $name = fn ($x) => is_array($x) ? ($x['name'] ?? null) : $x;
-        $layoutSet = in_array($v['room'] ?? null, ['kitchen', 'wardrobe', 'living'], true) ? $v['room'] : 'other';
+        $layoutSet = array_key_exists($v['room'] ?? '', trans('site.design.layouts', [], 'en')) ? $v['room'] : 'other';
         $visit = in_array($v['next'] ?? null, ['measure', 'showroom'], true);
 
         $lines = array_filter([

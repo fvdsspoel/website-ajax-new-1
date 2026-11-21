@@ -31,14 +31,19 @@
     // Layouts follow the room: kitchen, wardrobe, living have their own; others share one set.
     function syncRoom() {
         var room = val('room');
-        var set = ['kitchen', 'wardrobe', 'living'].indexOf(room) >= 0 ? room : (room ? 'other' : 'kitchen');
+        // every room type has its own layouts and its own style drawings
+        var set = form.querySelector('[data-layouts="' + room + '"]') ? room : (room ? 'other' : 'kitchen');
         form.querySelectorAll('[data-layouts]').forEach(function (g) {
             var on = g.dataset.layouts === set;
             g.hidden = !on;
             g.querySelectorAll('input').forEach(function (inp) { inp.disabled = !on; if (!on) inp.checked = false; });
         });
         // Style pictures follow the room too: a wardrobe shows wardrobes, a TV wall shows TV walls.
-        var styleSet = { kitchen: 'kitchen', whole: 'kitchen', wardrobe: 'wardrobe', bedroom: 'wardrobe', living: 'living', office: 'office', bath: 'bath', other: 'other' }[room] || 'kitchen';
+        var styleSet = room || 'kitchen';
+        // a whole condo has no single wall to measure
+        var sizeField = form.querySelector('#size').closest('.field');
+        sizeField.hidden = room === 'whole';
+        if (room === 'whole') form.size_m.value = '';
         form.querySelectorAll('[data-style-set]').forEach(function (el) { el.hidden = el.dataset.styleSet !== styleSet; });
         var top = form.querySelector('[data-top-block]');
         var needsTop = !room || room === 'kitchen' || room === 'bath' || room === 'whole';

@@ -302,6 +302,10 @@ return [
             'kitchen' => ['straight' => 'Straight', 'l_shape' => 'L-shape', 'u_shape' => 'U-shape', 'island' => 'May island', 'parallel' => 'Parallel'],
             'wardrobe' => ['hinged' => 'Hinged na pinto', 'sliding' => 'Sliding na pinto', 'walk_in' => 'Walk-in closet', 'open' => 'Open shelving'],
             'living' => ['console' => 'TV console', 'wall' => 'Buong TV wall', 'shelves' => 'Shelves at display', 'divider' => 'Room divider'],
+            'bedroom' => ['headboard' => 'Headboard wall', 'bed_storage' => 'Kama na may storage', 'bed_wardrobe' => 'Kama + wardrobe', 'full_room' => 'Buong kwarto'],
+            'office' => ['desks' => 'Workstations', 'exec' => 'Desk ng manager', 'storage' => 'Storage at filing', 'reception' => 'Reception counter'],
+            'bath' => ['single_vanity' => 'Isang vanity', 'double_vanity' => 'Dobleng vanity', 'mirror_cab' => 'Vanity + mirror cabinet', 'tall_cab' => 'Vanity + mataas na cabinet'],
+            'whole' => ['studio' => 'Studio', 'br1' => '1 kwarto', 'br2' => '2 kwarto', 'br3' => '3+ kwarto / bahay'],
             'other' => ['single' => 'Isang piraso', 'room' => 'Buong kuwarto', 'several' => 'Ilang kuwarto', 'project' => 'Buong proyekto (maraming units)'],
         ],
         'styles' => [

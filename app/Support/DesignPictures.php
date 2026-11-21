@@ -16,11 +16,13 @@ class DesignPictures
 {
     /** Room types as shown to staff; the design.js room → set map uses the same keys. */
     public const SETS = [
-        'kitchen' => 'Kitchen (also "Whole house")',
-        'wardrobe' => 'Wardrobe & bedroom',
-        'living' => 'TV wall & living room',
-        'office' => 'Office',
-        'bath' => 'Bathroom vanity',
+        'kitchen' => 'Kitchen',
+        'wardrobe' => 'Wardrobe / closet',
+        'living' => 'TV wall / living',
+        'bedroom' => 'Bedroom',
+        'office' => 'Office / commercial',
+        'bath' => 'Vanity / powder room',
+        'whole' => 'Whole house / condo',
         'other' => 'Something else',
     ];
 
