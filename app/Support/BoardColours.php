@@ -3,7 +3,7 @@
 namespace App\Support;
 
 /**
- * All board colours from config/colours.php as one list (melamine, plywood, HPL).
+ * All colours from config/colours.php as one list: board colours (plywood or particle board) and HPL.
  * Used by the Colours page and the colour step of "Design your space";
  * the value a visitor picks is the ERP code, so sales sees exactly which board.
  */
@@ -22,14 +22,14 @@ class BoardColours
         return $out;
     }
 
-    /** English text for the CRM, e.g. "Cedar — Melamine boards, wood (MP.Y2146)". */
+    /** English text for the CRM, e.g. "Cedar — board colour, wood (MP.Y2146)" or "Golden Teak — HPL, wood (HPL.9066)". */
     public static function describe(string $code): ?string
     {
         $c = self::all()[$code] ?? null;
         if (! $c) {
             return null;
         }
-        $group = trans('site.colours.tabs.'.$c['group'], [], 'en');
+        $group = $c['group'] === 'hpl' ? 'HPL' : 'board colour';
         $finish = trans('site.colours.finishes.'.$c['finish'], [], 'en');
 
         return $c['name'].' — '.$group.', '.strtolower($finish).' ('.$c['code'].')';

@@ -52,8 +52,8 @@
         document.querySelector('[data-sum="top"]').hidden = !needsTop;
     }
 
-    // Colour step: every board colour; filter by board type and by finish.
-    var cpGroup = 'melamine', cpFinish = 'all', lastFinish = '';
+    // Colour step: every board colour (plywood or particle board) and every HPL colour; filter by finish.
+    var cpGroup = 'board', cpFinish = 'all', lastFinish = '';
     function cpApply() {
         form.querySelectorAll('.cp').forEach(function (c) {
             var g = c.dataset.group, f = c.dataset.cfinish;
@@ -67,7 +67,7 @@
         var fin = val('finish');
         if (fin === lastFinish) return;
         lastFinish = fin;
-        if (fin === 'melamine') { cpGroup = 'melamine'; cpFinish = 'all'; }
+        if (fin === 'melamine') { cpGroup = 'board'; cpFinish = 'all'; }
         else if (fin === 'hpl') { cpGroup = 'hpl'; cpFinish = 'all'; }
         else if (fin === 'gloss') { cpGroup = 'all'; cpFinish = 'gloss'; }
         else { cpGroup = 'all'; cpFinish = 'all'; }

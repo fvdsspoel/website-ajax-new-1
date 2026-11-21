@@ -109,7 +109,7 @@
                         <div class="cp-tabs" data-cp-groups>
                             <button type="button" class="filter filter--sm" data-group="all" aria-pressed="false">{{ __('site.colours.finishes.all') }}</button>
                             @foreach (__('site.colours.tabs') as $g => $glabel)
-                                <button type="button" class="filter filter--sm" data-group="{{ $g }}" aria-pressed="{{ $g === 'melamine' ? 'true' : 'false' }}">{{ $glabel }}</button>
+                                <button type="button" class="filter filter--sm" data-group="{{ $g }}" aria-pressed="{{ $g === 'board' ? 'true' : 'false' }}">{{ $glabel }}</button>
                             @endforeach
                         </div>
                         <div class="cp-tabs cp-tabs--finish" data-cp-finishes>
@@ -125,7 +125,7 @@
                             @foreach ($boardColours as $code => $col)
                                 @php $cname = $col['name'].($col['finish'] === 'gloss' && ! str_contains($col['name'], 'Gloss') ? ' Gloss' : ''); @endphp
                                 <div class="cp" data-group="{{ $col['group'] }}" data-cfinish="{{ $col['finish'] }}">
-                                    <input type="radio" name="colour" value="{{ $code }}" id="colour-{{ $loop->index }}" data-label="{{ $cname }} · {{ __('site.colours.tabs.'.$col['group']) }}">
+                                    <input type="radio" name="colour" value="{{ $code }}" id="colour-{{ $loop->index }}" data-label="{{ $cname }}{{ $col['group'] === 'hpl' ? ' · HPL' : '' }}">
                                     <label for="colour-{{ $loop->index }}" title="{{ $cname }} · {{ $code }}"><i class="cp-chip @if ($col['finish'] === 'gloss') is-gloss @endif" style="background:{{ $col['hex'] }}">@if (! empty($col['image']))<img src="{{ asset($col['image']) }}" alt="" loading="lazy">@endif</i><b>{{ $cname }}</b><small>{{ $code }}</small></label>
                                 </div>
                             @endforeach

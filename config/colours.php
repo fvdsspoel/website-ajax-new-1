@@ -1,12 +1,15 @@
 <?php
 
-// Board, plywood and HPL colours — from the ERP (Inventory → Hisoon library, "Matches" and
+// Board colours and HPL colours — from the ERP (Inventory → Hisoon library, "Matches" and
 // "Edge bands", 21 November 2026). The code is the ERP code, so sales match it 1:1 in the
 // CRM, the Sales Tool and Hisoon. 'hex' is only a guide for the screen; when a real photo
 // of the board exists, put it in public/images/colours/<code>.webp and set 'image'.
+// Every board colour comes on marine plywood and on particle board (owner, 21 Nov 2026),
+// so the website shows one list of board colours — never "melamine" vs "plywood" colours.
+// HPL is a different material with its own colours and matching edge bands.
 // No prices here, ever.
 return [
-    'melamine' => [
+    'board' => [
         ['code' => 'MP.60.MATT.FSI', 'name' => 'Real White', 'finish' => 'matt', 'hex' => '#f4f3ef'],
         ['code' => 'MP.60.HG.FSI', 'name' => 'White', 'finish' => 'gloss', 'hex' => '#fbfbfa'],
         ['code' => 'MP.005-960M', 'name' => 'Latte', 'finish' => 'matt', 'hex' => '#d8c7ad'],
@@ -42,15 +45,6 @@ return [
         ['code' => 'MP.Y2112', 'name' => 'Dark Cherry', 'finish' => 'wood', 'hex' => 'linear-gradient(90deg,#5a2a22,#4c231c,#633026,#431f19)'],
     ],
 
-    // 1.2 mm plywood faced with melamine — the outside of our two-colour plywood boards (cold press).
-    'plywood' => [
-        ['code' => 'PP.60', 'name' => 'Real White', 'finish' => 'matt', 'hex' => '#f4f3ef'],
-        ['code' => 'PP.005-960H6', 'name' => 'Latte', 'finish' => 'matt', 'hex' => '#d8c7ad'],
-        ['code' => 'PP.7007-4', 'name' => 'Mocha', 'finish' => 'matt', 'hex' => '#b49a82'],
-        ['code' => 'PP.AJAX-ACACIA', 'name' => 'Acacia AJAX', 'finish' => 'wood', 'hex' => 'linear-gradient(90deg,#b98a5b,#a87a4d,#c19366,#9f7146)'],
-        ['code' => 'PP.Y2146', 'name' => 'Cedar', 'finish' => 'wood', 'hex' => 'linear-gradient(90deg,#c08a5a,#b57f50,#c69264,#ae784b)'],
-        ['code' => 'PP.Y2152', 'name' => 'Walnut', 'finish' => 'wood', 'hex' => 'linear-gradient(90deg,#8a5d3b,#7b5133,#946542,#70492d)'],
-    ],
 
     // HPL on plywood — each with its own 22 mm edge band (code RF.<same number>).
     'hpl' => [

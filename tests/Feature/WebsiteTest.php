@@ -65,7 +65,7 @@ class WebsiteTest extends TestCase
                 && $r->isMultipart()
                 && str_contains($body, 'Ana Cruz')
                 && str_contains($body, 'Layout: L-shape')
-                && str_contains($body, 'Colour: Cedar — Melamine boards, wood (MP.Y2146)')
+                && str_contains($body, 'Colour: Cedar — board colour, wood (MP.Y2146)')
                 && str_contains($body, 'Next step: Measure at my place')
                 && str_contains($body, 'name="design_config[source]"')
                 && str_contains($body, 'website_design_selector')
@@ -137,13 +137,14 @@ class WebsiteTest extends TestCase
     public function test_the_colours_page_shows_the_erp_colours_without_prices(): void
     {
         $this->get('/our-colours?lang=en')->assertOk()
-            ->assertSee('Real White')->assertSee('MP.60.MATT.FSI')        // melamine, with the ERP code
-            ->assertSee('Acacia AJAX')->assertSee('PP.AJAX-ACACIA')       // plywood, two colours
+            ->assertSee('Real White')->assertSee('MP.60.MATT.FSI')        // board colour, with the ERP code
+            ->assertSee('Board colours · plywood &amp; particle board', false)
+            ->assertDontSee('Plywood · two colours')                       // no separate plywood colours
             ->assertSee('Golden Teak')->assertSee('HPL.9066')             // HPL
             ->assertSee('Every HPL colour comes with its own matching edge band.')
             ->assertDontSee('₱')->assertDontSee('Cost');
-        $this->assertCount(33, config('colours.melamine'));
-        $this->assertCount(6, config('colours.plywood'));
+        $this->assertCount(33, config('colours.board'));
+        $this->assertNull(config('colours.plywood'));
         $this->assertCount(26, config('colours.hpl'));
     }
 

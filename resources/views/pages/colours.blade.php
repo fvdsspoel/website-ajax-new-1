@@ -31,14 +31,13 @@
 
         @foreach ($groups as $key => $colours)
             <div class="cpanel" role="tabpanel" id="panel-{{ $key }}" aria-labelledby="tab-{{ $key }}" @if (! $loop->first) hidden @endif>
-                @if ($key === 'plywood')<p class="cnote">@include('partials.icon', ['name' => 'layers']) {{ $c['plywood_note'] }}</p>@endif
+                @if ($key === 'board')<p class="cnote">@include('partials.icon', ['name' => 'layers']) {{ $c['board_note'] }}</p>@endif
                 @if ($key === 'hpl')<p class="cnote">@include('partials.icon', ['name' => 'check']) {{ $c['hpl_note'] }}</p>@endif
                 <div class="swatch-grid">
                     @foreach ($colours as $col)
                         <figure class="sw" data-finish="{{ $col['finish'] }}">
                             <div class="sw-chip @if ($col['finish'] === 'gloss') is-gloss @endif" style="background:{{ $col['hex'] }}">
                                 @if (! empty($col['image']))<img src="{{ asset($col['image']) }}" alt="" loading="lazy">@endif
-                                @if ($key === 'plywood')<span class="sw-inside" aria-hidden="true"></span>@endif
                                 @if ($key === 'hpl')<span class="sw-edge" style="background:{{ $col['hex'] }}" title="{{ $c['edge'] }}"></span>@endif
                             </div>
                             <figcaption>
