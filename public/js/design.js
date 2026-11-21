@@ -1,4 +1,4 @@
-// Design selector: 6 steps, a live sketch, file upload, sent to the website server → CRM.
+// Design selector: 6 steps, file upload, sent to the website server → CRM.
 (function () {
     var form = document.getElementById('designer');
     if (!form) return;
@@ -9,7 +9,6 @@
     var stepNames = JSON.parse(form.dataset.steps);
     var back = form.querySelector('[data-back]'), next = form.querySelector('[data-next]'), skip = form.querySelector('[data-skip]'), submit = form.querySelector('[data-submit]');
     var errBox = document.getElementById('form-error');
-    var colours = JSON.parse(document.getElementById('sketch-colours').textContent);
     var cur = 0, files = [];
     var MAX = 5, MAX_BYTES = 8 * 1024 * 1024, OK = /\.(jpe?g|png|webp|pdf)$/i;
 
@@ -23,7 +22,9 @@
         label.textContent = t.step + ' ' + (cur + 1) + ' ' + t.of + ' ' + panes.length + ' · ' + stepNames[cur];
         back.hidden = cur === 0;
         var last = cur === panes.length - 1;
-        next.hidden = last; skip.hidden = last; submit.hidden = !last;
+        next.hidden = last; submit.hidden = !last;
+        skip.hidden = cur === 0 || last;   // the room must be chosen; the contact step is sent, not skipped
+        if (last) review();
         if (window.innerWidth < 1000) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -47,45 +48,28 @@
     }
 
     function sum(key, text) {
-        var row = document.querySelector('[data-sum="' + key + '"] dd');
+        var row = document.querySelector('[data-sum="' + key + '"]');
         if (!row) return;
-        row.textContent = text || '—';
-        row.classList.toggle('empty', !text);
+        row.querySelector('dd').textContent = text || '';
+        row.hidden = !text;   // only what was chosen is listed
     }
 
-    // Live sketch of the choice (top view for kitchens, front view for the rest).
-    function sketch() {
-        var room = val('room') || 'kitchen', layout = val('layout'), c = colours[val('colour')] || '#e9e4d8', top = colours[val('top')] || '#f1efe9';
-        if (val('top') === 'none') top = 'transparent';
-        var R = function (x, y, w, h, cls, fill) { return '<rect class="' + cls + '" x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="1.5" fill="' + fill + '"/>'; };
-        var cab = function (x, y, w, h) { return R(x, y, w, h, 'cab', c) + R(x, y, w, Math.min(3, h), 'top', top); };
-        var s = '<svg viewBox="0 0 160 100" xmlns="http://www.w3.org/2000/svg">';
-        if (room === 'kitchen' || room === 'whole' || room === 'bath') {
-            s += '<path class="wall" d="M10 10H150V90H10Z"/>';
-            var L = layout || 'straight';
-            s += cab(14, 14, 132, 20);
-            if (L === 'l_shape' || L === 'u_shape') s += cab(14, 34, 20, 52);
-            if (L === 'u_shape') s += cab(126, 34, 20, 52);
-            if (L === 'island') s += cab(50, 58, 60, 22);
-            if (L === 'parallel') s += cab(14, 66, 132, 20);
-            s += '<rect x="70" y="18" width="18" height="11" rx="2" fill="rgba(0,0,0,.18)"/>';
-            s += '<text x="80" y="52" text-anchor="middle">' + (lab('layout') || '').toUpperCase() + '</text>';
-        } else if (room === 'wardrobe' || room === 'bedroom') {
-            var n = layout === 'sliding' ? 2 : 4;
-            s += '<path class="wall" d="M10 92H150"/>';
-            if (layout === 'walk_in') { s += cab(20, 14, 120, 14) + cab(20, 28, 18, 62) + cab(122, 28, 18, 62); }
-            else if (layout === 'open') { s += cab(30, 10, 100, 82); for (var k = 1; k < 4; k++) s += '<path d="M30 ' + (10 + k * 20.5) + 'H130" stroke="rgba(0,0,0,.35)"/>'; }
-            else { for (var d = 0; d < n; d++) { var w = 100 / n; s += R(30 + d * w + .5, 10, w - 1, 82, 'cab', c); if (val('style') === 'handles') s += '<rect x="' + (30 + d * w + w / 2 - 1) + '" y="40" width="2" height="18" fill="#222"/>'; } }
-        } else if (room === 'living') {
-            s += '<path class="wall" d="M6 92H154"/>';
-            if (layout === 'wall' || layout === 'shelves') s += R(18, 8, 124, 70, 'cab', c);
-            s += '<rect x="50" y="22" width="60" height="34" rx="2" fill="#151515"/>';
-            s += cab(26, 70, 108, 18);
-        } else {
-            s += '<path class="wall" d="M10 92H150"/>' + cab(40, 30, 80, 60);
-        }
-        s += '</svg>';
-        document.getElementById('sketch').innerHTML = s;
+    // The picture of the chosen style (desktop summary).
+    function styleThumb() {
+        var box = document.getElementById('sum-thumb'), el = form.querySelector('input[name="style"]:checked');
+        var art = el ? el.parentNode.querySelector('.opt-art:not([hidden]) img') : null;
+        box.innerHTML = art ? '<img src="' + art.getAttribute('src') + '" alt="">' : '';
+        box.hidden = !art;
+    }
+
+    // On phones: the choices, listed on the last step before sending.
+    function review() {
+        var dl = document.querySelector('#review dl'), html = '';
+        document.querySelectorAll('#summary-list > div').forEach(function (row) {
+            if (!row.hidden) html += '<div>' + row.innerHTML + '</div>';
+        });
+        dl.innerHTML = html;
+        document.getElementById('review').hidden = !html;
     }
 
     function refresh() {
@@ -98,7 +82,9 @@
         sum('colour', lab('colour'));
         sum('top', lab('top'));
         sum('files', files.length ? files.length + ' ✓' : '');
-        sketch();
+        styleThumb();
+        var any = Array.prototype.some.call(document.querySelectorAll('#summary-list > div'), function (r) { return !r.hidden; });
+        document.getElementById('sum-empty').hidden = any;
         var nx = val('next');
         form.querySelector('[data-visit-fields]').hidden = !(nx === 'measure' || nx === 'showroom');
     }

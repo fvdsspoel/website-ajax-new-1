@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', __('site.seo.design.title'))
 @section('meta_description', __('site.seo.design.description'))
-@section('body_class', 'page-solid')
+@section('body_class', 'page-solid page-design')
 
 @php
     $d = __('site.design');
@@ -48,7 +48,7 @@
                 <fieldset class="pane" data-step="1" style="border:0;padding:0;margin:0">
                     <legend class="q">{{ $d['q_layout'] }}</legend>
                     @foreach ($layoutSets as $set => $layouts)
-                        <div class="options options--3" data-layouts="{{ $set }}" @if ($set !== 'kitchen') hidden @endif>
+                        <div class="options {{ count($layouts) === 4 ? 'options--4' : 'options--3' }}" data-layouts="{{ $set }}" @if ($set !== 'kitchen') hidden @endif>
                             @foreach ($layouts as $key => $label)
                                 <div class="opt">
                                     <input type="radio" name="layout" value="{{ $key }}" id="layout-{{ $set }}-{{ $key }}" data-label="{{ $label }}" @if ($set !== 'kitchen') disabled @endif>
@@ -154,7 +154,7 @@
                         <div class="field"><label for="city">{{ $d['city'] }}</label><input id="city" name="city" autocomplete="address-level2" maxlength="120" placeholder="Sta. Rosa, Laguna"></div>
                     </div>
                     <p class="subq" style="margin-top:6px">{{ $d['next_q'] }}</p>
-                    <div class="options options--3" style="margin-bottom:8px">
+                    <div class="options options--list" style="margin-bottom:8px">
                         @foreach ($d['next_options'] as $key => $n)
                             <div class="opt">
                                 <input type="radio" name="next" value="{{ $key }}" id="next-{{ $key }}" data-label="{{ $n['name'] }}" @checked($key === 'call')>
@@ -176,6 +176,8 @@
                             <select id="when" name="when">@foreach ($d['when_options'] as $k => $t)<option value="{{ $k }}">{{ $t }}</option>@endforeach</select>
                         </div>
                     </div>
+                    {{-- On phones the side summary is hidden: show the choices here before sending. --}}
+                    <div class="review" id="review" hidden><p class="subq">{{ $d['summary'] }}</p><dl></dl></div>
                     <p class="hint">{{ $d['consent'] }}</p>
                     <div class="alert alert--err" id="form-error" role="alert" hidden></div>
                 </fieldset>
@@ -199,13 +201,14 @@
                 </div>
             </form>
 
-            {{-- Live summary with a sketch of the chosen layout (idea from Reform's OUTLINE — no prices shown) --}}
+            {{-- Summary of the choices (desktop only; on phones they are shown on the last step) --}}
             <aside class="summary" aria-live="polite">
                 <h3>{{ $d['summary'] }}</h3>
-                <div class="sketch" id="sketch" aria-hidden="true"></div>
+                <div class="sum-thumb" id="sum-thumb" hidden></div>
+                <p class="sum-empty" id="sum-empty">{{ $d['summary_empty'] }}</p>
                 <dl id="summary-list">
                     @foreach ($sumRows as $k => $label)
-                        <div data-sum="{{ $k }}" @if ($k === 'top') hidden @endif><dt>{{ $label }}</dt><dd class="empty">—</dd></div>
+                        <div data-sum="{{ $k }}" hidden><dt>{{ $label }}</dt><dd></dd></div>
                     @endforeach
                 </dl>
                 <div class="contact-mini">
@@ -217,8 +220,6 @@
         </div>
     </div>
 </section>
-@php $sketchColours = ['white' => '#f4f3ef', 'light' => '#cfc8bb', 'dark' => '#2a2d2f', 'woodlight' => '#d6b483', 'wooddark' => '#5e3a22', 'colour' => '#2f6f57', 'sintered' => '#f3f3f1', 'marble' => '#e6dfd3', 'granite' => '#4a4a4a', 'board' => '#c9a36b', 'none' => 'transparent']; @endphp
-<script type="application/json" id="sketch-colours">{!! json_encode($sketchColours) !!}</script>
 @endsection
 
 @push('scripts')

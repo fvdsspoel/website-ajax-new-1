@@ -252,7 +252,7 @@ return [
         'of' => 'sa',
         'back' => 'Bumalik',
         'next' => 'Susunod',
-        'skip' => 'Hindi sigurado — laktawan',
+        'skip' => 'Laktawan',
         'steps' => ['Ano', 'Layout', 'Style', 'Finish', 'Plano mo', 'Kontak'],
         'q_room' => 'Ano ang gusto mong ipagawa?',
         'q_layout' => 'Anong layout ang bagay sa espasyo mo?',
@@ -287,6 +287,7 @@ return [
         'too_many' => 'Hanggang 5 files lang.',
         'required' => 'Pakilagay ang pangalan at mobile number mo.',
         'summary' => 'Mga pinili mo',
+        'summary_empty' => 'Lalabas dito ang mga pinili mo habang tumatagal.',
         'rooms' => [
             'kitchen' => 'Kitchen',
             'wardrobe' => 'Wardrobe / closet',
@@ -304,12 +305,12 @@ return [
             'other' => ['single' => 'Isang piraso', 'room' => 'Buong kuwarto', 'several' => 'Ilang kuwarto', 'project' => 'Buong proyekto (maraming units)'],
         ],
         'styles' => [
-            'handleless' => ['name' => 'Modern handleless', 'text' => 'Malinis na flat na pinto na may 42° bevel — walang handle.'],
+            'handleless' => ['name' => 'Modern handleless', 'text' => 'Flat na pinto na binubuksan sa nakatagong uka — walang handle.'],
             'handles' => ['name' => 'Modern na may handle', 'text' => 'Flat na pinto na may manipis na bar handle.'],
             'wood' => ['name' => 'Warm wood', 'text' => 'Natural na wood grain, maaliwalas at hindi nalalaos.'],
-            'dark' => ['name' => 'Dark at bold', 'text' => 'Itim, charcoal at dark wood na may bato.'],
+            'dark' => ['name' => 'Dark at bold', 'text' => 'Itim, charcoal o dark wood — matapang at elegante.'],
             'gloss' => ['name' => 'High-gloss luxe', 'text' => 'Makintab na pinto na parang salamin.'],
-            'twotone' => ['name' => 'Two-tone', 'text' => 'Dalawang kulay — hal. puti sa taas, wood sa baba.'],
+            'twotone' => ['name' => 'Two-tone', 'text' => 'Dalawang kulay na magkasama — hal. puti at wood.'],
         ],
         'finishes' => [
             'melamine' => ['name' => 'Melamine (matt / wood / stone look)', 'text' => 'Matibay, madaling linisin, pinaka-sulit.'],

@@ -253,7 +253,7 @@ return [
         'of' => 'sa',
         'back' => 'Balik',
         'next' => 'Sunod',
-        'skip' => 'Dili sigurado — laktawi',
+        'skip' => 'Laktawi',
         'steps' => ['Unsa', 'Layout', 'Style', 'Finish', 'Imong plano', 'Kontak'],
         'q_room' => 'Unsa ang gusto nimo ipahimo?',
         'q_layout' => 'Unsa nga layout ang haom sa imong space?',
@@ -288,6 +288,7 @@ return [
         'too_many' => 'Hangtod 5 ka files lang.',
         'required' => 'Palihug ibutang ang imong ngalan ug mobile number.',
         'summary' => 'Imong mga gipili',
+        'summary_empty' => 'Makita dinhi ang imong mga gipili samtang nagpadayon ka.',
         'rooms' => [
             'kitchen' => 'Kitchen',
             'wardrobe' => 'Wardrobe / closet',
@@ -305,12 +306,12 @@ return [
             'other' => ['single' => 'Usa ka piraso', 'room' => 'Tibuok kwarto', 'several' => 'Pipila ka kwarto', 'project' => 'Tibuok proyekto (daghang units)'],
         ],
         'styles' => [
-            'handleless' => ['name' => 'Modern handleless', 'text' => 'Limpyo nga flat nga pultahan nga naay 42° bevel — walay handle.'],
+            'handleless' => ['name' => 'Modern handleless', 'text' => 'Flat nga pultahan nga ablihan sa tinagong uka — walay handle.'],
             'handles' => ['name' => 'Modern nga naay handle', 'text' => 'Flat nga pultahan nga naay nipis nga bar handle.'],
             'wood' => ['name' => 'Warm wood', 'text' => 'Natural nga wood grain, init ug dili maluma.'],
-            'dark' => ['name' => 'Dark ug bold', 'text' => 'Itom, charcoal ug dark wood nga naay bato.'],
+            'dark' => ['name' => 'Dark ug bold', 'text' => 'Itom, charcoal o dark wood — kusog ug elegante.'],
             'gloss' => ['name' => 'High-gloss luxe', 'text' => 'Sinaw nga pultahan nga murag salamin.'],
-            'twotone' => ['name' => 'Two-tone', 'text' => 'Duha ka kolor — pananglitan puti sa taas, wood sa ubos.'],
+            'twotone' => ['name' => 'Two-tone', 'text' => 'Duha ka kolor nga magkauban — pananglitan puti ug wood.'],
         ],
         'finishes' => [
             'melamine' => ['name' => 'Melamine (matt / wood / stone look)', 'text' => 'Lig-on, sayon limpyohan, labing barato.'],

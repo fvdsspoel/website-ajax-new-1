@@ -602,12 +602,6 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
 }
 
 /* Live sketch in the design selector */
-.sketch { margin-top: 16px; border-radius: 16px; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .1); aspect-ratio: 16 / 10; display: grid; place-items: center; overflow: hidden; }
-.sketch svg { width: 92%; height: 92%; }
-.sketch .wall { stroke: rgba(255, 255, 255, .35); stroke-width: 1.2; fill: none; stroke-dasharray: 3 3; }
-.sketch text { fill: rgba(255, 255, 255, .55); font: 700 7px var(--font); letter-spacing: .08em; }
-.sketch .cab { stroke: rgba(0, 0, 0, .35); stroke-width: .8; transition: fill .4s; }
-.sketch .top { transition: fill .4s; stroke: rgba(0, 0, 0, .2); stroke-width: .5; }
 
 /* Our boards */
 .boards { display: grid; gap: 16px; align-items: stretch; }
@@ -688,3 +682,37 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
 .site-footer .office-line small { display: block; font-size: 12px; opacity: .72; line-height: 1.45; margin-top: 2px; }
 .info-row--small { font-size: 13px; opacity: .85; }
 .info-row--small svg { width: 18px; height: 18px; }
+
+/* ── Design selector, cleaned up (21 Nov 2026) ── */
+.options--4 { grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 720px) { .options--4 { grid-template-columns: repeat(4, 1fr); } }
+/* "What happens next": a clean list, icon left */
+.options--list { grid-template-columns: 1fr !important; }
+.options--list .opt label { display: grid; grid-template-columns: 42px 1fr; column-gap: 14px; row-gap: 2px; align-items: center; padding: 14px 44px 14px 16px; }
+.options--list .opt .oi { grid-row: span 2; width: 42px; height: 42px; }
+.options--list .opt label strong, .options--list .opt label small { min-width: 0; }
+@media (min-width: 720px) { .options--list { grid-template-columns: repeat(3, 1fr) !important; } .options--list .opt label { display: flex; flex-direction: column; align-items: flex-start; padding: 16px; } }
+/* Summary: only what was chosen, plus the picture of the chosen style */
+.summary .sum-empty { margin: 14px 0 0; color: rgba(255, 255, 255, .6); font-size: 14px; }
+.summary .sum-thumb { margin-top: 14px; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; background: rgba(255,255,255,.06); }
+.summary .sum-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.summary dl div[hidden] { display: none; }
+/* Review list on the last step (phones) */
+.review { margin: 18px 0 6px; padding: 16px; border-radius: 16px; background: var(--sand); }
+.review .subq { margin: 0 0 8px; }
+.review dl { margin: 0; display: grid; gap: 8px; }
+.review dl div { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; border-bottom: 1px dashed var(--line); padding-bottom: 6px; }
+.review dl div:last-child { border-bottom: 0; padding-bottom: 0; }
+.review dt { color: var(--muted); }
+.review dd { margin: 0; font-weight: 700; text-align: right; }
+@media (min-width: 1000px) { .review { display: none; } }
+/* Phones: no side summary, no floating contact bar over the form; Back / Next stay at the bottom of the screen */
+@media (max-width: 999px) {
+  .page-design .summary { display: none; }
+}
+@media (max-width: 719px) {
+  .page-design .fab-dock { display: none; }
+  .page-design .pane-nav { position: sticky; bottom: 0; z-index: 5; margin: 22px -24px -24px; padding: 12px 24px calc(12px + env(safe-area-inset-bottom)); background: rgba(255, 255, 255, .96); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-top: 1px solid var(--line); border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+  .page-design .pane-nav .btn { padding-left: 18px; padding-right: 18px; }
+  .page-design .pane-nav .skip { white-space: nowrap; }
+}

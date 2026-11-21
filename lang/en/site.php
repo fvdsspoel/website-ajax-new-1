@@ -250,7 +250,7 @@ return [
         'of' => 'of',
         'back' => 'Back',
         'next' => 'Next',
-        'skip' => 'Not sure — skip',
+        'skip' => 'Skip',
         'steps' => ['What', 'Layout', 'Style', 'Finish', 'Your plan', 'Contact'],
         'q_room' => 'What do you want us to make?',
         'q_layout' => 'Which layout fits your space?',
@@ -285,6 +285,7 @@ return [
         'too_many' => 'Up to 5 files only.',
         'required' => 'Please fill in your name and mobile number.',
         'summary' => 'Your choices',
+        'summary_empty' => 'Your choices appear here as you go.',
         'rooms' => [
             'kitchen' => 'Kitchen',
             'wardrobe' => 'Wardrobe / closet',
@@ -302,12 +303,12 @@ return [
             'other' => ['single' => 'One piece', 'room' => 'A full room', 'several' => 'Several rooms', 'project' => 'A whole project (many units)'],
         ],
         'styles' => [
-            'handleless' => ['name' => 'Modern handleless', 'text' => 'Clean flat doors with our 42° bevel — no handles.'],
+            'handleless' => ['name' => 'Modern handleless', 'text' => 'Flat doors you open with a hidden finger groove — no handles.'],
             'handles' => ['name' => 'Modern with handles', 'text' => 'Flat doors with slim bar handles.'],
             'wood' => ['name' => 'Warm wood', 'text' => 'Natural wood grain, cozy and timeless.'],
-            'dark' => ['name' => 'Dark & bold', 'text' => 'Black, charcoal and dark wood with stone.'],
+            'dark' => ['name' => 'Dark & bold', 'text' => 'Black, charcoal or dark wood — strong and elegant.'],
             'gloss' => ['name' => 'High-gloss luxe', 'text' => 'Mirror-like gloss doors that reflect the light.'],
-            'twotone' => ['name' => 'Two-tone', 'text' => 'Two colours — e.g. white upper, wood lower.'],
+            'twotone' => ['name' => 'Two-tone', 'text' => 'Two colours together — e.g. white and wood.'],
         ],
         'finishes' => [
             'melamine' => ['name' => 'Melamine (matt / wood / stone look)', 'text' => 'Durable, easy to clean, best value.'],
