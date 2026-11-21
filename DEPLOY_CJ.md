@@ -20,7 +20,7 @@ git status                       # must NOT list modified files; if it does, sto
 git log -1 --oneline             # write this line down (before) — expected: 405c856 Fix admin panel CSS…
 git fetch origin main
 git reset --hard origin/main     # the server's own September fix (405c856) is already inside origin/main
-git log -1 --oneline             # write this line down (after) — expected: d74e5b3 Admin panel CSS…
+git log -1 --oneline             # write this line down (after) and send it
 ```
 
 (A plain `git pull` would stop here, because 405c856 was committed on the server and never pushed.
