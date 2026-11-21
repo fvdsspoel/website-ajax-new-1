@@ -76,6 +76,30 @@ return [
         'gloss' => 'images/projects/08/01.webp',
         'twotone' => 'images/projects/02/01.webp',
     ],
+    // The style step follows the room chosen in step 1: real Ajax photos of
+    // that kind of furniture where we have them; a style sketch otherwise
+    // (never a kitchen photo for a wardrobe). Rooms map to these sets in design.js.
+    'style_images_by_set' => [
+        'wardrobe' => [
+            'handleless' => 'images/projects/07/07.webp',
+            'handles' => 'images/projects/13/01.webp',
+            'wood' => 'images/projects/13/04.webp',
+            'twotone' => 'images/projects/10/01.webp',
+        ],
+        'living' => [
+            'handleless' => 'images/projects/09/01.webp',
+            'wood' => 'images/projects/11/01.webp',
+            'dark' => 'images/projects/21/05.webp',
+            'gloss' => 'images/projects/09/03.webp',
+            'twotone' => 'images/projects/19/03.webp',
+        ],
+        'office' => [
+            'handleless' => 'images/projects/14/02.webp',
+            'twotone' => 'images/projects/14/01.webp',
+        ],
+        'bath' => [],
+        'other' => [],
+    ],
     'room_icons' => [
         'kitchen' => 'kitchen', 'wardrobe' => 'wardrobe', 'living' => 'tv', 'bedroom' => 'bed',
         'office' => 'office', 'bath' => 'bath', 'whole' => 'home', 'other' => 'puzzle',

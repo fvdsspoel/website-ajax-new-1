@@ -72,7 +72,18 @@
                             <div class="opt opt--img">
                                 <input type="radio" name="style" value="{{ $key }}" id="style-{{ $key }}" data-label="{{ $s['name'] }}">
                                 <label for="style-{{ $key }}">
-                                    <span class="opt-img"><img src="{{ asset(str_replace('.webp', '-sm.webp', config('ajax.style_images.'.$key))) }}" alt="" loading="lazy"></span>
+                                    <span class="opt-img">
+                                        <span class="opt-art" data-style-set="kitchen"><img src="{{ asset(str_replace('.webp', '-sm.webp', config('ajax.style_images.'.$key))) }}" alt="" loading="lazy"></span>
+                                        @foreach (config('ajax.style_images_by_set') as $set => $imgs)
+                                            <span class="opt-art" data-style-set="{{ $set }}" hidden>
+                                                @if (! empty($imgs[$key]))
+                                                    <img src="{{ asset(str_replace('.webp', '-sm.webp', $imgs[$key])) }}" alt="" loading="lazy">
+                                                @else
+                                                    @include('pages.partials.style-sketch', ['set' => $set, 'style' => $key])
+                                                @endif
+                                            </span>
+                                        @endforeach
+                                    </span>
                                     <span class="opt-text"><strong>{{ $s['name'] }}</strong><small>{{ $s['text'] }}</small></span>
                                 </label>
                             </div>

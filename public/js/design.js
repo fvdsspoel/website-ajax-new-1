@@ -36,6 +36,9 @@
             g.hidden = !on;
             g.querySelectorAll('input').forEach(function (inp) { inp.disabled = !on; if (!on) inp.checked = false; });
         });
+        // Style pictures follow the room too: a wardrobe shows wardrobes, a TV wall shows TV walls.
+        var styleSet = { kitchen: 'kitchen', whole: 'kitchen', wardrobe: 'wardrobe', bedroom: 'wardrobe', living: 'living', office: 'office', bath: 'bath', other: 'other' }[room] || 'kitchen';
+        form.querySelectorAll('[data-style-set]').forEach(function (el) { el.hidden = el.dataset.styleSet !== styleSet; });
         var top = form.querySelector('[data-top-block]');
         var needsTop = !room || room === 'kitchen' || room === 'bath' || room === 'whole';
         top.hidden = !needsTop;
