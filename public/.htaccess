@@ -13,6 +13,14 @@
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
+    # One address for Google and visitors: ajaxtradingcorp.com and the old test address new.ajaxtradingcorp.com
+    # go to https://www.ajaxtradingcorp.com (21 November 2026, the day the new site went live).
+    RewriteCond %{HTTP_HOST} ^(new\.)?ajaxtradingcorp\.com$ [NC]
+    RewriteRule ^(.*)$ https://www.ajaxtradingcorp.com/$1 [L,R=301]
+    RewriteCond %{HTTP_HOST} ^www\.ajaxtradingcorp\.com$ [NC]
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://www.ajaxtradingcorp.com/$1 [L,R=301]
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$

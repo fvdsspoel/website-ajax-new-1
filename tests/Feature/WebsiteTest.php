@@ -131,6 +131,11 @@ class WebsiteTest extends TestCase
         $this->get('/contact-us')->assertRedirect('/contact');
         $this->get('/build-your-own')->assertRedirect('/design-your-space');
         $this->get('/show-rooms')->assertRedirect('/showroom');
+        $this->get('/highlights/view/16/Ajax%20Trading%20Flutted%20Pannel')->assertRedirect('/projects');
+        $this->get('/portfolios/view/3/Kitchen%20Set')->assertRedirect('/projects');
+        $this->get('/products/list/2/abc')->assertRedirect('/what-we-make');
+        $this->get('/assets/images/catalog/catalog.pdf')->assertRedirect('/what-we-make');
+        $this->get('/login')->assertRedirect('/admin/login');
     }
 
     public function test_every_language_file_has_the_same_texts(): void

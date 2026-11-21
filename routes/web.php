@@ -69,6 +69,17 @@ Route::permanentRedirect('/build-your-own', '/design-your-space');
 Route::permanentRedirect('/inquiries', '/contact');
 Route::permanentRedirect('/contact-us', '/contact');
 Route::permanentRedirect('/get-a-quote', '/contact');
+// More old addresses from the old www.ajaxtradingcorp.com (checked on the day of the switch, 21 November 2026).
+Route::permanentRedirect('/highlights', '/projects');
+Route::permanentRedirect('/highlights/view/{id}/{name?}', '/projects')->where('name', '.*');
+Route::permanentRedirect('/portfolios/{any}', '/projects')->where('any', '.*');
+Route::permanentRedirect('/machines/{any}', '/our-factory')->where('any', '.*');
+Route::permanentRedirect('/products/{any}', '/what-we-make')->where('any', '.*');
+Route::permanentRedirect('/assets/images/catalog/catalog.pdf', '/what-we-make');
+Route::permanentRedirect('/catalog', '/what-we-make');
+Route::redirect('/login', '/admin/login');
+Route::redirect('/dashboard', '/admin');
+Route::permanentRedirect('/about', '/about-us');
 
 // Admin login intentionally lives off the public nav — no link to it
 // anywhere in the site's visible UI.
