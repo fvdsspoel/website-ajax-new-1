@@ -32,3 +32,6 @@ auth.json
 /database/*.sqlite
 /storage/*.key
 .env
+
+# Pictures uploaded in the back office (Design pictures) — kept on the server, never in git
+/public/uploads/

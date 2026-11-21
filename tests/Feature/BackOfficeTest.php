@@ -92,4 +92,28 @@ class BackOfficeTest extends TestCase
         $this->actingAs($this->owner())->post('/admin/texts', ['section' => 'hero', 't' => ['en' => ['quote__title' => 'Hacked', 'nope__x' => 'y']]]);
         $this->assertSame(0, SiteText::count());
     }
+
+    public function test_staff_can_upload_a_real_photo_for_a_design_style_and_the_website_shows_it(): void
+    {
+        $file = \App\Support\DesignPictures::dir().'/wardrobe-dark.jpg';
+        @unlink($file);
+        $this->get('/admin/design-pictures')->assertRedirect('/admin/login');
+
+        $owner = $this->owner();
+        $this->actingAs($owner)->get('/admin/design-pictures')->assertOk()->assertSee('Wardrobe &amp; bedroom', false)->assertSee('Drawing');
+
+        $img = \Illuminate\Http\UploadedFile::fake()->image('dark-wardrobe.jpg', 1600, 900);
+        $this->actingAs($owner)->post('/admin/design-pictures', ['set' => 'wardrobe', 'style' => 'dark', 'image' => $img])->assertRedirect();
+        $this->assertFileExists($file);
+        [$w, $h] = getimagesize($file);
+        $this->assertSame([1200, 900], [$w, $h]); // cropped to the 4:3 tile, max 1200 wide
+
+        $this->get('/design-your-space')->assertOk()->assertSee('uploads/design/wardrobe-dark.jpg', false);
+
+        $this->actingAs($owner)->delete('/admin/design-pictures', ['set' => 'wardrobe', 'style' => 'dark'])->assertRedirect();
+        $this->assertFileDoesNotExist($file);
+
+        // Only real room types / styles are accepted.
+        $this->actingAs($owner)->post('/admin/design-pictures', ['set' => '../../x', 'style' => 'dark', 'image' => $img])->assertSessionHasErrors('set');
+    }
 }

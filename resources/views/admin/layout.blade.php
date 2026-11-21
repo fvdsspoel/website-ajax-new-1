@@ -14,6 +14,7 @@
             <a class="admin-brand" href="{{ route('admin.texts.index') }}">@include('admin.partials.brand')</a>
             <a class="nav @if(request()->routeIs('admin.texts.*')) is-active @endif" href="{{ route('admin.texts.index') }}">Website texts</a>
             <a class="nav @if(request()->routeIs('admin.portfolio.*')) is-active @endif" href="{{ route('admin.portfolio.index') }}">Projects</a>
+            <a class="nav @if(request()->routeIs('admin.design.*')) is-active @endif" href="{{ route('admin.design.index') }}">Design pictures</a>
             @can('owner')
                 <a class="nav @if(request()->routeIs('admin.team.*')) is-active @endif" href="{{ route('admin.team.index') }}">Team &amp; login codes</a>
             @endcan

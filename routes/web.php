@@ -112,6 +112,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::patch('/user/{user}', [AdminTeamController::class, 'role'])->name('role');
             Route::delete('/user/{user}', [AdminTeamController::class, 'remove'])->name('remove');
         });
+        Route::get('/design-pictures', [\App\Http\Controllers\Admin\DesignPictureController::class, 'index'])->name('design.index');
+        Route::post('/design-pictures', [\App\Http\Controllers\Admin\DesignPictureController::class, 'store'])->name('design.store');
+        Route::delete('/design-pictures', [\App\Http\Controllers\Admin\DesignPictureController::class, 'destroy'])->name('design.destroy');
         Route::resource('portfolio', AdminPortfolioController::class)->except('show');
         Route::resource('products', AdminProductController::class)->except('show');
         Route::resource('showrooms', AdminShowroomController::class)->except('show');

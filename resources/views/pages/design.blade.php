@@ -73,11 +73,11 @@
                                 <input type="radio" name="style" value="{{ $key }}" id="style-{{ $key }}" data-label="{{ $s['name'] }}">
                                 <label for="style-{{ $key }}">
                                     <span class="opt-img">
-                                        <span class="opt-art" data-style-set="kitchen"><img src="{{ asset(str_replace('.webp', '-sm.webp', config('ajax.style_images.'.$key))) }}" alt="" loading="lazy"></span>
-                                        @foreach (config('ajax.style_images_by_set') as $set => $imgs)
-                                            <span class="opt-art" data-style-set="{{ $set }}" hidden>
-                                                @if (! empty($imgs[$key]))
-                                                    <img src="{{ asset(str_replace('.webp', '-sm.webp', $imgs[$key])) }}" alt="" loading="lazy">
+                                        @foreach (array_keys(\App\Support\DesignPictures::SETS) as $set)
+                                            @php $pic = \App\Support\DesignPictures::url($set, $key); @endphp
+                                            <span class="opt-art" data-style-set="{{ $set }}" @if ($set !== 'kitchen') hidden @endif>
+                                                @if ($pic)
+                                                    <img src="{{ $pic }}" alt="" loading="lazy">
                                                 @else
                                                     @include('pages.partials.style-sketch', ['set' => $set, 'style' => $key])
                                                 @endif
