@@ -106,6 +106,7 @@ return [
             'workshop' => 'Among assembly area sa Laguna',
             'warehouse' => 'Mga board sa among bodega',
             'delivery' => 'Gihatod sa among kaugalingong truck',
+            'ready' => 'Mga wardrobe nga andam na i-deliver',
             'samples' => 'Among sample case — dad-on namo sa inyo',
         ],
         'groups' => [

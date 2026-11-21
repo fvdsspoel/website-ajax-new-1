@@ -3,7 +3,11 @@
 
 @section('content')
 <section class="page-hero has-image">
-    <img src="{{ asset('images/factory/workshop.webp') }}" alt="">
+    {{-- Real clips from our factory (silent, 21 s, ~2 MB); the photo shows until it plays and for visitors who prefer less motion. --}}
+    <img src="{{ asset('video/factory-reel-poster.webp') }}" alt="">
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="{{ asset('video/factory-reel-poster.webp') }}" aria-hidden="true">
+        <source src="{{ asset('video/factory-reel.mp4') }}" type="video/mp4">
+    </video>
     <div class="wrap">
         <span class="eyebrow">{{ __('site.factory.eyebrow') }}</span>
         <h1>{{ __('site.factory.title') }}</h1>

@@ -44,7 +44,9 @@ return [
         'handling' => ['roller'],
     ],
     'machine_photos' => [
-        'stone_cutter' => 'images/factory/stone-saw.webp',
+        'stone_cutter' => 'images/factory/stone-cutter.webp',
+        'cnc_router' => 'images/factory/cnc-nesting.webp',
+        'edge' => 'images/factory/edge-bander-2.webp',
     ],
 
     // Real shots from the factory floor (the reel on the factory page).
@@ -57,8 +59,9 @@ return [
         ['images/factory/led-wiring.webp', 'led'],
         ['images/factory/testfit-kitchen.webp', 'testfit'],
         ['images/factory/hot-press-10.webp', 'multi_press'],
-        ['images/factory/cnc-drill.webp', 'cnc_router'],
+        ['images/factory/cnc-nesting.webp', 'cnc_router'],
         ['images/factory/warehouse-2.webp', 'warehouse'],
+        ['images/factory/wardrobes-row.webp', 'ready'],
         ['images/factory/sample-case.webp', 'samples'],
         ['images/factory/delivery-truck.webp', 'delivery'],
     ],

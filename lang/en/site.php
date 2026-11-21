@@ -103,6 +103,7 @@ return [
             'workshop' => 'Our assembly hall in Laguna',
             'warehouse' => 'Board stock in our warehouse',
             'delivery' => 'Delivered by our own truck',
+            'ready' => 'Wardrobes ready for delivery',
             'samples' => 'Our sample case — we bring it to you',
         ],
         'groups' => [

@@ -210,7 +210,7 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
 /* Page hero (inner pages) */
 .page-hero { position: relative; padding: calc(var(--head) + 56px) 0 56px; background: var(--forest); color: var(--white); overflow: hidden; isolation: isolate; }
 .page-hero.has-image::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(11, 34, 24, .96) 0%, rgba(11, 34, 24, .7) 55%, rgba(11, 34, 24, .35) 100%); }
-.page-hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.page-hero > img, .page-hero > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
 .page-hero h1 { margin-top: 14px; font-size: clamp(36px, 7.5vw, 76px); max-width: 16ch; }
 .page-hero .lead { margin-top: 18px; color: rgba(255, 255, 255, .8); }
 @media (min-width: 900px) { .page-hero { padding: calc(var(--head) + 96px) 0 96px; } }
@@ -665,3 +665,6 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
   .site-header .brand-word span { display: none; }
   .header-actions { gap: 8px; }
 }
+
+/* Factory film in the page top: off for visitors who prefer less motion. */
+@media (prefers-reduced-motion: reduce) { .hero-video { display: none; } }
