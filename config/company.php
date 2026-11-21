@@ -35,6 +35,12 @@ return [
     'meta_pixel_id' => env('META_PIXEL_ID', ''),
     'ga4_id' => env('GA4_MEASUREMENT_ID', ''),
 
+    // Google Ads (account 564-160-6996). The tag loads on every page; the
+    // "Request quote" conversion fires once after a quote / design request
+    // is sent. Set GOOGLE_ADS_ID= (empty) in .env to switch it off.
+    'google_ads_id' => env('GOOGLE_ADS_ID', 'AW-18588478601'),
+    'google_ads_lead_label' => env('GOOGLE_ADS_LEAD_LABEL', 'Bst8CNyq8bwdEInZ1p9F'),
+
     // true on the temporary test site so Google doesn't index it.
     'noindex' => (bool) env('SITE_NOINDEX', false),
 

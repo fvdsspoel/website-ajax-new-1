@@ -153,8 +153,7 @@
             .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
             .then(function (res) {
                 if (!res.ok || !res.j.success) throw new Error((res.j && (res.j.message || (res.j.errors && Object.values(res.j.errors)[0][0]))) || t.error);
-                if (window.fbq) window.fbq('track', 'Lead');
-                if (window.gtag) window.gtag('event', 'generate_lead');
+                if (window.ajaxLead) window.ajaxLead();
                 form.querySelectorAll('.pane, .pane-nav, .stepper, #step-label').forEach(function (el) { el.hidden = true; el.classList.remove('is-active'); });
                 document.getElementById('done').hidden = false;
                 form.scrollIntoView({ behavior: 'smooth', block: 'start' });

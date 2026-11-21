@@ -112,6 +112,24 @@ class WebsiteTest extends TestCase
         Http::assertSent(fn (HttpRequest $r) => str_contains($r->body(), 'Interest: Boards (marine plywood)') && str_contains($r->body(), 'Website language: ceb'));
     }
 
+    public function test_the_google_ads_tag_is_on_every_page_and_counts_a_quote_only_after_it_is_sent(): void
+    {
+        config(['company.google_ads_id' => 'AW-18588478601', 'company.google_ads_lead_label' => 'Bst8CNyq8bwdEInZ1p9F']);
+
+        $this->get('/')->assertOk()
+            ->assertSee('googletagmanager.com/gtag/js?id=AW-18588478601', false)
+            ->assertSee('AW-18588478601\/Bst8CNyq8bwdEInZ1p9F', false);
+
+        // The form page itself must not count a lead…
+        $this->get('/contact')->assertOk()->assertDontSee('ajaxLead && ajaxLead()', false);
+        // …only the page shown after a successful send.
+        $this->withSession(['success' => true])->get('/contact')->assertOk()->assertSee('ajaxLead && ajaxLead()', false);
+
+        // Switched off when the ID is empty.
+        config(['company.google_ads_id' => '']);
+        $this->get('/')->assertOk()->assertDontSee('AW-18588478601', false);
+    }
+
     public function test_the_colours_page_shows_the_erp_colours_without_prices(): void
     {
         $this->get('/our-colours?lang=en')->assertOk()

@@ -78,10 +78,26 @@
             fbq('init', @json(config('company.meta_pixel_id'))); fbq('track', 'PageView');
         </script>
     @endif
-    @if (config('company.ga4_id'))
-        <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('company.ga4_id') }}"></script>
-        <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config',@json(config('company.ga4_id')));</script>
+    @php
+        $gIds = array_values(array_filter([config('company.ga4_id'), config('company.google_ads_id')]));
+        $adsLead = config('company.google_ads_id') && config('company.google_ads_lead_label')
+            ? config('company.google_ads_id').'/'.config('company.google_ads_lead_label') : null;
+    @endphp
+    @if ($gIds)
+        {{-- Google tag (GA4 and/or Google Ads) — one loader for both --}}
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gIds[0] }}"></script>
+        <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());@foreach ($gIds as $gId)gtag('config',@json($gId));@endforeach</script>
     @endif
+    <script>
+        {{-- One call for every "lead sent" moment (quote form, design request): Meta "Lead", GA4 "generate_lead", Google Ads "Request quote" --}}
+        window.ajaxLead = function () {
+            if (window.fbq) fbq('track', 'Lead');
+            if (window.gtag) {
+                gtag('event', 'generate_lead');
+                @if ($adsLead)gtag('event', 'conversion', {send_to: @json($adsLead), value: 1.0, currency: 'PHP'});@endif
+            }
+        };
+    </script>
 </head>
 @php
     $nav = [

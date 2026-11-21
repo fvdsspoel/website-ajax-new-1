@@ -24,7 +24,7 @@
             <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
             @if (session('success'))
                 <div class="alert alert--ok" role="status">@include('partials.icon', ['name' => 'check']) {{ $q['success'] }}</div>
-                @if (config('company.meta_pixel_id'))<script>window.addEventListener('load', function () { window.fbq && fbq('track', 'Lead'); });</script>@endif
+                <script>window.addEventListener('load', function () { window.ajaxLead && ajaxLead(); });</script>
             @elseif (session('error'))
                 <div class="alert alert--err" role="alert">{{ $q['error'] }}</div>
             @endif
