@@ -187,7 +187,7 @@
         </div>
         <div class="dev-photos" data-reveal style="--d:.15s">
             <img src="{{ asset('images/projects/06/01-sm.webp') }}" alt="DDC Land" loading="lazy">
-            <img src="{{ asset('images/projects/02/03-sm.webp') }}" alt="DDC Land" loading="lazy">
+            <img src="{{ asset('images/site/office-reception-sm.webp') }}" alt="Office reception and pantry" loading="lazy">
         </div>
     </div>
 </section>

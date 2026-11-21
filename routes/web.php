@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\HighlightController as AdminHighlightController;
+use App\Http\Controllers\Admin\JoinController as AdminJoinController;
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ShowroomController as AdminShowroomController;
+use App\Http\Controllers\Admin\TeamController as AdminTeamController;
+use App\Http\Controllers\Admin\TextController as AdminTextController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DesignController;
 use App\Http\Controllers\PageController;
@@ -60,10 +63,24 @@ Route::permanentRedirect('/get-a-quote', '/contact');
 // anywhere in the site's visible UI.
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login')->middleware('guest');
-    Route::post('/login', [AdminAuthController::class, 'login'])->middleware('guest');
+    Route::post('/login', [AdminAuthController::class, 'login'])->middleware(['guest', 'throttle:8,1']);
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout')->middleware('auth');
 
+    // A new person joins with the one-time code an owner gave them (21 November 2026).
+    Route::get('/join', [AdminJoinController::class, 'show'])->name('join')->middleware('guest');
+    Route::post('/join', [AdminJoinController::class, 'store'])->middleware(['guest', 'throttle:6,1']);
+
     Route::middleware('auth')->group(function () {
+        Route::redirect('/', '/admin/texts');
+        Route::get('/texts', [AdminTextController::class, 'index'])->name('texts.index');
+        Route::post('/texts', [AdminTextController::class, 'update'])->name('texts.update');
+        Route::middleware('can:owner')->prefix('team')->name('team.')->group(function () {
+            Route::get('/', [AdminTeamController::class, 'index'])->name('index');
+            Route::post('/invite', [AdminTeamController::class, 'invite'])->name('invite');
+            Route::delete('/invite/{invite}', [AdminTeamController::class, 'cancel'])->name('cancel');
+            Route::patch('/user/{user}', [AdminTeamController::class, 'role'])->name('role');
+            Route::delete('/user/{user}', [AdminTeamController::class, 'remove'])->name('remove');
+        });
         Route::resource('portfolio', AdminPortfolioController::class)->except('show');
         Route::resource('products', AdminProductController::class)->except('show');
         Route::resource('showrooms', AdminShowroomController::class)->except('show');

@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Website back office: only an owner may give codes to new people or remove a login.
+        \Illuminate\Support\Facades\Gate::define('owner', fn (\App\Models\User $user) => $user->isOwner());
     }
 }

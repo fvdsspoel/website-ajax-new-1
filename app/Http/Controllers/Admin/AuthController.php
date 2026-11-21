@@ -22,7 +22,8 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended(route('admin.portfolio.index'));
+            $request->user()->forceFill(['last_login_at' => now()])->save();
+            return redirect()->intended(route('admin.texts.index'));
         }
 
         return back()->withErrors(['email' => 'Those credentials don\'t match our records.']);

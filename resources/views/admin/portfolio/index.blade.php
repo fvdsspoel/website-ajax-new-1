@@ -1,8 +1,8 @@
 @extends('admin.layout')
-@section('title', 'Portfolio')
+@section('title', 'Projects')
 @section('content')
 <div class="admin-header">
-    <h1>Portfolio ({{ $items->count() }})</h1>
+    <h1>Projects ({{ $items->count() }})</h1>
     <a href="{{ route('admin.portfolio.create') }}" class="admin-btn">Add project</a>
 </div>
 <table class="admin-table">

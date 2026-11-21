@@ -25,7 +25,7 @@ return [
         'kitchen' => ['icon' => 'kitchen', 'image' => 'images/projects/02/01.webp', 'size' => 'big', 'filter' => 'kitchen'],
         'wardrobe' => ['icon' => 'wardrobe', 'image' => 'images/projects/13/02.webp', 'size' => '', 'filter' => 'wardrobe'],
         'living' => ['icon' => 'tv', 'image' => 'images/projects/19/01.webp', 'size' => '', 'filter' => 'living'],
-        'office' => ['icon' => 'office', 'image' => 'images/projects/14/01.webp', 'size' => 'wide', 'filter' => 'commercial'],
+        'office' => ['icon' => 'office', 'image' => 'images/site/office-open.webp', 'size' => 'wide', 'filter' => 'commercial'],
         'stone' => ['icon' => 'stone', 'image' => 'images/projects/06/01.webp', 'size' => 'wide', 'filter' => 'kitchen'],
         'cladding' => ['icon' => 'wall', 'image' => 'images/projects/20/02.webp', 'size' => '', 'filter' => 'commercial'],
         'bath' => ['icon' => 'bath', 'image' => 'images/projects/17/03.webp', 'size' => '', 'filter' => 'kitchen'],
