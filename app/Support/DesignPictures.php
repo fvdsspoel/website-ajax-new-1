@@ -48,6 +48,29 @@ class DesignPictures
         return is_file($f) ? $f : null;
     }
 
+    /**
+     * The layout each room's general sample photos show (the first photos, 21 Nov 2026). Photos of another layout are
+     * images/design/styles/{set}-{layout}-{style}.webp; while a layout has none, the room's general photos are shown.
+     */
+    public const DEFAULT_LAYOUT = ['kitchen' => 'straight', 'wardrobe' => 'hinged', 'living' => 'wall', 'bedroom' => 'headboard',
+        'office' => 'exec', 'bath' => 'mirror_cab', 'whole' => 'br1', 'other' => 'single'];
+
+    /** Sample photo of one layout of a room in one style (null: none — the room's general photo is used). */
+    public static function layoutUrl(string $set, string $layout, string $style): ?string
+    {
+        $f = public_path("images/design/styles/{$set}-{$layout}-{$style}.webp");
+
+        return is_file($f) ? asset("images/design/styles/{$set}-{$layout}-{$style}.webp").'?v='.filemtime($f) : null;
+    }
+
+    /** Photo of the layout tile in step 2 (null: the floor-plan drawing). */
+    public static function layoutTileUrl(string $set, string $layout): ?string
+    {
+        $f = public_path("images/design/layouts/{$set}-{$layout}.webp");
+
+        return is_file($f) ? asset("images/design/layouts/{$set}-{$layout}.webp").'?v='.filemtime($f) : null;
+    }
+
     /** URL of the picture for this tile: an uploaded photo first, then the sample photo; null → the drawing. */
     public static function url(string $set, string $style): ?string
     {

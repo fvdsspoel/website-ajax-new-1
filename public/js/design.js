@@ -44,7 +44,11 @@
         var sizeField = form.querySelector('#size').closest('.field');
         sizeField.hidden = room === 'whole';
         if (room === 'whole') form.size_m.value = '';
-        form.querySelectorAll('[data-style-set]').forEach(function (el) { el.hidden = el.dataset.styleSet !== styleSet; });
+        // … and the layout: a reception counter shows reception counters. No photo of that layout yet: the room's general one.
+        var layout = val('layout');
+        var own = layout && form.querySelector('[data-style-set="' + styleSet + '"][data-style-layout="' + layout + '"]');
+        var want = own ? layout : '';
+        form.querySelectorAll('[data-style-set]').forEach(function (el) { el.hidden = el.dataset.styleSet !== styleSet || (el.dataset.styleLayout || '') !== want; });
         var top = form.querySelector('[data-top-block]');
         var needsTop = !room || room === 'kitchen' || room === 'bath' || room === 'whole';
         top.hidden = !needsTop;

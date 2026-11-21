@@ -52,7 +52,8 @@
                             @foreach ($layouts as $key => $label)
                                 <div class="opt opt--img opt--plan">
                                     <input type="radio" name="layout" value="{{ $key }}" id="layout-{{ $set }}-{{ $key }}" data-label="{{ $label }}" @if ($set !== 'kitchen') disabled @endif>
-                                    <label for="layout-{{ $set }}-{{ $key }}"><span class="opt-img">@include('pages.partials.layout-icon', ['set' => $set, 'key' => $key])</span><span class="opt-text"><strong>{{ $label }}</strong></span></label>
+                                    @php $tile = \App\Support\DesignPictures::layoutTileUrl($set, $key); @endphp
+                                    <label for="layout-{{ $set }}-{{ $key }}"><span class="opt-img {{ $tile ? 'has-photo' : '' }}">@if ($tile)<img src="{{ $tile }}" alt="" loading="lazy">@else @include('pages.partials.layout-icon', ['set' => $set, 'key' => $key]) @endif</span><span class="opt-text"><strong>{{ $label }}</strong></span></label>
                                 </div>
                             @endforeach
                         </div>
@@ -74,8 +75,14 @@
                                 <label for="style-{{ $key }}">
                                     <span class="opt-img">
                                         @foreach (array_keys(\App\Support\DesignPictures::SETS) as $set)
+                                            {{-- The chosen layout in this style (a reception counter, a walk-in closet …), when there is a photo of it. --}}
+                                            @foreach (array_keys($layoutSets[$set] ?? []) as $lay)
+                                                @if ($lp = \App\Support\DesignPictures::layoutUrl($set, $lay, $key))
+                                                    <span class="opt-art" data-style-set="{{ $set }}" data-style-layout="{{ $lay }}" hidden><img src="{{ $lp }}" alt="" loading="lazy"></span>
+                                                @endif
+                                            @endforeach
                                             @php $pic = \App\Support\DesignPictures::url($set, $key); @endphp
-                                            <span class="opt-art" data-style-set="{{ $set }}" @if ($set !== 'kitchen') hidden @endif>
+                                            <span class="opt-art" data-style-set="{{ $set }}" data-style-layout="" @if ($set !== 'kitchen') hidden @endif>
                                                 @if ($pic)
                                                     <img src="{{ $pic }}" alt="" loading="lazy">
                                                 @else
