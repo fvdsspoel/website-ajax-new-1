@@ -182,11 +182,11 @@
             <span class="eyebrow">{{ __('site.developers.eyebrow') }}</span>
             <h2 class="h2" style="margin-top:14px">{{ __('site.developers.title') }}</h2>
             <p class="lead" style="margin-top:18px">{{ __('site.developers.text') }}</p>
-            <div class="logos-row"><span>DDC LAND</span><span>CONCEPT BUILDERS</span><span>GREENFIELD</span><span>BGC OFFICE</span></div>
+            <div class="logos-row"><span>CONCEPT BUILDERS</span><span>GREENFIELD</span><span>BGC OFFICE</span></div>
             <a href="{{ route('quote.create', ['interest' => 'project']) }}" class="btn btn--primary btn--lg" style="margin-top:28px">{{ __('site.developers.cta') }} <span class="arrow">@include('partials.icon', ['name' => 'arrow'])</span></a>
         </div>
         <div class="dev-photos" data-reveal style="--d:.15s">
-            <img src="{{ asset('images/projects/06/01-sm.webp') }}" alt="DDC Land" loading="lazy">
+            <img src="{{ asset('images/projects/06/01-sm.webp') }}" alt="Kitchens built for a property developer" loading="lazy">
             <img src="{{ asset('images/site/office-reception-sm.webp') }}" alt="Office reception and pantry" loading="lazy">
         </div>
     </div>

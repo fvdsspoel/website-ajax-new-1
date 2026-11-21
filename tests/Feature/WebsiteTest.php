@@ -32,7 +32,8 @@ class WebsiteTest extends TestCase
     public function test_the_homepage_shows_real_projects_factory_boards_and_socials(): void
     {
         $this->get('/?lang=en')->assertOk()
-            ->assertSee('Kitchen Set at DDC Land')
+            ->assertSee('Two-tone Kitchen Set for a Property Developer')
+            ->assertDontSee('DDC')
             ->assertSee('images/projects/02/01-sm.webp', false)
             ->assertSee('Stone cutting machine')
             ->assertSee('Marine plywood, 11 layers')
