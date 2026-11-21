@@ -53,6 +53,15 @@ Route::get('/lang/{locale}', function (Request $request, string $locale) {
     return redirect($path);
 })->name('lang.switch');
 
+// Sitemap for Google: every page in English, Tagalog and Bisaya (21 November 2026).
+Route::get('/sitemap.xml', function () {
+    $names = ['home' => '1.0', 'furniture' => '0.9', 'portfolio' => '0.9', 'design' => '0.8', 'quote.create' => '0.8', 'colours' => '0.7', 'factory' => '0.7', 'showrooms' => '0.7', 'about' => '0.6'];
+    $updated = \App\Models\PortfolioItem::max('updated_at');
+    $lastmod = $updated ? \Illuminate\Support\Carbon::parse($updated)->toDateString() : now()->toDateString();
+
+    return response()->view('sitemap', compact('names', 'lastmod'))->header('Content-Type', 'application/xml; charset=UTF-8');
+})->name('sitemap');
+
 // Old URLs (old live site and the September test build) → new pages (301),
 // so Google rankings and links already shared on Facebook keep working.
 Route::permanentRedirect('/portfolios', '/projects');

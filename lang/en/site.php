@@ -8,6 +8,30 @@ return [
         'og_title' => 'Ajax — Kitchens & furniture built in our own factory',
     ],
 
+    'seo' => [
+        'home' => ['title' => 'Modular Kitchen & Cabinets Philippines | Ajax Factory, Laguna', 'description' => 'Modular kitchens, kitchen cabinets, wardrobes and custom furniture made to measure in our own factory in Laguna. Free design & quote. Metro Manila & Calabarzon.'],
+        'furniture' => ['title' => 'Custom Kitchens, Wardrobes & Furniture Made to Measure | Ajax', 'description' => 'Kitchen cabinets, wardrobes and walk-in closets, TV walls, office furniture, vanities and stone countertops — all made to measure in our own factory.'],
+        'portfolio' => ['title' => 'Kitchen & Cabinet Projects in Metro Manila & Laguna | Ajax', 'description' => 'See real kitchens, wardrobes, wine walls and office furniture we designed, built and installed for homeowners, condos and property developers.'],
+        'colours' => ['title' => 'Cabinet Colours: Melamine, HPL & Plywood Boards | Ajax', 'description' => 'Choose your cabinet colour: 33 melamine boards, 26 HPL colours with matching edge bands and two-colour marine plywood — all pressed in our factory.'],
+        'factory' => ['title' => 'Furniture Factory in San Pablo, Laguna — 17 Machines | Ajax', 'description' => 'Board presses, CNC routers, six-sided drilling, edge banding and our own stone cutting machine — see how every Ajax kitchen and wardrobe is made.'],
+        'about' => ['title' => 'About Ajax — Kitchen Cabinet Maker in Laguna, Philippines', 'description' => 'Ajax Trading Corporation designs, builds and installs modular kitchens, wardrobes and custom furniture from its factory in San Pablo City, Laguna.'],
+        'showrooms' => ['title' => 'Kitchen Showroom in San Pablo City, Laguna | Ajax', 'description' => 'Visit our showroom and factory: see the boards, open the drawers and choose your colours. Mon–Sat, 7 AM – 7 PM. Directions, phone and Viber.'],
+        'design' => ['title' => 'Design Your Kitchen or Wardrobe Online — Free Quote | Ajax', 'description' => 'Pick your room, layout, style and colours, upload your floor plan or photos, and we call you back with a design and a free quotation.'],
+        'quote' => ['title' => 'Free Quote: Kitchen Cabinets, Wardrobes & Boards | Ajax', 'description' => 'Ask for a free quotation for kitchen cabinets, wardrobes, custom furniture or marine plywood boards. Message us, call, or upload your plan.'],
+    ],
+
+    'faq' => [
+        'title' => 'Questions we often get',
+        'items' => [
+            ['q' => 'How much does a modular kitchen cost?', 'a' => 'Every kitchen is made to measure, so the price depends on the length, the layout, the board, the doors and the countertop. Send your plan, photos or measurements and we send you a free proforma quotation.'],
+            ['q' => 'What boards do you use for kitchen cabinets?', 'a' => 'Marine plywood with an 11-layer hardwood eucalyptus core, particle board, melamine and HPL — pressed in our own factory, also with two colours on one board: white inside, your colour outside.'],
+            ['q' => 'Where do you deliver and install?', 'a' => 'Our own team delivers and installs in Metro Manila, Laguna and the whole Calabarzon. For other areas, message us with your location.'],
+            ['q' => 'Can I see the colours and materials first?', 'a' => 'Yes. Visit our showroom and factory in San Pablo City, Laguna, Monday to Saturday from 7 AM to 7 PM — or ask for our sample case.'],
+            ['q' => 'Do you work with property developers and contractors?', 'a' => 'Yes. We have built 400+ units for developers, with standard designs per unit type, delivered and installed on the turnover schedule.'],
+            ['q' => 'Is there a warranty?', 'a' => 'Yes, every job has a 1-year warranty, and we pre-assemble and check every piece in our factory before it leaves.'],
+        ],
+    ],
+
     'nav' => [
         'home' => 'Home',
         'make' => 'What we make',

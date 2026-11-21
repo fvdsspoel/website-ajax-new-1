@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('title', __('site.colours.title').' — Ajax Trading Corporation')
+@section('title', __('site.seo.colours.title'))
+@section('meta_description', __('site.seo.colours.description'))
 
 @php $c = __('site.colours'); $groups = config('colours'); @endphp
 

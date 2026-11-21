@@ -192,6 +192,9 @@
     </div>
 </section>
 
+{{-- FAQ --}}
+@include('pages.partials.faq')
+
 {{-- FACEBOOK / SOCIAL --}}
 @include('pages.partials.social')
 

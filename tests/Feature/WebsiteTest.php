@@ -125,6 +125,23 @@ class WebsiteTest extends TestCase
         $this->assertCount(26, config('colours.hpl'));
     }
 
+    public function test_google_gets_a_title_and_description_per_page_and_language_and_a_sitemap(): void
+    {
+        $this->get('/our-factory?lang=en')->assertSee('<title>Furniture Factory in San Pablo, Laguna — 17 Machines | Ajax</title>', false)
+            ->assertSee('<link rel="canonical" href="'.url('/our-factory').'">', false);
+        $this->get('/our-factory?lang=tl')->assertSee('<link rel="canonical" href="'.url('/our-factory').'?lang=tl">', false)
+            ->assertSee('Furniture Factory sa San Pablo');
+        $this->get('/?lang=en')->assertSee('"@type":"FAQPage"', false)->assertSee('How much does a modular kitchen cost?');
+        $this->get('/sitemap.xml')->assertOk()->assertHeader('Content-Type', 'application/xml; charset=UTF-8')
+            ->assertSee('<loc>'.url('/projects').'?lang=ceb</loc>', false);
+        $titles = [];
+        foreach (['/', '/what-we-make', '/projects', '/our-colours', '/our-factory', '/about-us', '/showroom', '/design-your-space', '/contact'] as $u) {
+            preg_match('#<title>(.*?)</title>#', $this->get($u.'?lang=en')->getContent(), $m);
+            $titles[] = $m[1];
+        }
+        $this->assertCount(9, array_unique($titles));
+    }
+
     public function test_old_addresses_still_work(): void
     {
         $this->get('/portfolios')->assertRedirect('/projects');

@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('title', __('site.quote.title').' — Ajax Trading Corporation')
+@section('title', __('site.seo.quote.title'))
+@section('meta_description', __('site.seo.quote.description'))
 
 @php
     $q = __('site.quote');
@@ -71,4 +72,5 @@
         </aside>
     </div>
 </section>
+@include('pages.partials.faq')
 @endsection

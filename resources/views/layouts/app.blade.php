@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>@yield('title', __('site.meta.title'))</title>
-    <meta name="description" content="@yield('meta_description', __('site.meta.description'))">
+    @php
+        // One clean address per language for Google: English = no ?lang, Tagalog/Bisaya = ?lang=tl / ?lang=ceb.
+        $loc = app()->getLocale();
+        $base = url()->current();
+        $canonical = $loc === 'en' ? $base : $base.'?lang='.$loc;
+        $ogLocale = ['en' => 'en_PH', 'tl' => 'tl_PH', 'ceb' => 'cx_PH'][$loc] ?? 'en_PH';
+    @endphp
+    <title>@yield('title', __('site.seo.home.title'))</title>
+    <meta name="description" content="@yield('meta_description', __('site.seo.home.description'))">
     <meta name="theme-color" content="#0b2218">
     @if (config('company.noindex'))
         <meta name="robots" content="noindex, nofollow">
@@ -14,21 +21,21 @@
     {{-- Facebook / Messenger / Viber link previews --}}
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Ajax Trading Corporation">
-    <meta property="og:title" content="@yield('og_title', __('site.meta.og_title'))">
-    <meta property="og:description" content="@yield('meta_description', __('site.meta.description'))">
+    <meta property="og:title" content="@yield('title', __('site.seo.home.title'))">
+    <meta property="og:description" content="@yield('meta_description', __('site.seo.home.description'))">
     <meta property="og:image" content="{{ asset('images/site/og-cover.jpg') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:locale" content="{{ app()->getLocale() }}_PH">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:locale" content="{{ $ogLocale }}">
     <meta name="twitter:card" content="summary_large_image">
 
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-    <link rel="canonical" href="{{ url()->current() }}">
-    <link rel="alternate" hreflang="en" href="{{ url()->current() }}?lang=en">
-    <link rel="alternate" hreflang="tl" href="{{ url()->current() }}?lang=tl">
-    <link rel="alternate" hreflang="ceb" href="{{ url()->current() }}?lang=ceb">
-    <link rel="alternate" hreflang="x-default" href="{{ url()->current() }}">
+    <link rel="canonical" href="{{ $canonical }}">
+    <link rel="alternate" hreflang="en-PH" href="{{ $base }}">
+    <link rel="alternate" hreflang="tl-PH" href="{{ $base }}?lang=tl">
+    <link rel="alternate" hreflang="ceb" href="{{ $base }}?lang=ceb">
+    <link rel="alternate" hreflang="x-default" href="{{ $base }}">
 
     <link rel="preload" href="{{ asset('fonts/plus-jakarta-sans-latin-wght-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ asset('css/site.css') }}?v={{ filemtime(public_path('css/site.css')) }}">
@@ -40,7 +47,11 @@
         '@context' => 'https://schema.org',
         '@type' => 'FurnitureStore',
         'name' => 'Ajax Trading Corporation',
-        'description' => __('site.meta.description'),
+        'description' => __('site.seo.home.description'),
+        'email' => config('company.email') ?: null,
+        'priceRange' => 'Free quotation',
+        'hasMap' => config('company.map_url'),
+        'currenciesAccepted' => 'PHP',
         'url' => 'https://www.ajaxtradingcorp.com',
         'logo' => asset('images/site/logo.png'),
         'image' => asset('images/site/og-cover.jpg'),
@@ -53,7 +64,8 @@
             'addressCountry' => 'PH',
         ],
         'openingHours' => 'Mo-Sa 07:00-19:00',
-        'areaServed' => ['Metro Manila', 'Laguna', 'Calabarzon'],
+        'areaServed' => ['Metro Manila', 'Laguna', 'Cavite', 'Batangas', 'Rizal', 'Quezon', 'Calabarzon'],
+        'knowsAbout' => ['Modular kitchens', 'Kitchen cabinets', 'Wardrobes', 'Walk-in closets', 'Custom furniture', 'Marine plywood boards', 'HPL', 'Sintered stone countertops'],
         'sameAs' => array_values(config('company.social')),
     ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
     </script>

@@ -10,6 +10,30 @@ return [
         'og_title' => 'Ajax — Kitchen at furniture na gawa sa sarili naming factory',
     ],
 
+    'seo' => [
+        'home' => ['title' => 'Modular Kitchen at Cabinets sa Pilipinas | Ajax Factory, Laguna', 'description' => 'Modular kitchen, kitchen cabinet, wardrobe at custom furniture na sukat sa bahay mo, gawa sa sarili naming factory sa Laguna. Libreng design at quotation.'],
+        'furniture' => ['title' => 'Custom Kitchen, Wardrobe at Furniture na Sukat sa Inyo | Ajax', 'description' => 'Kitchen cabinet, wardrobe at walk-in closet, TV wall, office furniture, vanity at stone countertop — lahat gawa sa sukat ninyo sa sarili naming factory.'],
+        'portfolio' => ['title' => 'Mga Proyekto: Kitchen at Cabinet sa Metro Manila at Laguna | Ajax', 'description' => 'Tingnan ang mga totoong kitchen, wardrobe, wine wall at office furniture na dinisenyo, ginawa at ikinabit namin para sa mga bahay, condo at developer.'],
+        'colours' => ['title' => 'Kulay ng Cabinet: Melamine, HPL at Plywood Boards | Ajax', 'description' => 'Piliin ang kulay ng cabinet: 33 melamine board, 26 HPL na kulay na may katugmang edge band at two-colour marine plywood — pinindot sa aming factory.'],
+        'factory' => ['title' => 'Furniture Factory sa San Pablo, Laguna — 17 Makina | Ajax', 'description' => 'Board press, CNC router, six-sided drilling, edge banding at sariling stone cutting machine — tingnan kung paano ginagawa ang bawat Ajax kitchen.'],
+        'about' => ['title' => 'Tungkol sa Ajax — Gumagawa ng Kitchen Cabinet sa Laguna', 'description' => 'Ang Ajax Trading Corporation ay nagdidisenyo, gumagawa at nagkakabit ng modular kitchen, wardrobe at custom furniture mula sa factory sa San Pablo City.'],
+        'showrooms' => ['title' => 'Kitchen Showroom sa San Pablo City, Laguna | Ajax', 'description' => 'Bisitahin ang aming showroom at factory: hawakan ang mga board, buksan ang mga drawer at piliin ang kulay. Lunes–Sabado, 7 AM – 7 PM.'],
+        'design' => ['title' => 'Idisenyo ang Kitchen o Wardrobe Online — Libreng Quote | Ajax', 'description' => 'Piliin ang kwarto, layout, estilo at kulay, i-upload ang floor plan o litrato, at tatawagan namin kayo para sa disenyo at libreng quotation.'],
+        'quote' => ['title' => 'Libreng Quote: Kitchen Cabinet, Wardrobe at Boards | Ajax', 'description' => 'Humingi ng libreng quotation para sa kitchen cabinet, wardrobe, custom furniture o marine plywood board. Mag-message, tumawag o mag-upload ng plano.'],
+    ],
+
+    'faq' => [
+        'title' => 'Mga madalas itanong',
+        'items' => [
+            ['q' => 'Magkano ang modular kitchen?', 'a' => 'Bawat kitchen ay gawa sa sukat ninyo, kaya ang presyo ay depende sa haba, layout, board, pinto at countertop. Ipadala ang plano, litrato o sukat at padadalhan namin kayo ng libreng proforma quotation.'],
+            ['q' => 'Anong board ang gamit ninyo sa kitchen cabinet?', 'a' => 'Marine plywood na may 11-layer hardwood eucalyptus core, particle board, melamine at HPL — pinindot sa sarili naming factory, pwede rin ang dalawang kulay sa isang board: puti sa loob, kulay ninyo sa labas.'],
+            ['q' => 'Saan kayo nagde-deliver at nagkakabit?', 'a' => 'Ang sarili naming team ang nagde-deliver at nagkakabit sa Metro Manila, Laguna at buong Calabarzon. Para sa ibang lugar, i-message kami kasama ang lokasyon ninyo.'],
+            ['q' => 'Pwede ko bang makita muna ang mga kulay at materyales?', 'a' => 'Oo. Bisitahin ang aming showroom at factory sa San Pablo City, Laguna, Lunes hanggang Sabado, 7 AM hanggang 7 PM — o hingin ang aming sample case.'],
+            ['q' => 'Nakikipagtrabaho ba kayo sa mga developer at contractor?', 'a' => 'Oo. Nakagawa na kami ng 400+ unit para sa mga developer, may standard na disenyo bawat unit type, na-deliver at naikabit ayon sa turnover schedule.'],
+            ['q' => 'May warranty ba?', 'a' => 'Oo, may 1 taong warranty ang bawat trabaho, at binubuo at sinusuri namin ang bawat piraso sa factory bago ito umalis.'],
+        ],
+    ],
+
     'nav' => [
         'home' => 'Home',
         'make' => 'Ginagawa namin',

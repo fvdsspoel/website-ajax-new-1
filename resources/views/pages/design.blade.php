@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('title', __('site.design.title').' — Ajax Trading Corporation')
+@section('title', __('site.seo.design.title'))
+@section('meta_description', __('site.seo.design.description'))
 @section('body_class', 'page-solid')
 
 @php

@@ -11,6 +11,30 @@ return [
         'og_title' => 'Ajax — Kitchen ug furniture nga gihimo sa among kaugalingong factory',
     ],
 
+    'seo' => [
+        'home' => ['title' => 'Modular Kitchen ug Cabinets sa Pilipinas | Ajax Factory, Laguna', 'description' => 'Modular kitchen, kitchen cabinet, wardrobe ug custom furniture nga sukod sa imong balay, gihimo sa among kaugalingong factory sa Laguna. Libre nga design ug quotation.'],
+        'furniture' => ['title' => 'Custom Kitchen, Wardrobe ug Furniture nga Sukod Ninyo | Ajax', 'description' => 'Kitchen cabinet, wardrobe ug walk-in closet, TV wall, office furniture, vanity ug stone countertop — tanan gihimo sa inyong sukod sa among factory.'],
+        'portfolio' => ['title' => 'Mga Proyekto: Kitchen ug Cabinet sa Metro Manila ug Laguna | Ajax', 'description' => 'Tan-awa ang tinuod nga kitchen, wardrobe, wine wall ug office furniture nga among gidisenyo, gihimo ug gibutang para sa mga balay, condo ug developer.'],
+        'colours' => ['title' => 'Kolor sa Cabinet: Melamine, HPL ug Plywood Boards | Ajax', 'description' => 'Pilia ang kolor sa cabinet: 33 ka melamine board, 26 ka HPL nga kolor nga naay katugbang nga edge band ug two-colour marine plywood — gipilit sa among factory.'],
+        'factory' => ['title' => 'Furniture Factory sa San Pablo, Laguna — 17 ka Makina | Ajax', 'description' => 'Board press, CNC router, six-sided drilling, edge banding ug kaugalingong stone cutting machine — tan-awa giunsa paghimo ang matag Ajax kitchen.'],
+        'about' => ['title' => 'Mahitungod sa Ajax — Naghimo og Kitchen Cabinet sa Laguna', 'description' => 'Ang Ajax Trading Corporation nagdisenyo, naghimo ug nagbutang og modular kitchen, wardrobe ug custom furniture gikan sa factory sa San Pablo City.'],
+        'showrooms' => ['title' => 'Kitchen Showroom sa San Pablo City, Laguna | Ajax', 'description' => 'Bisitaha ang among showroom ug factory: hikapa ang mga board, ablihi ang mga drawer ug pilia ang kolor. Lunes–Sabado, 7 AM – 7 PM.'],
+        'design' => ['title' => 'Disenyoha ang Kitchen o Wardrobe Online — Libre nga Quote | Ajax', 'description' => 'Pilia ang kwarto, layout, estilo ug kolor, i-upload ang floor plan o litrato, ug tawagan mo namo para sa disenyo ug libre nga quotation.'],
+        'quote' => ['title' => 'Libre nga Quote: Kitchen Cabinet, Wardrobe ug Boards | Ajax', 'description' => 'Pangayo og libre nga quotation para sa kitchen cabinet, wardrobe, custom furniture o marine plywood board. Mag-message, tawag o mag-upload og plano.'],
+    ],
+
+    'faq' => [
+        'title' => 'Mga kasagarang pangutana',
+        'items' => [
+            ['q' => 'Pila ang modular kitchen?', 'a' => 'Ang matag kitchen gihimo sa inyong sukod, mao nga ang presyo depende sa gitas-on, layout, board, pultahan ug countertop. Ipadala ang plano, litrato o sukod ug padad-an mo namo og libre nga proforma quotation.'],
+            ['q' => 'Unsang board ang gamit ninyo sa kitchen cabinet?', 'a' => 'Marine plywood nga naay 11-layer hardwood eucalyptus core, particle board, melamine ug HPL — gipilit sa among kaugalingong factory, pwede pud duha ka kolor sa usa ka board: puti sa sulod, inyong kolor sa gawas.'],
+            ['q' => 'Asa mo nag-deliver ug nagbutang?', 'a' => 'Ang among kaugalingong team ang nag-deliver ug nagbutang sa Metro Manila, Laguna ug tibuok Calabarzon. Para sa ubang lugar, i-message mi uban sa inyong lokasyon.'],
+            ['q' => 'Pwede ba nako makita una ang mga kolor ug materyales?', 'a' => 'Oo. Bisitaha ang among showroom ug factory sa San Pablo City, Laguna, Lunes hangtod Sabado, 7 AM hangtod 7 PM — o pangayo sa among sample case.'],
+            ['q' => 'Nagtrabaho ba mo uban sa mga developer ug contractor?', 'a' => 'Oo. Nakahimo na mi og 400+ ka unit para sa mga developer, naay standard nga disenyo matag unit type, gi-deliver ug gibutang sumala sa turnover schedule.'],
+            ['q' => 'Naa bay warranty?', 'a' => 'Oo, ang matag trabaho naay 1 ka tuig nga warranty, ug among gibuo ug gisusi ang matag piraso sa factory una kini mobiya.'],
+        ],
+    ],
+
     'nav' => [
         'home' => 'Home',
         'make' => 'Among gihimo',

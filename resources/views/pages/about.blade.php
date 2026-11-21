@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('title', __('site.about.eyebrow').' — Ajax Trading Corporation')
+@section('title', __('site.seo.about.title'))
+@section('meta_description', __('site.seo.about.description'))
 
 @section('content')
 <section class="page-hero has-image">

@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('title', __('site.factory.title').' — Ajax Trading Corporation')
+@section('title', __('site.seo.factory.title'))
+@section('meta_description', __('site.seo.factory.description'))
 
 @section('content')
 <section class="page-hero has-image">
@@ -19,8 +20,9 @@
     <div class="wrap">
         <div class="reel" data-reveal>
             @foreach (config('ajax.factory_reel') as [$src, $label])
-                <figure><img src="{{ asset($src) }}" alt="" loading="lazy">
-                    <figcaption>{{ trans()->has('site.factory.reel.'.$label) ? __('site.factory.reel.'.$label) : (trans()->has('site.factory.machines.'.$label.'.name') ? __('site.factory.machines.'.$label.'.name') : __('site.factory.boards_title')) }}</figcaption>
+                @php $cap = trans()->has('site.factory.reel.'.$label) ? __('site.factory.reel.'.$label) : (trans()->has('site.factory.machines.'.$label.'.name') ? __('site.factory.machines.'.$label.'.name') : __('site.factory.boards_title')); @endphp
+                <figure><img src="{{ asset($src) }}" alt="{{ $cap }}" loading="lazy">
+                    <figcaption>{{ $cap }}</figcaption>
                 </figure>
             @endforeach
         </div>

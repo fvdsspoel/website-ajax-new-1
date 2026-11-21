@@ -24,7 +24,7 @@ class SiteTexts
         'colours' => 'Colours', 'developers' => 'Developers / B2B', 'upload' => 'Upload your plan', 'social' => 'Social media',
         'showroom' => 'Showroom', 'design' => 'Design your space', 'quote' => 'Contact / free quote', 'about' => 'About us',
         'cta' => 'Call-to-action band', 'float' => 'Floating buttons', 'chat' => 'Chat', 'footer' => 'Footer',
-        'nav' => 'Menu', 'meta' => 'Google / page titles',
+        'nav' => 'Menu', 'seo' => 'Google: page titles & descriptions', 'faq' => 'FAQ (questions)', 'meta' => 'Old Google texts',
     ];
 
     /** Every text of a locale's file as "section.key" => text (only real strings, lists included). */
