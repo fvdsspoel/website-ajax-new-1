@@ -309,8 +309,8 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
 .lb-head p { font-size: 13px; color: rgba(255, 255, 255, .65); }
 .lb-close { margin-left: auto; }
 .lb-icon { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, .1); border: 0; color: var(--white); cursor: pointer; }
-.lb-stage { position: relative; display: grid; place-items: center; min-height: 0; padding: 0 var(--gutter); }
-.lb-stage img { max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 12px; }
+.lb-stage { position: relative; display: grid; place-items: center; min-height: 0; overflow: hidden; padding: 0 var(--gutter); }
+.lb-stage img { max-height: calc(100svh - 200px); max-width: 100%; width: auto; height: auto; object-fit: contain; border-radius: 12px; }
 .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); }
 .lb-prev { left: 10px; } .lb-next { right: 10px; }
 .lb-prev svg { transform: rotate(180deg); }
