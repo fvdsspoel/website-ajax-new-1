@@ -1,3 +1,11 @@
+:root {
+  --bg-alt: var(--stone);
+  --border: var(--line);
+  --brand: var(--navy);
+  --text: var(--ink);
+  --text-muted: var(--muted);
+}
+
 .admin-body { background: var(--bg-alt); }
 .admin-shell { display: flex; min-height: 100vh; }
 .admin-nav { width: 200px; background: #fff; border-right: 1px solid var(--border); padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 0.5rem; }

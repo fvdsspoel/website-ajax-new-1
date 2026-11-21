@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex, nofollow">
     <title>@yield('title', 'Admin') — Ajax Trading Corporation</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') . '?v=2' }}">
 </head>
 <body class="admin-body">
     <div class="admin-shell">
