@@ -8,7 +8,7 @@
             <p class="lead" style="margin-top:16px">{{ __('site.social.text') }}</p>
             <div class="social-buttons">
                 <a class="sbtn sbtn--facebook" href="{{ $social['facebook'] }}" target="_blank" rel="noopener"><i>@include('partials.icon', ['name' => 'facebook'])</i><span>Facebook<small>Ajax Trading Corp.</small></span></a>
-                <a class="sbtn sbtn--instagram" href="{{ $social['instagram'] }}" target="_blank" rel="noopener"><i>@include('partials.icon', ['name' => 'instagram'])</i><span>Instagram<small>@ajaxtradingcorporation</small></span></a>
+                <a class="sbtn sbtn--instagram" href="{{ $social['instagram'] }}" target="_blank" rel="noopener"><i>@include('partials.icon', ['name' => 'instagram'])</i><span>Instagram<small>@ajaxtradingcorporation_2024</small></span></a>
                 <a class="sbtn sbtn--tiktok" href="{{ $social['tiktok'] }}" target="_blank" rel="noopener"><i>@include('partials.icon', ['name' => 'tiktok'])</i><span>TikTok<small>@ajaxtradingcorpor</small></span></a>
                 <a class="sbtn sbtn--youtube" href="{{ $social['youtube'] }}" target="_blank" rel="noopener"><i>@include('partials.icon', ['name' => 'youtube'])</i><span>YouTube<small>Factory videos</small></span></a>
                 <a class="sbtn sbtn--shopee" href="{{ $social['shopee'] }}" target="_blank" rel="noopener"><i>@include('partials.icon', ['name' => 'bag'])</i><span>Shopee<small>Ajax shop</small></span></a>
