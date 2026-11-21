@@ -10,7 +10,7 @@
     $layoutSets = $d['layouts'];
     $i18n = ['step' => $d['step'], 'of' => $d['of'], 'sending' => $d['sending'], 'submit' => $d['submit'], 'error' => $d['error'], 'too_big' => $d['file_too_big'], 'bad_type' => $d['file_type'], 'too_many' => $d['too_many'], 'required' => $d['required']];
     $topSwatch = ['sintered' => 'linear-gradient(135deg,#fff,#e9e9e9 40%,#bdbdbd 41%,#fff 43%,#f2f2f2)', 'marble' => 'linear-gradient(135deg,#f6f3ee,#d9d2c5 45%,#9e9689 47%,#efe9df)', 'granite' => 'radial-gradient(circle at 30% 30%,#7b7b7b,#2c2c2c 60%)', 'board' => 'linear-gradient(135deg,#d9c3a0,#b38c5a)', 'none' => 'repeating-linear-gradient(45deg,#eee 0 4px,#fff 4px 8px)'];
-    $sumRows = ['room' => $steps[0], 'layout' => $steps[1], 'style' => $steps[2], 'finish' => $steps[3], 'colour' => $d['q_colour'], 'top' => $d['q_top'], 'files' => $steps[4]];
+    $sumRows = ['room' => $steps[0], 'layout' => $steps[1], 'style' => $steps[2], 'board' => $d['board_label'], 'finish' => $steps[3], 'colour' => $d['q_colour'], 'top' => $d['q_top'], 'files' => $steps[4]];
 @endphp
 
 @section('content')
@@ -94,6 +94,17 @@
                 {{-- 4. Finish, colour, countertop --}}
                 <fieldset class="pane" data-step="3" style="border:0;padding:0;margin:0">
                     <legend class="q">{{ $d['q_finish'] }}</legend>
+                    <p class="subq" style="margin-top:0">{{ $d['q_board'] }}</p>
+                    <div class="options options--boards">
+                        @foreach ($d['board_options'] as $key => $b)
+                            @php $soon = in_array($key, ['pvc', 'aluminium'], true); @endphp
+                            <div class="opt @if ($soon) opt--soon @endif">
+                                <input type="radio" name="board" value="{{ $key }}" id="board-{{ $key }}" data-label="{{ $b['name'] }}{{ $soon ? ' ('.$d['board_soon'].')' : '' }}">
+                                <label for="board-{{ $key }}"><strong>{{ $b['name'] }}@if ($soon) <em class="soon">{{ $d['board_soon'] }}</em>@endif</strong><small>{{ $b['text'] }}</small></label>
+                            </div>
+                        @endforeach
+                    </div>
+                    <p class="subq">{{ $d['finish_label'] }}</p>
                     <div class="options options--3">
                         @foreach ($d['finishes'] as $key => $f)
                             <div class="opt opt--img">

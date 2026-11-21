@@ -116,6 +116,7 @@
         var size = form.size_m && form.size_m.value ? ' · ' + form.size_m.value + ' m' : '';
         sum('layout', (lab('layout') || '') + size);
         sum('style', lab('style'));
+        sum('board', lab('board'));
         sum('finish', lab('finish'));
         sum('colour', lab('colour'));
         sum('top', lab('top'));

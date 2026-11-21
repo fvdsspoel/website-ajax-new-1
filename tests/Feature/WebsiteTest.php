@@ -50,7 +50,7 @@ class WebsiteTest extends TestCase
 
         $this->post('/design-your-space', [
             'name' => 'Ana Cruz', 'mobile' => '09171234567', 'city' => 'Sta. Rosa, Laguna',
-            'room' => 'kitchen', 'layout' => 'l_shape', 'size_m' => '4.2', 'style' => 'handleless',
+            'room' => 'kitchen', 'layout' => 'l_shape', 'size_m' => '4.2', 'style' => 'handleless', 'board' => 'marine',
             'finish' => 'melamine', 'colour' => 'MP.Y2146', 'top' => 'sintered', 'next' => 'measure',
             'visit_date' => now()->addDays(3)->toDateString(), 'visit_time' => 'morning', 'prefer' => 'viber', 'when' => 'asap',
             'files' => [UploadedFile::fake()->image('plan.jpg', 800, 600)],
@@ -65,6 +65,7 @@ class WebsiteTest extends TestCase
                 && $r->isMultipart()
                 && str_contains($body, 'Ana Cruz')
                 && str_contains($body, 'Layout: L-shape')
+                && str_contains($body, 'Board: Marine plywood')
                 && str_contains($body, 'Colour: Cedar — melamine, wood (MP.Y2146)')
                 && str_contains($body, 'Next step: Measure at my place')
                 && str_contains($body, 'name="design_config[source]"')
@@ -138,7 +139,7 @@ class WebsiteTest extends TestCase
     {
         $this->get('/our-colours?lang=en')->assertOk()
             ->assertSee('Real White')->assertSee('MP.60.MATT.FSI')        // board colour, with the ERP code
-            ->assertSee('Melamine colours')->assertSee('marine plywood and full waterproof plywood')->assertSee('Duco paint')
+            ->assertSee('Melamine colours')->assertSee('full waterproof marine board')->assertSee('PVC and aluminium boards are coming soon')->assertSee('Duco paint')
             ->assertDontSee('Plywood · two colours')                       // no separate plywood colours
             ->assertSee('Golden Teak')->assertSee('HPL.9066')             // HPL
             ->assertSee('Every HPL colour comes with its own matching edge band.')
