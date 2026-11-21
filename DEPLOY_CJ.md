@@ -16,11 +16,15 @@ The folder is a git clone of `github.com/fvdsspoel/website-ajax-new-1` (branch `
 
 ```bash
 cd ~/public_html/new-website
-git status                       # must say "nothing to commit"; if not, stop and send a photo
-git log -1 --oneline             # write this line down (before)
-git pull --ff-only origin main
-git log -1 --oneline             # write this line down (after)
+git status                       # must NOT list modified files; if it does, stop and send a photo
+git log -1 --oneline             # write this line down (before) — expected: 405c856 Fix admin panel CSS…
+git fetch origin main
+git reset --hard origin/main     # the server's own September fix (405c856) is already inside origin/main
+git log -1 --oneline             # write this line down (after) — expected: d74e5b3 Admin panel CSS…
 ```
+
+(A plain `git pull` would stop here, because 405c856 was committed on the server and never pushed.
+`reset --hard origin/main` is safe: `.env`, `vendor` and `storage` are not in git and stay as they are.)
 
 `composer.lock` did not change: the `vendor` folder that is already there stays good. Do not run composer.
 
@@ -78,7 +82,7 @@ php artisan view:cache
 
 ```bash
 cd ~/public_html/new-website
-git reset --hard <the "before" line from A>
+git reset --hard 405c856          # the "before" line from A
 php artisan optimize:clear
 ```
 and send a photo. Nothing else on the server is affected.
