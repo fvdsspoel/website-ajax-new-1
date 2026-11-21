@@ -28,6 +28,7 @@ class PortfolioController extends Controller
     {
         $validated = $this->validated($request);
         $validated['image_url'] = $this->handleUpload($request);
+        $validated['images'] = $this->galleryUploads($request);
         PortfolioItem::create($validated);
         return redirect()->route('admin.portfolio.index')->with('status', 'Project added.');
     }
@@ -46,6 +47,9 @@ class PortfolioController extends Controller
         if ($upload = $this->handleUpload($request)) {
             $validated['image_url'] = $upload;
         }
+        if ($more = $this->galleryUploads($request)) {
+            $validated['images'] = array_merge($portfolio->images ?? [], $more);
+        }
         $portfolio->update($validated);
         return redirect()->route('admin.portfolio.index')->with('status', 'Project updated.');
     }
@@ -60,10 +64,21 @@ class PortfolioController extends Controller
     {
         return $request->validate([
             'title' => 'required|string|max:255',
+            'location' => 'nullable|string|max:255',
             'category' => 'required|string|in:' . implode(',', array_keys(PortfolioItem::CATEGORIES)),
             'description' => 'nullable|string|max:2000',
             'is_featured' => 'nullable|boolean',
         ]) + ['is_featured' => $request->boolean('is_featured')];
+    }
+
+    /** Extra photos for the project's gallery (up to 20 at a time). */
+    private function galleryUploads(Request $request): array
+    {
+        $request->validate(['gallery' => 'nullable|array|max:20', 'gallery.*' => 'image|max:8192']);
+
+        return collect($request->file('gallery', []))
+            ->map(fn ($file) => Storage::url($file->store('portfolio', 'public')))
+            ->values()->all();
     }
 
     private function handleUpload(Request $request): ?string

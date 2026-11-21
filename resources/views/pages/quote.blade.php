@@ -1,86 +1,73 @@
 @extends('layouts.app')
-
 @section('title', __('site.quote.title').' — Ajax Trading Corporation')
-@section('meta_description', __('site.quote.lead'))
 
 @php
-    $selectedInterest = old('interest', request('interest', 'kitchen'));
-    $prefill = request('product') ? request('product').' — ' : '';
+    $q = __('site.quote');
+    $tel = 'tel:+63'.ltrim(preg_replace('/\D+/', '', config('company.phone_primary')), '0');
 @endphp
 
 @section('content')
-<section class="page-head">
+<section class="page-hero has-image">
+    <img src="{{ asset('images/projects/15/01.webp') }}" alt="">
     <div class="wrap">
-        <h1>{{ __('site.quote.title') }}</h1>
-        <p class="lead">{{ __('site.quote.lead') }}</p>
+        <span class="eyebrow">{{ $q['eyebrow'] }}</span>
+        <h1>{{ $q['title'] }}</h1>
+        <p class="lead">{{ $q['lead'] }}</p>
     </div>
 </section>
 
-<section class="section" style="padding-top: 0">
-    <div class="wrap form-layout">
-        <div class="form-card">
+<section class="section">
+    <div class="wrap contact-layout">
+        <form class="form-card" method="POST" action="{{ route('quote.store') }}" enctype="multipart/form-data" data-reveal>
+            @csrf
+            <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
             @if (session('success'))
-                <p class="alert alert--ok" role="status">{{ __('site.quote.success') }}</p>
+                <div class="alert alert--ok" role="status">@include('partials.icon', ['name' => 'check']) {{ $q['success'] }}</div>
+                @if (config('company.meta_pixel_id'))<script>window.addEventListener('load', function () { window.fbq && fbq('track', 'Lead'); });</script>@endif
+            @elseif (session('error'))
+                <div class="alert alert--err" role="alert">{{ $q['error'] }}</div>
             @endif
-            @if (session('error'))
-                <p class="alert alert--err" role="alert">{{ __('site.quote.error') }}</p>
+            @if ($errors->any())
+                <div class="alert alert--err" role="alert">{{ $errors->first() }}</div>
             @endif
 
-            <form method="POST" action="{{ route('quote.store') }}" novalidate>
-                @csrf
-                <fieldset class="field" style="border: 0; padding: 0; margin: 0 0 18px">
-                    <legend class="field-label" style="margin-bottom: 8px">{{ __('site.quote.interest') }}</legend>
-                    <div class="choice-grid">
-                        @foreach (__('site.quote.interests') as $key => $label)
-                            <label class="choice">
-                                <input type="radio" name="interest" value="{{ $key }}" @checked($selectedInterest === $key)>
-                                <span>{{ $label }}</span>
-                            </label>
-                        @endforeach
-                    </div>
-                </fieldset>
-
-                <div class="field-row">
-                    <div class="field">
-                        <label for="name">{{ __('site.quote.name') }}</label>
-                        <input type="text" id="name" name="name" required autocomplete="name" value="{{ old('name') }}">
-                        @error('name')<span class="hint" style="color: var(--err)">{{ $message }}</span>@enderror
-                    </div>
-                    <div class="field">
-                        <label for="contact">{{ __('site.quote.contact') }}</label>
-                        <input type="text" id="contact" name="contact" required autocomplete="tel" inputmode="tel" value="{{ old('contact') }}">
-                        @error('contact')<span class="hint" style="color: var(--err)">{{ $message }}</span>@enderror
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label for="city">{{ __('site.quote.city') }}</label>
-                    <input type="text" id="city" name="city" autocomplete="address-level2" value="{{ old('city') }}">
-                </div>
-
-                <div class="field">
-                    <label for="message">{{ __('site.quote.message') }}</label>
-                    <span class="hint" id="message-hint">{{ __('site.quote.message_hint') }}</span>
-                    <textarea id="message" name="message" rows="5" aria-describedby="message-hint">{{ old('message', $prefill) }}</textarea>
-                </div>
-
-                <button type="submit" class="btn btn--primary btn--block">{{ __('site.quote.submit') }}</button>
-                <p class="form-note">{{ __('site.quote.privacy') }}</p>
-            </form>
-        </div>
-
-        <aside class="contact-aside">
-            <h2>{{ __('site.quote.or_reach') }}</h2>
-            <div class="contact-list" style="display: grid; gap: 10px">
-                @include('partials.channels', ['variant' => 'light', 'withWhatsapp' => true])
+            <div class="field-row">
+                <div class="field"><label for="name">{{ $q['name'] }} *</label><input id="name" name="name" value="{{ old('name') }}" autocomplete="name" maxlength="150" required></div>
+                <div class="field"><label for="contact">{{ $q['contact'] }} *</label><input id="contact" name="contact" value="{{ old('contact') }}" autocomplete="tel" maxlength="150" required></div>
             </div>
-            <ul class="contact-list">
-                <li style="display: flex; gap: 10px"><span style="width: 20px; flex: none; color: var(--oak)">@include('partials.icon', ['name' => 'phone'])</span>{{ config('company.phone_primary') }} / {{ config('company.phone_secondary') }}</li>
-                @if (config('company.email'))
-                    <li style="display: flex; gap: 10px"><span style="width: 20px; flex: none; color: var(--oak)">@include('partials.icon', ['name' => 'mail'])</span><a href="mailto:{{ config('company.email') }}">{{ config('company.email') }}</a></li>
-                @endif
-                <li style="display: flex; gap: 10px"><span style="width: 20px; flex: none; color: var(--oak)">@include('partials.icon', ['name' => 'pin'])</span>{{ config('company.address') }}, Laguna</li>
-            </ul>
+            <div class="field-row">
+                <div class="field"><label for="interest">{{ $q['interest'] }}</label>
+                    <select id="interest" name="interest">
+                        @foreach ($q['interests'] as $k => $label)
+                            <option value="{{ $k }}" @selected(old('interest', $interest) === $k)>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="field"><label for="city">{{ $q['city'] }}</label><input id="city" name="city" value="{{ old('city') }}" maxlength="120"></div>
+            </div>
+            <div class="field"><label for="message">{{ $q['message'] }}</label><textarea id="message" name="message" maxlength="2000" placeholder="{{ $q['message_ph'] }}">{{ old('message') }}</textarea></div>
+            <div class="field">
+                <label for="files">{{ $q['files'] }}</label>
+                <input id="files" type="file" name="files[]" multiple accept=".jpg,.jpeg,.png,.webp,.pdf,image/jpeg,image/png,image/webp,application/pdf">
+                <span class="hint">{{ __('site.design.upload_hint') }}</span>
+            </div>
+            <p class="hint" style="margin-bottom:16px">{{ __('site.design.consent') }}</p>
+            <button type="submit" class="btn btn--primary btn--lg btn--block">{{ $q['submit'] }} <span class="arrow">@include('partials.icon', ['name' => 'arrow'])</span></button>
+        </form>
+
+        <aside data-reveal style="--d:.1s">
+            <h2 style="font-size:24px;margin-bottom:16px">{{ $q['or_title'] }}</h2>
+            <div class="quick">
+                <a href="{{ config('company.messenger_url') }}" target="_blank" rel="noopener" data-track="Contact"><i style="background:linear-gradient(135deg,#00b2ff,#006aff)">@include('partials.icon', ['name' => 'messenger'])</i><span>Messenger<small>Ajax Trading Corporation</small></span></a>
+                <a href="viber://chat?number=%2B{{ config('company.viber_number') }}" data-track="Contact"><i style="background:#7360f2">@include('partials.icon', ['name' => 'viber'])</i><span>Viber<small>{{ config('company.phone_primary') }}</small></span></a>
+                <a href="https://wa.me/{{ config('company.whatsapp_number') }}" target="_blank" rel="noopener" data-track="Contact"><i style="background:#25d366">@include('partials.icon', ['name' => 'whatsapp'])</i><span>WhatsApp<small>{{ config('company.phone_primary') }}</small></span></a>
+                <a href="{{ $tel }}" data-track="Contact"><i style="background:var(--green)">@include('partials.icon', ['name' => 'phone'])</i><span>{{ __('site.showroom.call') }}<small>{{ config('company.phone_primary') }} · {{ config('company.phone_secondary') }}</small></span></a>
+                <a href="{{ route('design') }}"><i style="background:linear-gradient(135deg,var(--gold-2),var(--gold));color:var(--forest)">@include('partials.icon', ['name' => 'sparkle'])</i><span>{{ __('site.nav.design') }}<small>{{ __('site.upload.cta') }}</small></span></a>
+            </div>
+            <div class="visit-card" style="margin-top:16px">
+                <div class="info-row">@include('partials.icon', ['name' => 'pin'])<div><strong>{{ __('site.showroom.name') }}</strong>{{ config('company.address') }}</div></div>
+                <div class="info-row">@include('partials.icon', ['name' => 'clock'])<div><strong>{{ __('site.showroom.hours') }}</strong>{{ config('company.hours') }}</div></div>
+            </div>
         </aside>
     </div>
 </section>

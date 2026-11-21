@@ -1,10 +1,9 @@
 @extends('layouts.app')
-
 @section('title', __('site.about.eyebrow').' — Ajax Trading Corporation')
-@section('meta_description', __('site.about.lead'))
 
 @section('content')
-<section class="page-head">
+<section class="page-hero has-image">
+    <img src="{{ asset('images/factory/cnc-operator.webp') }}" alt="">
     <div class="wrap">
         <span class="eyebrow">{{ __('site.about.eyebrow') }}</span>
         <h1>{{ __('site.about.title') }}</h1>
@@ -12,48 +11,45 @@
     </div>
 </section>
 
-<section class="section" style="padding-top: 0">
-    <div class="wrap">
-        <div class="about-blocks">
-            @foreach (__('site.about.blocks') as $block)
-                <div class="about-block reveal">
-                    <h2 style="font-size: 1.35rem">{{ $block['title'] }}</h2>
-                    <p>{{ $block['body'] }}</p>
-                </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-<section class="section section--paper">
-    <div class="wrap">
-        <h2 class="reveal">{{ __('site.home.process_title') }}</h2>
-        <ol class="process" style="margin-top: 32px">
-            @foreach (__('site.home.process') as $step)
-                <li class="reveal">
-                    <h3>{{ $step['title'] }}</h3>
-                    <p>{{ $step['body'] }}</p>
-                </li>
-            @endforeach
-        </ol>
-    </div>
+<section class="stats" aria-label="Ajax in numbers">
+    <div class="wrap"><div class="stats-grid" data-counters>
+        @foreach (config('ajax.stats') as $s)
+            <div class="stat"><strong><span data-count="{{ $s['value'] }}">{{ number_format($s['value']) }}</span><em>{{ $s['suffix'] }}</em></strong><span>{{ __('site.stats.'.$s['key']) }}</span></div>
+        @endforeach
+    </div></div>
 </section>
 
 <section class="section">
+    <div class="wrap split">
+        <div data-reveal>
+            <span class="eyebrow">{{ __('site.about.story_title') }}</span>
+            <div class="prose" style="margin-top:18px">
+                @foreach (__('site.about.story') as $p)<p>{{ $p }}</p>@endforeach
+            </div>
+        </div>
+        <img src="{{ asset('images/factory/assembly.webp') }}" alt="" loading="lazy" data-reveal style="--d:.1s;aspect-ratio:4/4.4">
+    </div>
+</section>
+
+<section class="section section--sand">
     <div class="wrap">
-        <h2 class="reveal">{{ __('site.about.locations_title') }}</h2>
-        <div class="locations" style="margin-top: 24px">
-            @foreach (__('site.about.locations') as $loc)
-                <div class="location reveal">
-                    <h3>{{ $loc['title'] }}</h3>
-                    <p>{{ $loc['body'] }}</p>
+        <div class="mv" data-reveal>
+            <div><h3>{{ __('site.about.mission_title') }}</h3><p>{{ __('site.about.mission') }}</p></div>
+            <div><h3>{{ __('site.about.vision_title') }}</h3><p>{{ __('site.about.vision') }}</p></div>
+        </div>
+        <div class="section-head" data-reveal style="margin-top:72px">
+            <h2>{{ __('site.about.values_title') }}</h2>
+        </div>
+        <div class="features">
+            @foreach (__('site.about.values') as $i => $v)
+                <div class="feature" data-reveal style="--d:{{ $i * .07 }}s">
+                    <div class="feature-icon">@include('partials.icon', ['name' => ['ruler', 'check', 'shield', 'home'][$i] ?? 'star'])</div>
+                    <h3>{{ $v['title'] }}</h3><p>{{ $v['text'] }}</p>
                 </div>
             @endforeach
         </div>
-        <div class="btn-row" style="margin-top: 36px">
-            <a href="{{ route('configurator') }}" class="btn btn--primary">{{ __('site.nav.build') }}</a>
-            <a href="{{ route('machines') }}" class="btn btn--ghost">{{ __('site.home.factory_cta') }}</a>
-        </div>
     </div>
 </section>
+
+@include('pages.partials.visit')
 @endsection

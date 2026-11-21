@@ -10,7 +10,7 @@
     <tbody>
         @foreach ($items as $item)
         <tr>
-            <td>@if ($item->image_url)<img src="{{ $item->image_url }}" class="admin-thumb">@else<span class="muted">No photo</span>@endif</td>
+            <td>@if ($item->image_url)<img src="{{ $item->coverThumbUrl() }}" class="admin-thumb">@else<span class="muted">No photo</span>@endif</td>
             <td>{{ $item->title }}</td>
             <td>{{ ucfirst($item->category) }}</td>
             <td class="admin-actions">

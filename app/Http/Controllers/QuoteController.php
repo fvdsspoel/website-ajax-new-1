@@ -9,34 +9,45 @@ class QuoteController extends Controller
 {
     public function __construct(private CrmInquiryService $crm) {}
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('pages.quote');
+        return view('pages.quote', ['interest' => $request->query('interest')]);
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'contact' => 'required|string|max:255',
+        if (filled($request->input('website'))) {
+            return back()->with('success', true);
+        }
+
+        $v = $request->validate([
+            'name' => 'required|string|max:150',
+            'contact' => 'required|string|max:150',
             'message' => 'nullable|string|max:2000',
-            'interest' => 'nullable|string|in:kitchen,wardrobe,custom,accessories,project',
+            'interest' => 'nullable|in:'.implode(',', array_keys(trans('site.quote.interests', [], 'en'))),
             'city' => 'nullable|string|max:120',
+            'files' => 'nullable|array|max:5',
+            'files.*' => 'file|mimes:jpg,jpeg,png,webp,pdf|extensions:jpg,jpeg,png,webp,pdf|max:8192',
         ]);
 
-        // Interest and city ride along in the CRM message so sales can
-        // route the lead (e.g. project inquiries to the project team)
-        // without needing new CRM columns.
-        $validated['message'] = trim(implode("\n", array_filter([
-            isset($validated['interest']) ? 'Interest: '.$validated['interest'] : null,
-            !empty($validated['city']) ? 'City: '.$validated['city'] : null,
-            'Language: '.app()->getLocale(),
-            $validated['message'] ?? null,
-        ])));
+        $sent = $this->crm->submit([
+            'name' => $v['name'],
+            'contact' => $v['contact'],
+            'message' => trim(implode("\n", array_filter([
+                '[Website contact form]',
+                ! empty($v['interest']) ? 'Interest: '.trans('site.quote.interests.'.$v['interest'], [], 'en') : null,
+                ! empty($v['city']) ? 'City / area: '.$v['city'] : null,
+                'Website language: '.app()->getLocale(),
+                $v['message'] ?? null,
+            ]))),
+            'design_config' => array_filter([
+                'source' => 'website_contact_form',
+                'section' => $v['interest'] ?? null,
+                'city' => $v['city'] ?? null,
+                'locale' => app()->getLocale(),
+            ]),
+        ], $request->file('files', []));
 
-        $sent = $this->crm->submitQuoteRequest($validated);
-
-        // The view shows the translated message; the flag just says which.
-        return back()->withInput($sent ? [] : $request->all())->with($sent ? 'success' : 'error', true);
+        return back()->withInput($sent ? [] : $request->except('files'))->with($sent ? 'success' : 'error', true);
     }
 }

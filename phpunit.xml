@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="tests/bootstrap.php" colors="true" cacheDirectory="storage/framework/cache/phpunit">
+    <testsuites>
+        <testsuite name="Feature"><directory>tests/Feature</directory></testsuite>
+    </testsuites>
+    <php>
+        <env name="APP_ENV" value="testing" force="true"/>
+        <env name="APP_KEY" value="base64:2fl+Ktvkfl+Fuz4Qp/A75G2RTiWVA/ZoKZvp6fiiM10=" force="true"/>
+        <env name="DB_CONNECTION" value="sqlite" force="true"/>
+        <env name="DB_DATABASE" value=":memory:" force="true"/>
+        <env name="SESSION_DRIVER" value="array" force="true"/>
+        <env name="CACHE_STORE" value="array" force="true"/>
+        <env name="CRM_INQUIRY_API_URL" value="https://crm.test/api/inquiry" force="true"/>
+        <env name="SITE_NOINDEX" value="false" force="true"/>
+        <env name="META_PIXEL_ID" value="" force="true"/>
+    </php>
+</phpunit>

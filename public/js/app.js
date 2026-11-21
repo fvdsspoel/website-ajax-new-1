@@ -5,7 +5,7 @@
     if (toggle) {
         var openIcon = toggle.querySelector('.icon-open');
         var closeIcon = toggle.querySelector('.icon-close');
-        var setOpen = function (open) {
+        var setNavOpen = function (open) {
             document.body.classList.toggle('nav-open', open);
             toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
             toggle.setAttribute('aria-label', open ? toggle.dataset.labelClose : toggle.dataset.labelOpen);
@@ -13,13 +13,13 @@
             closeIcon.hidden = !open;
         };
         toggle.addEventListener('click', function () {
-            setOpen(!document.body.classList.contains('nav-open'));
+            setNavOpen(!document.body.classList.contains('nav-open'));
         });
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && document.body.classList.contains('nav-open')) setOpen(false);
+            if (e.key === 'Escape' && document.body.classList.contains('nav-open')) setNavOpen(false);
         });
         window.addEventListener('resize', function () {
-            if (window.innerWidth > 1240) setOpen(false);
+            if (window.innerWidth > 1279) setNavOpen(false);
         });
     }
 

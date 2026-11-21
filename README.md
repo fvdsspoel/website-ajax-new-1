@@ -16,6 +16,18 @@ Rebuild of ajaxtradingcorp.com, built against `ATC-Website-Rebuild-Spec.md`.
 
 "Chat with us" is a live chat window, not a link to WhatsApp. `ChatController` forwards messages server-to-server to the CRM (`/api/webchat/*`, key `CRM_WEBCHAT_API_KEY` = CRM `WEBCHAT_API_KEY`). Maya answers instantly; chats show in CRM Inquiries as **Website chat** and staff can take over with Reply. Quote form and kitchen builder post to the CRM's existing `/api/inquiry` (channel `web`).
 
+## Redesign — November 2026 (replaces the September design)
+
+- **Look:** deep forest green, Ajax green and gold; Plus Jakarta Sans + Instrument Serif served from `public/fonts` (no Google call); `public/css/site.css`, `public/js/ui.js` (slideshow, reveal, counters, lightbox), `public/js/design.js`.
+- **Real photos** from the old site (`public/images/projects/NN`, `factory`, `machines`, `site`): cropped, graded, WebP with `-sm` thumbnails. 20 real projects in `PortfolioItemSeeder` with full galleries (new columns `location`, `images`, `sort`).
+- **Pages:** Home, What we make (all furniture types), Projects (filter + gallery), Colours (from the ERP: 33 melamine, 6 plywood, 26 HPL with matching edge band — `config/colours.php`), Our factory (all machines by group, incl. stone cutting and presses), About, Showroom, Contact. Our boards: 11-layer marine plywood (eucalyptus hardwood core), two colours on one board, waterproof marine boards (price on request).
+- **Design your space** (`DesignController`): 6 steps (what, layout + size, style, finish/colour/countertop, upload up to 5 files, contact + call back / measure at home / showroom visit with day and time) with a live sketch. Sent to the CRM `POST /api/inquiry` as multipart with the files; the CRM message is in English whatever language the visitor used. If the CRM does not answer, the lead and its files are kept in `storage/app/failed-leads/` and logged.
+- **Languages:** English, Tagalog, Bisaya (Cebuano) — `lang/{en,tl,ceb}/site.php`, same keys (a test checks it).
+- **Facebook & socials:** Facebook page feed (Facebook's Page plugin, with a fallback card), Messenger / Viber / Call bar, all channels in the footer, Open Graph share image `images/site/og-cover.jpg`, optional Meta Pixel (`META_PIXEL_ID`, event "Lead") and GA4.
+- **Maya chat** shows only when `CRM_WEBCHAT_API_KEY` is set.
+- No prices anywhere on the site.
+- Tests: `php tests/run.php` (uses the PHPUnit of the CRM next to this folder; local only).
+
 ## Redesign — September 2026
 
 **Positioning changed.** The site no longer sells wholesale boards. It presents Ajax as a manufacturer of modular kitchens, wardrobes and custom furniture, with three entry points on the homepage: homeowners (→ kitchen builder), projects/developers (→ quote form tagged `project`), and kitchen accessories. The factory (CNC, six-sided drilling, edge banding, hot press) is shown as proof of quality, not as a board shop.
