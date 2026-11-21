@@ -38,7 +38,7 @@ class WebsiteTest extends TestCase
             ->assertSee('Marine plywood, 11 layers')
             ->assertSee('Price on request')
             ->assertSee('facebook.com/plugins/page.php', false)
-            ->assertSee('https://www.instagram.com/ajaxtradingcorporation/', false)
+            ->assertSee('https://www.instagram.com/ajaxtradingcorporation_2024/', false)
             ->assertSee('https://m.me/61559238760421', false)
             ->assertDontSee('₱');                                          // no prices on the site
     }

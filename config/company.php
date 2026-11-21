@@ -10,12 +10,12 @@ return [
 
     // Leave empty to hide the email line — the live site's addresses are
     // Cloudflare-obfuscated, so set the real one in .env rather than guess.
-    'email' => env('COMPANY_EMAIL', ''),
+    'email' => env('COMPANY_EMAIL', 'sales.ajaxtradingcorporation@gmail.com'),
 
     // Chat channels. Messenger page ID is the live site's; Viber and
     // WhatsApp default to the primary number in international format.
     'messenger_url' => env('COMPANY_MESSENGER_URL', 'https://m.me/61559238760421'),
-    'whatsapp_number' => env('COMPANY_WHATSAPP', '639943648582'),
+    'whatsapp_number' => env('COMPANY_WHATSAPP', '639921496385'),          // as on the Facebook page (21 Nov 2026)
     'viber_number' => env('COMPANY_VIBER', '639943648582'),
 
     // The Facebook page (also used for the live page feed on the homepage).
@@ -23,7 +23,7 @@ return [
 
     'social' => [
         'facebook' => env('COMPANY_FACEBOOK_PAGE', 'https://www.facebook.com/profile.php?id=61559238760421'),
-        'instagram' => 'https://www.instagram.com/ajaxtradingcorporation/',
+        'instagram' => 'https://www.instagram.com/ajaxtradingcorporation_2024/',
         'tiktok' => 'https://www.tiktok.com/@ajaxtradingcorpor',
         'youtube' => 'https://www.youtube.com/channel/UCXOD9PjiQAy_WMJ51ZwLZzQ',
         'x' => 'https://x.com/ajaxtradingco',

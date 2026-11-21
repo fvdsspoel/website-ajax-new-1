@@ -60,7 +60,7 @@
             <div class="quick">
                 <a href="{{ config('company.messenger_url') }}" target="_blank" rel="noopener" data-track="Contact"><i style="background:linear-gradient(135deg,#00b2ff,#006aff)">@include('partials.icon', ['name' => 'messenger'])</i><span>Messenger<small>Ajax Trading Corporation</small></span></a>
                 <a href="viber://chat?number=%2B{{ config('company.viber_number') }}" data-track="Contact"><i style="background:#7360f2">@include('partials.icon', ['name' => 'viber'])</i><span>Viber<small>{{ config('company.phone_primary') }}</small></span></a>
-                <a href="https://wa.me/{{ config('company.whatsapp_number') }}" target="_blank" rel="noopener" data-track="Contact"><i style="background:#25d366">@include('partials.icon', ['name' => 'whatsapp'])</i><span>WhatsApp<small>{{ config('company.phone_primary') }}</small></span></a>
+                <a href="https://wa.me/{{ config('company.whatsapp_number') }}" target="_blank" rel="noopener" data-track="Contact"><i style="background:#25d366">@include('partials.icon', ['name' => 'whatsapp'])</i><span>WhatsApp<small>{{ config('company.phone_secondary') }}</small></span></a>
                 <a href="{{ $tel }}" data-track="Contact"><i style="background:var(--green)">@include('partials.icon', ['name' => 'phone'])</i><span>{{ __('site.showroom.call') }}<small>{{ config('company.phone_primary') }} · {{ config('company.phone_secondary') }}</small></span></a>
                 <a href="{{ route('design') }}"><i style="background:linear-gradient(135deg,var(--gold-2),var(--gold));color:var(--forest)">@include('partials.icon', ['name' => 'sparkle'])</i><span>{{ __('site.nav.design') }}<small>{{ __('site.upload.cta') }}</small></span></a>
             </div>
