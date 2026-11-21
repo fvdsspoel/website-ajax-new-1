@@ -130,7 +130,7 @@ return [
             'polish' => ['name' => 'Polishing ug side polishing', 'text' => 'Hamis ug sinaw nga kilid ug high-gloss finishing.'],
             'hot_press' => ['name' => 'Short-cycle hot press (2,000 t)', 'text' => 'Awtomatikong mo-press sa melamine paper sa boards — matt, wood grain, stone look.'],
             'multi_press' => ['name' => '10-layer hot press', 'text' => 'High-gloss nga melamine boards, napulo ka board dungan.'],
-            'cold_press' => ['name' => 'Hydraulic cold press (50 t)', 'text' => 'HPL ug pre-pressed nga facing sa plywood, naay awtomatikong glue machine.'],
+            'cold_press' => ['name' => 'Hydraulic cold press (50 t)', 'text' => 'Para ra sa HPL: gipilit ang HPL sa plywood, naay awtomatikong glue machine.'],
             'vacuum' => ['name' => 'Vacuum press', 'text' => 'Vinyl wrapping para sa fluted ug kinulit nga pultahan.'],
             'stone_cutter' => ['name' => 'Stone cutting machine', 'text' => 'Moputol sa sintered stone, marble ug granite nga countertop, apil ang buslot sa lababo ug kalan.'],
             'gluing' => ['name' => 'Awtomatikong gluing machine', 'text' => 'Patas nga pandikit para sa HPL, veneer ug laminate sa dili pa i-press.'],

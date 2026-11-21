@@ -127,7 +127,7 @@ return [
             'polish' => ['name' => 'Polishing & side polishing', 'text' => 'Smooth, polished edges and high-gloss finishing.'],
             'hot_press' => ['name' => 'Short-cycle hot press (2,000 t)', 'text' => 'Presses melamine paper onto boards automatically — matt, wood grain, stone look.'],
             'multi_press' => ['name' => '10-layer hot press', 'text' => 'High-gloss melamine boards, ten boards at a time.'],
-            'cold_press' => ['name' => 'Hydraulic cold press (50 t)', 'text' => 'HPL and pre-pressed facings on plywood, with an automatic glue machine.'],
+            'cold_press' => ['name' => 'Hydraulic cold press (50 t)', 'text' => 'Only for HPL: presses HPL sheets onto plywood, with an automatic glue machine.'],
             'vacuum' => ['name' => 'Vacuum press', 'text' => 'Vinyl wrapping for fluted and carved door fronts.'],
             'stone_cutter' => ['name' => 'Stone cutting machine', 'text' => 'Cuts sintered stone, marble and granite countertops with sink and cooktop cut-outs.'],
             'gluing' => ['name' => 'Automatic gluing machine', 'text' => 'Even glue for HPL, veneer and laminate before pressing.'],
