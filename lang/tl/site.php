@@ -106,6 +106,7 @@ return [
             'warehouse' => 'Mga board sa aming bodega',
             'delivery' => 'Inihahatid ng sarili naming truck',
             'ready' => 'Mga wardrobe na handa nang i-deliver',
+            'slabs' => 'Mga Calacatta sintered stone slab na naka-stock',
             'samples' => 'Ang aming sample case — dadalhin namin sa inyo',
         ],
         'groups' => [

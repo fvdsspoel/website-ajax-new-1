@@ -104,6 +104,7 @@ return [
             'warehouse' => 'Board stock in our warehouse',
             'delivery' => 'Delivered by our own truck',
             'ready' => 'Wardrobes ready for delivery',
+            'slabs' => 'Calacatta sintered stone slabs in stock',
             'samples' => 'Our sample case — we bring it to you',
         ],
         'groups' => [

@@ -25,7 +25,7 @@
                 <iframe src="{{ config('company.map_embed') }}" title="Map — Ajax showroom San Pablo City" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <div class="showroom-photo" data-reveal style="--d:.16s">
-                <img src="{{ asset('images/site/showroom.webp') }}" alt="{{ __('site.showroom.name') }}" loading="lazy">
+                <img src="{{ asset('images/site/showroom-kitchen-sm.webp') }}" alt="{{ __('site.showroom.name') }}" loading="lazy">
             </div>
         </div>
     </div>

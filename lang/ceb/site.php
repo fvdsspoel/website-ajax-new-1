@@ -107,6 +107,7 @@ return [
             'warehouse' => 'Mga board sa among bodega',
             'delivery' => 'Gihatod sa among kaugalingong truck',
             'ready' => 'Mga wardrobe nga andam na i-deliver',
+            'slabs' => 'Mga Calacatta sintered stone slab nga naa sa stock',
             'samples' => 'Among sample case — dad-on namo sa inyo',
         ],
         'groups' => [

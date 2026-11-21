@@ -3,7 +3,7 @@
 
 @section('content')
 <section class="page-hero has-image">
-    <img src="{{ asset('images/site/showroom.webp') }}" alt="">
+    <img src="{{ asset('images/site/showroom-island.webp') }}" alt="">
     <div class="wrap">
         <span class="eyebrow">{{ __('site.showroom.eyebrow') }}</span>
         <h1>{{ __('site.showroom.title') }}</h1>
