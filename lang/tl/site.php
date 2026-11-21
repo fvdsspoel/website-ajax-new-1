@@ -12,7 +12,7 @@ return [
 
     'nav' => [
         'home' => 'Home',
-        'make' => 'Mga ginagawa namin',
+        'make' => 'Ginagawa namin',
         'colours' => 'Mga kulay',
         'factory' => 'Aming factory',
         'portfolio' => 'Mga proyekto',

@@ -24,7 +24,7 @@
             slides[current].classList.add('is-active');
             if (dots[current]) { dots[current].classList.remove('is-active'); void dots[current].offsetWidth; dots[current].classList.add('is-active'); }
         };
-        var play = function () { clearInterval(timer); if (!reduce) timer = setInterval(function () { show(current + 1); }, 6000); };
+        var play = function () { clearInterval(timer); if (!reduce) timer = setInterval(function () { if (!document.hidden) show(current + 1); }, 6000); };
         dots.forEach(function (d, i) { d.addEventListener('click', function () { show(i); play(); }); });
         // Load the other slides once the page is idle.
         window.addEventListener('load', function () {
@@ -41,6 +41,7 @@
         if (words.length < 2 || reduce) return;
         var i = 0;
         setInterval(function () {
+            if (document.hidden) return;            // a tab in the background does not animate
             var prev = words[i];
             prev.classList.remove('is-active'); prev.classList.add('is-out');
             setTimeout(function () { prev.classList.remove('is-out'); }, 650);

@@ -653,3 +653,11 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
 .sw figcaption strong { font-size: 14.5px; line-height: 1.25; }
 .sw figcaption span { font-size: 12px; color: var(--muted); }
 .sw code { font-size: 11px; background: var(--sand); padding: 1px 5px; border-radius: 5px; color: var(--ink-2); word-break: break-all; }
+
+/* Desktop menu between 1280 and 1760 px: tighter, so longer Tagalog/Bisaya words fit on one line. */
+@media (min-width: 1280px) and (max-width: 1760px) {
+  .main-nav { margin-left: 10px; }
+  .main-nav a { padding: 8px 8px; font-size: 13.5px; }
+  .brand-word span { display: none; }
+  .header-actions { gap: 8px; }
+}
