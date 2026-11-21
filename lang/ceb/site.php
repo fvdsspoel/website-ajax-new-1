@@ -271,6 +271,7 @@ return [
             'particle' => ['name' => 'Particle board (chipboard)', 'text' => 'Moisture-resistant, hapsay ug labing sulit.'],
             'marine' => ['name' => 'Marine plywood', 'text' => 'Eucalyptus core, 11 layers — lig-on ug dugay mokupot ang turnilyo.'],
             'waterproof' => ['name' => 'Full waterproof marine board', 'text' => 'Para sa basa nga lugar: lababo, banyo ug gawas sa balay.'],
+            'petg' => ['name' => 'PETG marine plywood', 'text' => 'Puti nga high-gloss PETG sa marine plywood — taas nga kalidad.'],
             'pvc' => ['name' => 'PVC board', 'text' => 'Hapit na — pilia kini ug padalhan ka sa among sales team og impormasyon.'],
             'aluminium' => ['name' => 'Aluminium board', 'text' => 'Hapit na — pilia kini ug padalhan ka sa among sales team og impormasyon.'],
             'unsure' => ['name' => 'Tambagi ko', 'text' => 'Irekomendar sa designer ang labing maayong board sa matag parte.'],

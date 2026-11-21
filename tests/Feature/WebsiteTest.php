@@ -84,6 +84,8 @@ class WebsiteTest extends TestCase
 
         Http::assertSent(fn (HttpRequest $r) => str_contains($r['message'], 'INFO REQUEST: please send this customer information about PVC board (coming soon)')
             && $r['design_config']['info_request'] === 'pvc_board');
+
+        $this->get('/design-your-space?lang=en')->assertSee('PETG marine plywood')->assertSee('White high-gloss PETG on marine plywood');
     }
 
     public function test_a_lead_the_crm_does_not_take_is_kept_with_its_files(): void

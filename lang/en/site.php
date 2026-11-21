@@ -268,6 +268,7 @@ return [
             'particle' => ['name' => 'Particle board (chipboard)', 'text' => 'Moisture-resistant, smooth and the best value.'],
             'marine' => ['name' => 'Marine plywood', 'text' => 'Eucalyptus core, 11 layers — strong, and holds screws for years.'],
             'waterproof' => ['name' => 'Full waterproof marine board', 'text' => 'For wet areas: sink cabinets, bathrooms and outdoor.'],
+            'petg' => ['name' => 'PETG marine plywood', 'text' => 'White high-gloss PETG on marine plywood — high quality.'],
             'pvc' => ['name' => 'PVC board', 'text' => 'Coming soon — choose it and our sales team sends you the information.'],
             'aluminium' => ['name' => 'Aluminium board', 'text' => 'Coming soon — choose it and our sales team sends you the information.'],
             'unsure' => ['name' => 'Advise me', 'text' => 'Our designer recommends the best board for each part.'],
