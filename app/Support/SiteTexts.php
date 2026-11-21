@@ -42,7 +42,7 @@ class SiteTexts
     public static function overrides(): array
     {
         try {
-            return Cache::rememberForever(self::CACHE_KEY, function () {
+            return Cache::store('file')->rememberForever(self::CACHE_KEY, function () {
                 if (! Schema::hasTable('site_texts')) {
                     return [];
                 }
@@ -60,7 +60,7 @@ class SiteTexts
 
     public static function forget(): void
     {
-        Cache::forget(self::CACHE_KEY);
+        Cache::store('file')->forget(self::CACHE_KEY);
     }
 
     /** Lays the changes over the loaded lang lines for these locales. */
