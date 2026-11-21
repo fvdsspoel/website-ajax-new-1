@@ -44,6 +44,18 @@ class WebsiteTest extends TestCase
             ->assertDontSee('₱');                                          // no prices on the site
     }
 
+    public function test_the_projects_page_shows_the_real_projects_from_facebook_with_the_mall_kiosks(): void
+    {
+        $this->get('/projects?lang=en')->assertOk()
+            ->assertSee('Mall Kiosk with Arches and Mirrors')->assertSee('Mall Kiosk with a Rose Front')
+            ->assertSee('images/projects/30/01-sm.webp', false)
+            ->assertSee('Dark Blue Kitchen with Central Island');
+        foreach (range(28, 37) as $n) {
+            $this->assertFileExists(public_path('images/projects/'.$n.'/01.webp'));
+            $this->assertFileExists(public_path('images/projects/'.$n.'/01-sm.webp'));
+        }
+    }
+
     public function test_the_design_selector_sends_the_lead_with_its_files_to_the_crm(): void
     {
         Http::fake(['crm.test/*' => Http::response(['ok' => true, 'id' => 1])]);
