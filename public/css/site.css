@@ -681,3 +681,8 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
 .faq-plus::after { transform: rotate(90deg); }
 .faq-item[open] .faq-plus::after { transform: rotate(0); }
 .faq-item p { margin: 0 0 18px; color: var(--muted, #5d6a63); line-height: 1.6; }
+
+/* Makati office — kept small under the San Pablo main address */
+.site-footer .office-line small { display: block; font-size: 12px; opacity: .72; line-height: 1.45; margin-top: 2px; }
+.info-row--small { font-size: 13px; opacity: .85; }
+.info-row--small svg { width: 18px; height: 18px; }

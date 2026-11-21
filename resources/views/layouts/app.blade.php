@@ -55,7 +55,7 @@
         'url' => 'https://www.ajaxtradingcorp.com',
         'logo' => asset('images/site/logo.png'),
         'image' => asset('images/site/og-cover.jpg'),
-        'telephone' => [config('company.phone_primary'), config('company.phone_secondary')],
+        'telephone' => array_values(array_filter([config('company.phone_primary'), config('company.phone_secondary'), config('company.phone_fm')])),
         'address' => [
             '@type' => 'PostalAddress',
             'streetAddress' => '281 Purok 6, Santisimo Road, Brgy. Soledad',
@@ -177,12 +177,12 @@
                     <h3>{{ __('site.footer.contact') }}</h3>
                     <ul>
                         <li>{{ config('company.address') }}</li>
-                        <li><a href="{{ $tel }}">{{ config('company.phone_primary') }}</a> · <a href="tel:+63{{ ltrim(preg_replace('/\D+/', '', config('company.phone_secondary')), '0') }}">{{ config('company.phone_secondary') }}</a></li>
+                        <li><a href="{{ $tel }}">{{ config('company.phone_primary') }}</a> · <a href="tel:+63{{ ltrim(preg_replace('/\D+/', '', config('company.phone_secondary')), '0') }}">{{ config('company.phone_secondary') }}</a>@if (config('company.phone_fm')) · <a href="tel:+63{{ ltrim(preg_replace('/\D+/', '', config('company.phone_fm')), '0') }}">{{ config('company.phone_fm') }}</a>@endif</li>
                         @if (config('company.email'))
                             <li><a href="mailto:{{ config('company.email') }}">{{ config('company.email') }}</a></li>
                         @endif
                         <li>{{ config('company.hours') }}</li>
-                        <li>{{ __('site.showroom.office') }}</li>
+                        <li class="office-line">{{ __('site.showroom.office') }}@if (config('company.office_address'))<small>{{ config('company.office_address') }}</small>@endif</li>
                     </ul>
                 </div>
                 <div>
@@ -199,7 +199,7 @@
             </div>
             <div class="footer-bottom">
                 <span>&copy; {{ date('Y') }} Ajax Trading Corporation. {{ __('site.footer.rights') }}</span>
-                <span>Makati City · San Pablo City, Laguna</span>
+                <span>San Pablo City, Laguna · Office in Makati City</span>
             </div>
         </div>
     </footer>
