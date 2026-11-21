@@ -65,7 +65,7 @@ class WebsiteTest extends TestCase
                 && $r->isMultipart()
                 && str_contains($body, 'Ana Cruz')
                 && str_contains($body, 'Layout: L-shape')
-                && str_contains($body, 'Colour: Cedar — board colour, wood (MP.Y2146)')
+                && str_contains($body, 'Colour: Cedar — melamine, wood (MP.Y2146)')
                 && str_contains($body, 'Next step: Measure at my place')
                 && str_contains($body, 'name="design_config[source]"')
                 && str_contains($body, 'website_design_selector')
@@ -138,7 +138,7 @@ class WebsiteTest extends TestCase
     {
         $this->get('/our-colours?lang=en')->assertOk()
             ->assertSee('Real White')->assertSee('MP.60.MATT.FSI')        // board colour, with the ERP code
-            ->assertSee('Board colours · plywood &amp; particle board', false)
+            ->assertSee('Melamine colours')->assertSee('marine plywood and full waterproof plywood')->assertSee('Duco paint')
             ->assertDontSee('Plywood · two colours')                       // no separate plywood colours
             ->assertSee('Golden Teak')->assertSee('HPL.9066')             // HPL
             ->assertSee('Every HPL colour comes with its own matching edge band.')

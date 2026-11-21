@@ -22,14 +22,14 @@ class BoardColours
         return $out;
     }
 
-    /** English text for the CRM, e.g. "Cedar — board colour, wood (MP.Y2146)" or "Golden Teak — HPL, wood (HPL.9066)". */
+    /** English text for the CRM, e.g. "Cedar — melamine, wood (MP.Y2146)" or "Golden Teak — HPL, wood (HPL.9066)". */
     public static function describe(string $code): ?string
     {
         $c = self::all()[$code] ?? null;
         if (! $c) {
             return null;
         }
-        $group = $c['group'] === 'hpl' ? 'HPL' : 'board colour';
+        $group = $c['group'] === 'hpl' ? 'HPL' : 'melamine';
         $finish = trans('site.colours.finishes.'.$c['finish'], [], 'en');
 
         return $c['name'].' — '.$group.', '.strtolower($finish).' ('.$c['code'].')';

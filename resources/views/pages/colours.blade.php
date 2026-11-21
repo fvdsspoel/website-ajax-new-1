@@ -19,7 +19,7 @@
         <div class="ctabs" role="tablist" aria-label="{{ $c['title'] }}">
             @foreach ($c['tabs'] as $key => $label)
                 <button type="button" role="tab" class="ctab" id="tab-{{ $key }}" aria-controls="panel-{{ $key }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                    {{ $label }} <span>{{ count($groups[$key]) }}</span>
+                    {{ $label }}
                 </button>
             @endforeach
         </div>
@@ -50,7 +50,8 @@
             </div>
         @endforeach
 
-        <p class="hint" style="margin-top:24px">{{ $c['note'] }}</p>
+        <p class="cnote" style="margin-top:24px">@include('partials.icon', ['name' => 'sparkle']) {{ $c['duco_note'] }}</p>
+        <p class="hint" style="margin-top:14px">{{ $c['note'] }}</p>
         <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px">
             <a href="{{ route('design') }}" class="btn btn--primary btn--lg">@include('partials.icon', ['name' => 'sparkle']) {{ $c['cta'] }}</a>
             <a href="{{ route('showrooms') }}" class="btn btn--line btn--lg">@include('partials.icon', ['name' => 'pin']) {{ $c['samples'] }}</a>
