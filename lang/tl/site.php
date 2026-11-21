@@ -96,6 +96,17 @@ return [
         'boards_text' => 'Pinipindot ng mga press namin ang melamine, high-gloss o HPL sa plywood, particle board at MDF — kaya ang kulay na pinili mo ay ginagawa para sa trabaho mo, hindi kung ano lang ang meron ang supplier.',
         'stone_title' => 'Sariling stone shop',
         'stone_text' => 'Ang sintered stone, marble at granite na countertop ay ginugupit sa sarili naming stone cutting machine, kaya sakto sa cabinet — kasama na ang butas para sa lababo at kalan.',
+        'reel' => [
+            'assembly' => 'Binubuo ng sarili naming team',
+            'stone_edge' => 'Stone countertop: pagtatapos ng mitred na gilid',
+            'stone_polish' => 'Pagpapakinis ng gilid ng bato',
+            'led' => 'Ikinakabit ang LED lights sa pabrika',
+            'testfit' => 'Sinusubukang buuin sa pabrika bago i-deliver',
+            'workshop' => 'Ang aming assembly area sa Laguna',
+            'warehouse' => 'Mga board sa aming bodega',
+            'delivery' => 'Inihahatid ng sarili naming truck',
+            'samples' => 'Ang aming sample case — dadalhin namin sa inyo',
+        ],
         'groups' => [
             'cutting' => 'Pag-gupit',
             'drilling' => 'Pagbubutas',

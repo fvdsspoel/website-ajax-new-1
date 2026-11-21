@@ -27,7 +27,7 @@
                 @foreach (__('site.about.story') as $p)<p>{{ $p }}</p>@endforeach
             </div>
         </div>
-        <img src="{{ asset('images/factory/assembly.webp') }}" alt="" loading="lazy" data-reveal style="--d:.1s;aspect-ratio:4/4.4">
+        <img src="{{ asset('images/factory/team-wide.webp') }}" alt="" loading="lazy" data-reveal style="--d:.1s;aspect-ratio:4/4.4">
     </div>
 </section>
 

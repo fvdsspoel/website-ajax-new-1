@@ -3,7 +3,7 @@
 
 @section('content')
 <section class="page-hero has-image">
-    <img src="{{ asset('images/factory/press-line.webp') }}" alt="">
+    <img src="{{ asset('images/factory/workshop.webp') }}" alt="">
     <div class="wrap">
         <span class="eyebrow">{{ __('site.factory.eyebrow') }}</span>
         <h1>{{ __('site.factory.title') }}</h1>
@@ -16,7 +16,7 @@
         <div class="reel" data-reveal>
             @foreach (config('ajax.factory_reel') as [$src, $label])
                 <figure><img src="{{ asset($src) }}" alt="" loading="lazy">
-                    <figcaption>{{ trans()->has('site.factory.machines.'.$label.'.name') ? __('site.factory.machines.'.$label.'.name') : ($label === 'boards' ? __('site.factory.boards_title') : ($label === 'assembly' ? __('site.process.steps.3.title') : __('site.make.items.wardrobe.title'))) }}</figcaption>
+                    <figcaption>{{ trans()->has('site.factory.reel.'.$label) ? __('site.factory.reel.'.$label) : (trans()->has('site.factory.machines.'.$label.'.name') ? __('site.factory.machines.'.$label.'.name') : __('site.factory.boards_title')) }}</figcaption>
                 </figure>
             @endforeach
         </div>
@@ -56,8 +56,8 @@
         </div>
         <div class="collage" data-reveal style="--d:.12s">
             <figure><img src="{{ asset('images/factory/hot-press-10.webp') }}" alt="" loading="lazy"><figcaption>{{ __('site.factory.machines.multi_press.name') }}</figcaption></figure>
-            <figure><img src="{{ asset('images/site/boards.webp') }}" alt="" loading="lazy"></figure>
-            <figure><img src="{{ asset('images/factory/board-stock.webp') }}" alt="" loading="lazy"></figure>
+            <figure><img src="{{ asset('images/factory/colour-rack.webp') }}" alt="" loading="lazy"></figure>
+            <figure><img src="{{ asset('images/factory/warehouse-1.webp') }}" alt="" loading="lazy"></figure>
         </div>
     </div>
 </section>

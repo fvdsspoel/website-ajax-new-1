@@ -94,6 +94,17 @@ return [
         'boards_text' => 'Our presses face plywood, particle board and MDF with melamine, high-gloss or HPL — so the colour you choose is pressed for your job, not taken from whatever a supplier has.',
         'stone_title' => 'Our own stone shop',
         'stone_text' => 'Sintered stone, marble and granite countertops are cut on our own stone cutting machine, so the top fits the cabinets exactly — cut-outs for the sink and cooktop included.',
+        'reel' => [
+            'assembly' => 'Assembly by our own team',
+            'stone_edge' => 'Stone countertop: finishing the mitred edge',
+            'stone_polish' => 'Polishing the stone edges',
+            'led' => 'LED lights fitted in the factory',
+            'testfit' => 'Test-fitted in our factory before delivery',
+            'workshop' => 'Our assembly hall in Laguna',
+            'warehouse' => 'Board stock in our warehouse',
+            'delivery' => 'Delivered by our own truck',
+            'samples' => 'Our sample case — we bring it to you',
+        ],
         'groups' => [
             'cutting' => 'Cutting',
             'drilling' => 'Drilling & boring',

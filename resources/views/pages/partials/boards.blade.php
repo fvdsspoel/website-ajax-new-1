@@ -10,7 +10,7 @@
         </div>
         <div class="boards">
             <figure class="boards-photo" data-reveal>
-                <img src="{{ asset('images/site/boards.webp') }}" alt="" loading="lazy">
+                <img src="{{ asset('images/factory/colour-rack.webp') }}" alt="" loading="lazy">
             </figure>
             <div class="boards-list">
                 @foreach (__('site.boards.items') as $i => $b)

@@ -97,6 +97,17 @@ return [
         'boards_text' => 'Ang among mga press mo-press og melamine, high-gloss o HPL sa plywood, particle board ug MDF — mao nga ang kolor nga imong gipili gihimo para sa imong trabaho, dili kung unsa lang ang naa sa supplier.',
         'stone_title' => 'Kaugalingong stone shop',
         'stone_text' => 'Ang sintered stone, marble ug granite nga countertop giputol sa among kaugalingong stone cutting machine, mao nga sakto sa cabinet — apil na ang buslot para sa lababo ug kalan.',
+        'reel' => [
+            'assembly' => 'Gibuo sa among kaugalingong team',
+            'stone_edge' => 'Stone countertop: pagtapos sa mitred nga kilid',
+            'stone_polish' => 'Pagpahamis sa kilid sa bato',
+            'led' => 'Gibutang ang LED lights sa pabrika',
+            'testfit' => 'Gisulayan og buo sa pabrika una i-deliver',
+            'workshop' => 'Among assembly area sa Laguna',
+            'warehouse' => 'Mga board sa among bodega',
+            'delivery' => 'Gihatod sa among kaugalingong truck',
+            'samples' => 'Among sample case — dad-on namo sa inyo',
+        ],
         'groups' => [
             'cutting' => 'Pagputol',
             'drilling' => 'Pagbuslot',

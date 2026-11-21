@@ -5,7 +5,7 @@
 
 @section('content')
 <section class="page-hero has-image">
-    <img src="{{ asset('images/site/boards.webp') }}" alt="">
+    <img src="{{ asset('images/factory/colour-fan.webp') }}" alt="">
     <div class="wrap">
         <span class="eyebrow">{{ $c['eyebrow'] }}</span>
         <h1>{{ $c['title'] }}</h1>

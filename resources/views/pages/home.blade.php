@@ -85,7 +85,7 @@
             <div class="collage" data-reveal style="--d:.15s">
                 <figure><img src="{{ asset('images/factory/press-line.webp') }}" alt="{{ __('site.factory.machines.multi_press.name') }}" loading="lazy"><figcaption>{{ __('site.factory.groups.pressing') }}</figcaption></figure>
                 <figure><img src="{{ asset('images/factory/cnc-router.webp') }}" alt="{{ __('site.factory.machines.cnc_router.name') }}" loading="lazy"><figcaption>{{ __('site.factory.machines.cnc_router.name') }}</figcaption></figure>
-                <figure><img src="{{ asset('images/factory/stone-calacatta.webp') }}" alt="{{ __('site.factory.machines.stone_cutter.name') }}" loading="lazy"><figcaption>{{ __('site.factory.groups.stone') }}</figcaption></figure>
+                <figure><img src="{{ asset('images/factory/stone-saw.webp') }}" alt="{{ __('site.factory.machines.stone_cutter.name') }}" loading="lazy"><figcaption>{{ __('site.factory.groups.stone') }}</figcaption></figure>
             </div>
         </div>
         <div class="marquee" aria-hidden="true">

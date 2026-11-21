@@ -44,18 +44,23 @@ return [
         'handling' => ['roller'],
     ],
     'machine_photos' => [
-        'stone_cutter' => 'images/factory/stone-calacatta.webp',
+        'stone_cutter' => 'images/factory/stone-saw.webp',
     ],
 
     // Real shots from the factory floor (the reel on the factory page).
     'factory_reel' => [
-        ['images/factory/cnc-drill.webp', 'cnc_router'],
+        ['images/factory/stone-saw.webp', 'stone_cutter'],
+        ['images/factory/stone-edge.webp', 'stone_edge'],
+        ['images/factory/stone-polish.webp', 'stone_polish'],
+        ['images/factory/edge-bander.webp', 'edge'],
+        ['images/factory/team-assembly.webp', 'assembly'],
+        ['images/factory/led-wiring.webp', 'led'],
+        ['images/factory/testfit-kitchen.webp', 'testfit'],
         ['images/factory/hot-press-10.webp', 'multi_press'],
-        ['images/factory/drilling.webp', 'six_sided'],
-        ['images/factory/board-stock.webp', 'boards'],
-        ['images/factory/assembly.webp', 'assembly'],
-        ['images/factory/stone-detail.webp', 'stone_cutter'],
-        ['images/factory/walk-in-closet.webp', 'finished'],
+        ['images/factory/cnc-drill.webp', 'cnc_router'],
+        ['images/factory/warehouse-2.webp', 'warehouse'],
+        ['images/factory/sample-case.webp', 'samples'],
+        ['images/factory/delivery-truck.webp', 'delivery'],
     ],
 
     // For the design selector: a real photo per style.
