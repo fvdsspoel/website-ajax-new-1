@@ -4,7 +4,7 @@
 <div class="admin-header">
     <div>
         <h1>Design pictures</h1>
-        <p class="lead">The pictures in step 3 "Which style do you like?" of <a href="{{ route('design') }}" target="_blank" rel="noopener">Design your space</a>. Each room type has its own six styles. Upload a <b>real photo of an Ajax job</b> to replace a drawing — it is cropped to the tile shape and goes live straight away.</p>
+        <p class="lead">The pictures in step 3 "Which style do you like?" of <a href="{{ route('design') }}" target="_blank" rel="noopener">Design your space</a>. Each room type has its own six styles. Every tile shows a clean drawing by default. Only upload a photo if it shows exactly this furniture in exactly this style — it is cropped to the tile shape and goes live straight away; Remove brings the drawing back.</p>
     </div>
 </div>
 <div class="sec-tabs">
@@ -19,11 +19,11 @@
                 @php $src = \App\Support\DesignPictures::source($set, $style); $url = \App\Support\DesignPictures::url($set, $style); @endphp
                 <div class="dp-tile">
                     <div class="dp-img">
-                        @if ($url)<img src="{{ $url }}" alt="">@else @include('pages.partials.style-sketch', ['set' => $set === 'kitchen' ? 'other' : $set, 'style' => $style]) @endif
+                        @if ($url)<img src="{{ $url }}" alt="">@else @include('pages.partials.style-sketch', ['set' => $set, 'style' => $style]) @endif
                     </div>
                     <div class="dp-body">
                         <b>{{ $name }}</b>
-                        <span class="tag {{ $src === 'upload' ? 'tag--changed' : '' }}">{{ ['upload' => 'Uploaded photo', 'project' => 'Ajax project photo', 'sketch' => 'Drawing'][$src] }}</span>
+                        <span class="tag {{ $src === 'upload' ? 'tag--changed' : '' }}">{{ ['upload' => 'Uploaded photo', 'sketch' => 'Drawing'][$src] }}</span>
                         <form method="POST" action="{{ route('admin.design.store') }}" enctype="multipart/form-data" class="dp-form">
                             @csrf
                             <input type="hidden" name="set" value="{{ $set }}"><input type="hidden" name="style" value="{{ $style }}">

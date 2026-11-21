@@ -57,8 +57,9 @@
     // The picture of the chosen style (desktop summary).
     function styleThumb() {
         var box = document.getElementById('sum-thumb'), el = form.querySelector('input[name="style"]:checked');
-        var art = el ? el.parentNode.querySelector('.opt-art:not([hidden]) img') : null;
-        box.innerHTML = art ? '<img src="' + art.getAttribute('src') + '" alt="">' : '';
+        var art = el ? el.parentNode.querySelector('.opt-art:not([hidden])') : null;
+        // own ids for the copy: the step with the original drawing is hidden later, and hidden gradients don't paint
+        box.innerHTML = art ? art.innerHTML.replace(/sk-/g, 'sum-sk-') : '';
         box.hidden = !art;
     }
 

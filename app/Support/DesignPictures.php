@@ -6,10 +6,10 @@ use Illuminate\Http\UploadedFile;
 
 /**
  * Pictures for the "Which style do you like?" step of the design selector,
- * one per room type × style. Order of preference:
- *   1. a picture uploaded in the back office (public/uploads/design/{set}-{style}.jpg)
- *   2. a real Ajax project photo set in config/ajax.php
- *   3. none → the page draws a style sketch of that piece of furniture.
+ * one per room type × style.
+ * By default every tile is a clean drawing of that piece of furniture in that style
+ * (same look for every room — owner's choice, 21 Nov 2026). A picture uploaded in the
+ * back office (public/uploads/design/{set}-{style}.jpg) replaces the drawing.
  * Uploads live outside git, so a deploy (git reset) never removes them.
  */
 class DesignPictures
@@ -38,30 +38,18 @@ class DesignPictures
         return is_file($f) ? $f : null;
     }
 
-    /** URL of the picture for this tile, or null when the sketch should be drawn. */
-    public static function url(string $set, string $style, bool $small = true): ?string
+    /** URL of an uploaded picture for this tile, or null → the clean drawing is shown (the default). */
+    public static function url(string $set, string $style): ?string
     {
-        if ($f = self::uploadedFile($set, $style)) {
-            return asset("uploads/design/{$set}-{$style}.jpg").'?v='.filemtime($f);
-        }
-        $path = $set === 'kitchen'
-            ? config("ajax.style_images.$style")
-            : config("ajax.style_images_by_set.$set.$style");
-        if (! $path) {
-            return null;
-        }
+        $f = self::uploadedFile($set, $style);
 
-        return asset($small ? str_replace('.webp', '-sm.webp', $path) : $path);
+        return $f ? asset("uploads/design/{$set}-{$style}.jpg").'?v='.filemtime($f) : null;
     }
 
-    /** Where the current picture comes from: upload | project | sketch. */
+    /** Where the current picture comes from: upload | sketch. */
     public static function source(string $set, string $style): string
     {
-        if (self::uploadedFile($set, $style)) {
-            return 'upload';
-        }
-
-        return self::url($set, $style) ? 'project' : 'sketch';
+        return self::uploadedFile($set, $style) ? 'upload' : 'sketch';
     }
 
     /** Save an upload as a 4:3 JPEG (max 1200 px wide); falls back to the original file if GD is missing. */

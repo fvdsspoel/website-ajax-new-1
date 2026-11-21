@@ -1,81 +1,151 @@
-{{-- Front-view sketch of a style for a room type, used in the design selector when
-     we have no real Ajax photo of that exact style for that room.
-     $set: wardrobe | living | office | bath | other   ·   $style: handleless | handles | wood | dark | gloss | twotone --}}
+{{-- Front-view drawing of one style for one room type — used for every tile in step 3 of
+     "Design your space" (same look everywhere; a back-office upload can replace one).
+     Light comes from the top left: soft shading on every panel, metal handles, real wood
+     grain, stone counter edge, floor shadow, LED light under kitchen wall cabinets.
+     $set: kitchen | wardrobe | living | office | bath | other
+     $style: handleless | handles | wood | dark | gloss | twotone --}}
 @php
-    $pal = [
-        'white' => '#f4f2ed', 'line' => '#cfc8ba', 'wood' => '#b88a5c', 'woodDark' => '#8f6440',
-        'dark' => '#2c2d2f', 'darkLine' => '#47494c', 'stone' => '#ecebe7', 'bar' => '#1d1d1d',
-    ];
-    $uid = 'sk'.$set.$style;
-    // Door colour for a door; $part = 'upper' | 'lower' (only matters for two-tone).
-    $fill = function ($part = 'lower') use ($style, $pal, $uid) {
-        return match ($style) {
-            'wood' => "url(#{$uid}g)",
-            'dark' => $pal['dark'],
-            'twotone' => $part === 'upper' ? $pal['white'] : "url(#{$uid}g)",
-            'gloss' => "url(#{$uid}s)",
-            default => $pal['white'],
-        };
+    $u = 'sk-'.$set.'-'.$style;
+    $C = ['line' => '#bfb5a4', 'white' => '#f6f4ef', 'dark' => "url(#$u-dark)", 'darkEdge' => '#151618', 'glass' => "url(#$u-mirror)"];
+    $isDark = $style === 'dark';
+    $handles = $style === 'handles';
+    $fill = fn ($part = 'base') => match ($style) {
+        'wood' => "url(#$u-wood)",
+        'dark' => $C['dark'],
+        'gloss' => "url(#$u-gloss)",
+        'twotone' => $part === 'top' ? $C['white'] : "url(#$u-wood)",
+        default => $C['white'],
     };
-    $stroke = $style === 'dark' ? $pal['darkLine'] : $pal['line'];
-    // One door: panel + handle (handles style) or bevel groove (handleless/dark/gloss).
-    $door = function ($x, $y, $w, $h, $part = 'lower', $hingeLeft = true) use ($fill, $stroke, $style, $pal) {
-        $s = "<rect x='$x' y='$y' width='$w' height='$h' rx='1.5' fill='{$fill($part)}' stroke='$stroke' stroke-width='1.4'/>";
-        if ($style === 'handles' || $style === 'wood' || $style === 'twotone') {
-            $hx = $hingeLeft ? $x + $w - 9 : $x + 6;
-            $hl = min(60, $h * .45);
-            $hy = $y + ($h - $hl) / 2;
-            $s .= "<rect x='$hx' y='$hy' width='3.5' height='$hl' rx='1.5' fill='{$pal['bar']}'/>";
-        } else {
-            $s .= "<rect x='".($x + 2)."' y='".($y + 2)."' width='".($w - 4)."' height='3' fill='".($style === 'dark' ? '#151617' : '#bdb5a5')."' opacity='.8'/>";
+    $edge = $isDark ? $C['darkEdge'] : $C['line'];
+    $groove = $isDark ? '#0c0c0d' : 'rgba(70,52,34,.45)';
+
+    // Panel with soft light (top-left bright, bottom darker) and a gloss streak for high-gloss.
+    $panel = function ($x, $y, $w, $h, $part) use ($fill, $edge, $style, $u) {
+        $s = "<rect x='$x' y='$y' width='$w' height='$h' rx='1.4' fill='{$fill($part)}' stroke='$edge' stroke-width='1'/>";
+        $s .= "<rect x='$x' y='$y' width='$w' height='$h' rx='1.4' fill='url(#$u-".($style === 'dark' ? 'shadeDark' : 'shade').")'/>";   // matt dark: almost no sheen
+        if ($style === 'gloss') {
+            $s .= "<path d='M".($x + $w * .14).' '.($y + 3).'H'.($x + $w * .34).'L'.($x + $w * .12).' '.($y + $h - 3).'H'.($x + 3).'V'.($y + $h * .55)."Z' fill='#fff' opacity='.7'/>";
+            $s .= "<path d='M".($x + $w * .44).' '.($y + 3).'H'.($x + $w * .5).'L'.($x + $w * .3).' '.($y + $h - 3).'H'.($x + $w * .24)."Z' fill='#fff' opacity='.5'/>";
         }
         return $s;
     };
+    $bar = fn ($x, $y, $w, $h) => "<rect x='".($x + .8)."' y='".($y + 1)."' width='$w' height='$h' rx='1.5' fill='rgba(0,0,0,.18)'/><rect x='$x' y='$y' width='$w' height='$h' rx='1.5' fill='url(#$u-metal)'/>";
+    $door = function ($x, $y, $w, $h, $part = 'base', $openRight = true) use ($panel, $bar, $handles, $groove) {
+        $s = $panel($x, $y, $w, $h, $part);
+        if ($handles) {
+            $hl = min(46, $h * .42);
+            $hx = $openRight ? $x + $w - 8 : $x + 5;
+            $hy = $h > 120 ? $y + ($h - $hl) / 2 : ($part === 'top' ? $y + $h - $hl - 6 : $y + 6);
+            $s .= $bar($hx, $hy, 3.2, $hl);
+        } else {
+            $s .= "<rect x='".($x + 1.5)."' y='".($y + 1.2)."' width='".($w - 3)."' height='2.8' fill='$groove'/>";
+        }
+        return $s;
+    };
+    $drawer = function ($x, $y, $w, $h, $part = 'base') use ($panel, $bar, $handles, $groove) {
+        $s = $panel($x, $y, $w, $h, $part);
+        $s .= $handles ? $bar($x + $w * .3, $y + 5, $w * .4, 3.2) : "<rect x='".($x + 1.5)."' y='".($y + 1.2)."' width='".($w - 3)."' height='2.6' fill='$groove'/>";
+        return $s;
+    };
+    // Stone counter: top surface, lit front edge, shadow line underneath.
+    $counter = fn ($x, $y, $w) => "<rect x='$x' y='".($y + 7)."' width='$w' height='3' fill='rgba(0,0,0,.12)'/>"
+        ."<rect x='$x' y='$y' width='$w' height='7' rx='1' fill='url(#$u-stone)'/>"
+        ."<rect x='$x' y='$y' width='$w' height='1.4' fill='#fff' opacity='".($isDark ? '.18' : '.9')."'/>";
+    $plinth = fn ($x, $y, $w) => "<rect x='".($x + 3)."' y='$y' width='".($w - 6)."' height='8' fill='".($isDark ? '#141516' : '#cfc4b1')."'/>";
+    $floorShadow = fn ($x, $y, $w) => "<ellipse cx='".($x + $w / 2)."' cy='$y' rx='".($w / 2 + 10)."' ry='6' fill='rgba(50,35,20,.22)' filter='url(#$u-blur)'/>";
+    $side = fn ($x, $y, $h) => "<rect x='$x' y='$y' width='4' height='$h' fill='".($isDark ? '#1f2023' : '#e4ddd0')."' stroke='$edge' stroke-width='.6'/>";
+
     $svg = '';
     switch ($set) {
+        case 'kitchen':
+            $svg .= "<rect x='44' y='120' width='312' height='58' fill='url(#$u-tile)'/>";
+            $svg .= "<rect x='44' y='120' width='312' height='14' fill='url(#$u-led)'/>";          // warm LED under the wall cabinets
+            $svg .= $door(44, 46, 76, 74, 'top', false) . $door(122, 46, 76, 74, 'top', true);
+            $svg .= "<path d='M214 46H266V92L280 116H200L214 92Z' fill='url(#$u-steel)' stroke='#a9adb1' stroke-width='.8'/><rect x='200' y='114' width='80' height='4' fill='#8d9296'/>";
+            $svg .= $door(280, 46, 76, 74, 'top', false);
+            $svg .= "<rect x='44' y='120' width='312' height='2' fill='rgba(0,0,0,.14)'/>";
+            $svg .= $floorShadow(44, 268, 312);
+            $svg .= $counter(40, 178, 320);
+            $svg .= "<rect x='142' y='175' width='54' height='4' rx='2' fill='#b9bfc5'/><path d='M170 175V158Q170 154 175 154H180' stroke='url(#$u-steel)' stroke-width='3' fill='none' stroke-linecap='round'/>";
+            $svg .= $door(44, 188, 62, 70, 'base', true) . $door(108, 188, 62, 70, 'base', false) . $door(172, 188, 62, 70, 'base', true);
+            $svg .= $drawer(236, 188, 120, 22) . $drawer(236, 212, 120, 22) . $drawer(236, 236, 120, 22);
+            $svg .= $plinth(44, 258, 312);
+            break;
         case 'wardrobe':
-            $svg .= "<rect x='60' y='22' width='280' height='254' fill='$stroke'/>";
+            $svg .= $floorShadow(62, 268, 276);
+            $svg .= $side(62, 28, 240) . $side(334, 28, 240);
             for ($i = 0; $i < 4; $i++) {
-                $x = 63 + $i * 69;
-                $svg .= $door($x, 25, 66, 52, 'upper', $i % 2 === 0);
-                $svg .= $door($x, 80, 66, 193, 'lower', $i % 2 === 0);
+                $x = 66 + $i * 67;
+                $svg .= $door($x, 28, 66, 46, 'top', $i % 2 === 1);
+                $svg .= $door($x, 76, 66, 184, 'base', $i % 2 === 1);
             }
+            $svg .= $plinth(66, 260, 268);
             break;
         case 'living':
-            $svg .= "<rect x='70' y='38' width='260' height='150' rx='2' fill='".($style === 'gloss' ? "url(#{$uid}s)" : ($style === 'dark' ? '#3a3b3d' : '#e6e1d6'))."'/>";
-            $svg .= "<rect x='130' y='70' width='140' height='80' rx='3' fill='#141516'/>";
-            $svg .= "<rect x='40' y='196' width='320' height='8' fill='".($style === 'dark' ? $pal['dark'] : $pal['stone'])."' stroke='$stroke'/>";
-            for ($i = 0; $i < 4; $i++) $svg .= $door(40 + $i * 80, 204, 80, 52, $i % 2 ? 'upper' : 'lower', $i % 2 === 0);
+            $wall = match ($style) { 'gloss' => "url(#$u-marble)", 'dark' => "url(#$u-dark)", 'wood', 'twotone' => "url(#$u-wood)", default => '#e8e1d4' };
+            $svg .= "<rect x='92' y='26' width='216' height='176' rx='2' fill='$wall' stroke='$edge' stroke-width='.8'/><rect x='92' y='26' width='216' height='176' fill='url(#$u-shade)'/>";
+            $svg .= "<rect x='92' y='196' width='216' height='6' fill='rgba(255,214,150,.55)' filter='url(#$u-blur)'/>";
+            $svg .= "<rect x='134' y='60' width='132' height='78' rx='3' fill='#0f1113'/><rect x='138' y='64' width='124' height='70' rx='2' fill='url(#$u-screen)'/>";
+            $svg .= $floorShadow(56, 262, 288);
+            $svg .= $counter(56, 202, 288);
+            $p = $style === 'twotone' ? 'top' : 'base';
+            $svg .= $drawer(56, 212, 70, 40, $p) . $door(128, 212, 70, 40, 'base', true) . $door(200, 212, 70, 40, 'base', false) . $drawer(272, 212, 72, 40, $p);
             break;
         case 'office':
-            $svg .= "<rect x='70' y='40' width='260' height='60' fill='$stroke'/>";
-            for ($i = 0; $i < 3; $i++) $svg .= $door(73 + $i * 85.5, 43, 82, 54, 'upper', $i % 2 === 0);
-            $svg .= "<rect x='40' y='168' width='320' height='10' fill='".($style === 'dark' ? $pal['dark'] : $pal['stone'])."' stroke='$stroke'/>";
-            for ($i = 0; $i < 3; $i++) $svg .= $door(270, 180 + $i * 32, 86, 30, 'lower', false);
-            $svg .= "<rect x='46' y='178' width='8' height='96' fill='$stroke'/>";
+            $svg .= $door(70, 34, 85, 56, 'top', true) . $door(157, 34, 85, 56, 'top', false) . $door(244, 34, 86, 56, 'top', true);
+            $svg .= "<rect x='70' y='90' width='260' height='3' fill='rgba(0,0,0,.1)'/>";
+            $svg .= $floorShadow(44, 268, 312);
+            $svg .= "<rect x='118' y='128' width='74' height='40' rx='3' fill='#121416'/><rect x='121' y='131' width='68' height='33' rx='2' fill='url(#$u-screen)'/><rect x='150' y='166' width='10' height='6' fill='#2a2d31'/>";
+            $svg .= $counter(44, 172, 312);
+            $svg .= "<rect x='52' y='182' width='8' height='84' fill='".($isDark ? '#1a1b1d' : '#cfc6b6')."'/>";
+            $svg .= $drawer(256, 182, 96, 27) . $drawer(256, 211, 96, 27) . $drawer(256, 240, 96, 26);
             break;
         case 'bath':
-            $svg .= "<rect x='120' y='34' width='160' height='100' rx='50' fill='#dfe6ea' stroke='$stroke'/>";
-            $svg .= "<rect x='80' y='168' width='240' height='10' fill='".($style === 'dark' ? $pal['dark'] : $pal['stone'])."' stroke='$stroke'/>";
-            $svg .= "<ellipse cx='200' cy='166' rx='46' ry='9' fill='#fff' stroke='$stroke'/>";
-            $svg .= $door(83, 180, 234, 24, 'upper', false);
-            $svg .= $door(83, 207, 115, 55, 'lower', true) . $door(202, 207, 115, 55, 'lower', false);
+            $svg .= "<rect x='126' y='26' width='148' height='98' rx='49' fill='{$C['glass']}' stroke='#b8bfc4' stroke-width='2'/>";
+            $svg .= "<path d='M150 44L176 36L150 110L138 96Z' fill='#fff' opacity='.45'/>";
+            $svg .= "<rect x='86' y='150' width='228' height='4' rx='2' fill='rgba(255,214,150,.0)'/>";
+            $svg .= $floorShadow(86, 266, 228);
+            $svg .= $counter(86, 160, 228);
+            $svg .= "<ellipse cx='200' cy='159' rx='40' ry='7' fill='#fff' stroke='#c9cdd1'/><path d='M200 152V141Q200 137 205 137H210' stroke='url(#$u-steel)' stroke-width='3' fill='none' stroke-linecap='round'/>";
+            $svg .= $drawer(86, 170, 228, 24, $style === 'twotone' ? 'top' : 'base');
+            $svg .= $door(86, 196, 113, 56, 'base', true) . $door(201, 196, 113, 56, 'base', false);
             break;
-        default: // sideboard / any cabinet
-            $svg .= "<rect x='50' y='140' width='300' height='10' fill='".($style === 'dark' ? $pal['dark'] : $pal['stone'])."' stroke='$stroke'/>";
-            for ($i = 0; $i < 3; $i++) $svg .= $door(52 + $i * 99, 152, 97, 108, $i === 1 ? 'upper' : 'lower', $i !== 2);
+        default:   // sideboard on legs
+            $svg .= $floorShadow(60, 268, 280);
+            $svg .= $counter(60, 138, 280);
+            $svg .= $door(60, 148, 92, 104, 'base', true) . $door(154, 148, 92, 104, $style === 'twotone' ? 'top' : 'base', false) . $door(248, 148, 92, 104, 'base', false);
+            $svg .= "<rect x='72' y='252' width='6' height='15' rx='1' fill='url(#$u-metal)'/><rect x='322' y='252' width='6' height='15' rx='1' fill='url(#$u-metal)'/>";
     }
 @endphp
 <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
     <defs>
-        <linearGradient id="{{ $uid }}g" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#c39467"/><stop offset=".35" stop-color="#ad7f52"/><stop offset=".6" stop-color="#c79a6c"/><stop offset="1" stop-color="#a87a4e"/>
+        <linearGradient id="{{ $u }}-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8f4ec"/><stop offset="1" stop-color="#ece5d8"/></linearGradient>
+        <linearGradient id="{{ $u }}-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9ccb6"/><stop offset="1" stop-color="#e6dccb"/></linearGradient>
+        <linearGradient id="{{ $u }}-shade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".1"/></linearGradient>
+        <linearGradient id="{{ $u }}-shadeDark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#000" stop-opacity=".12"/></linearGradient>
+        <linearGradient id="{{ $u }}-dark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3c40"/><stop offset="1" stop-color="#25272a"/></linearGradient>
+        <linearGradient id="{{ $u }}-gloss" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#eef0f3"/><stop offset="1" stop-color="#dfe3e7"/></linearGradient>
+        <linearGradient id="{{ $u }}-metal" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#55585c"/><stop offset=".45" stop-color="#1b1c1e"/><stop offset="1" stop-color="#3b3d40"/></linearGradient>
+        <linearGradient id="{{ $u }}-steel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e7e9eb"/><stop offset=".5" stop-color="#b7bcc1"/><stop offset="1" stop-color="#d8dbde"/></linearGradient>
+        <linearGradient id="{{ $u }}-stone" x1="0" y1="0" x2="1" y2="0">
+            @if ($isDark)<stop offset="0" stop-color="#3b3c3f"/><stop offset="1" stop-color="#2b2c2e"/>@else<stop offset="0" stop-color="#f1efea"/><stop offset=".5" stop-color="#e6e3dc"/><stop offset="1" stop-color="#f0ede8"/>@endif
         </linearGradient>
-        <linearGradient id="{{ $uid }}s" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#ffffff"/><stop offset=".42" stop-color="#f1f1f3"/><stop offset=".5" stop-color="#ffffff"/><stop offset=".58" stop-color="#e9e9ec"/><stop offset="1" stop-color="#f7f7f9"/>
-        </linearGradient>
+        <linearGradient id="{{ $u }}-led" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd690" stop-opacity=".75"/><stop offset="1" stop-color="#ffd690" stop-opacity="0"/></linearGradient>
+        <linearGradient id="{{ $u }}-screen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2c333a"/><stop offset=".45" stop-color="#15191d"/><stop offset=".46" stop-color="#1c2126"/><stop offset="1" stop-color="#0d0f11"/></linearGradient>
+        <linearGradient id="{{ $u }}-mirror" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eef3f6"/><stop offset="1" stop-color="#c9d4db"/></linearGradient>
+        <pattern id="{{ $u }}-tile" width="26" height="14" patternUnits="userSpaceOnUse"><rect width="26" height="14" fill="#efebe3"/><path d="M0 13.5H26M25.5 0V14" stroke="#ddd6c9" stroke-width="1"/></pattern>
+        <pattern id="{{ $u }}-marble" width="216" height="176" patternUnits="userSpaceOnUse"><rect width="216" height="176" fill="#f5f3ef"/><path d="M-10 40C40 30 70 70 120 50S200 20 230 40M-10 120C50 100 90 150 150 120S210 100 230 130M40 0C60 50 30 90 70 176" stroke="#c9c3b8" stroke-width="1.2" fill="none" opacity=".8"/></pattern>
+        <pattern id="{{ $u }}-wood" width="48" height="300" patternUnits="userSpaceOnUse">
+            <rect width="48" height="300" fill="#b7875a"/>
+            <rect x="0" width="14" height="300" fill="#bf9064" opacity=".7"/><rect x="26" width="10" height="300" fill="#a87b4f" opacity=".6"/>
+            <path d="M5 0C8 70 2 150 6 300M15 0C12 90 19 190 15 300M24 0C27 70 21 170 25 300M33 0C31 100 36 200 32 300M42 0C45 80 39 160 43 300" stroke="#94673d" stroke-width="1" fill="none" opacity=".55"/>
+            <path d="M10 0C12 120 8 220 11 300M29 0C27 110 31 230 28 300M38 0C40 60 36 140 39 300" stroke="#d2a678" stroke-width=".8" fill="none" opacity=".7"/>
+            <ellipse cx="20" cy="140" rx="2.2" ry="7" fill="none" stroke="#8c6038" stroke-width=".8" opacity=".5"/>
+        </pattern>
+        <filter id="{{ $u }}-blur" x="-20%" y="-200%" width="140%" height="500%"><feGaussianBlur stdDeviation="3"/></filter>
     </defs>
-    <rect width="400" height="300" fill="#f6f2ea"/>
-    <rect y="276" width="400" height="24" fill="#e4dccd"/>
+    <rect width="400" height="300" fill="url(#{{ $u }}-wall)"/>
+    <rect y="266" width="400" height="34" fill="url(#{{ $u }}-floor)"/>
+    <path d="M0 266H400M0 280H400M120 266L112 300M260 266L268 300" stroke="#cdbfa7" stroke-width=".8" opacity=".6"/>
     {!! $svg !!}
 </svg>

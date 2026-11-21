@@ -695,7 +695,7 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
 /* Summary: only what was chosen, plus the picture of the chosen style */
 .summary .sum-empty { margin: 14px 0 0; color: rgba(255, 255, 255, .6); font-size: 14px; }
 .summary .sum-thumb { margin-top: 14px; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; background: rgba(255,255,255,.06); }
-.summary .sum-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.summary .sum-thumb img, .summary .sum-thumb svg { width: 100%; height: 100%; object-fit: cover; display: block; }
 .summary dl div[hidden] { display: none; }
 /* Review list on the last step (phones) */
 .review { margin: 18px 0 6px; padding: 16px; border-radius: 16px; background: var(--sand); }
