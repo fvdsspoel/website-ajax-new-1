@@ -38,7 +38,7 @@
                         @foreach ($d['rooms'] as $key => $label)
                             <div class="opt opt--img opt--room">
                                 <input type="radio" name="room" value="{{ $key }}" id="room-{{ $key }}" data-label="{{ $label }}">
-                                <label for="room-{{ $key }}"><span class="opt-img">@include('pages.partials.style-sketch', ['set' => $key, 'style' => 'twotone', 'prefix' => 'rm'])</span><span class="opt-text"><strong>{{ $label }}</strong></span></label>
+                                <label for="room-{{ $key }}"><span class="opt-img">@if (is_file(public_path("images/design/rooms/$key.webp")))<img src="{{ asset("images/design/rooms/$key.webp") }}?v={{ filemtime(public_path("images/design/rooms/$key.webp")) }}" alt="" loading="lazy">@else @include('pages.partials.style-sketch', ['set' => $key, 'style' => 'twotone', 'prefix' => 'rm']) @endif</span><span class="opt-text"><strong>{{ $label }}</strong></span></label>
                             </div>
                         @endforeach
                     </div>
