@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\CrmInquiryService;
 use Illuminate\Http\JsonResponse;
+use App\Support\BoardColours;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 /**
  * "Design your space": the visitor picks what, layout, style, finish and
@@ -41,7 +43,7 @@ class DesignController extends Controller
             'size_m' => 'nullable|numeric|min:0.3|max:500',
             'style' => 'nullable|in:'.$keys('styles'),
             'finish' => 'nullable|in:'.$keys('finishes'),
-            'colour' => 'nullable|in:'.$keys('colours'),
+            'colour' => ['nullable', Rule::in(array_merge(['advise'], array_keys(BoardColours::all())))],
             'top' => 'nullable|in:'.$keys('tops'),
             'note' => 'nullable|string|max:2000',
             'next' => 'nullable|in:'.$keys('next_options'),
@@ -66,7 +68,7 @@ class DesignController extends Controller
             isset($v['size_m']) ? 'Wall length about: '.$v['size_m'].' m' : null,
             isset($v['style']) ? 'Style: '.$name($en('styles', $v['style'])) : null,
             isset($v['finish']) ? 'Finish: '.$name($en('finishes', $v['finish'])) : null,
-            isset($v['colour']) ? 'Colour: '.$en('colours', $v['colour']) : null,
+            isset($v['colour']) ? 'Colour: '.($v['colour'] === 'advise' ? 'Not sure yet — advise me' : BoardColours::describe($v['colour'])) : null,
             isset($v['top']) ? 'Countertop: '.$en('tops', $v['top']) : null,
             'Next step: '.($name($en('next_options', $v['next'] ?? 'call')) ?? 'Call me back')
                 .($visit && ! empty($v['visit_date']) ? ' — '.$v['visit_date'].' '.($en('visit_times', $v['visit_time'] ?? 'any') ?? '') : ''),

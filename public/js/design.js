@@ -52,6 +52,37 @@
         document.querySelector('[data-sum="top"]').hidden = !needsTop;
     }
 
+    // Colour step: every board colour; filter by board type and by finish.
+    var cpGroup = 'melamine', cpFinish = 'all', lastFinish = '';
+    function cpApply() {
+        form.querySelectorAll('.cp').forEach(function (c) {
+            var g = c.dataset.group, f = c.dataset.cfinish;
+            c.hidden = g !== 'any' && ((cpGroup !== 'all' && g !== cpGroup) || (cpFinish !== 'all' && f !== cpFinish));
+        });
+        form.querySelectorAll('[data-cp-groups] button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.group === cpGroup ? 'true' : 'false'); });
+        form.querySelectorAll('[data-cp-finishes] button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.cfinish === cpFinish ? 'true' : 'false'); });
+    }
+    // The finish picked above opens the matching colours: HPL → HPL, high-gloss → all gloss boards.
+    function cpFollowFinish() {
+        var fin = val('finish');
+        if (fin === lastFinish) return;
+        lastFinish = fin;
+        if (fin === 'melamine') { cpGroup = 'melamine'; cpFinish = 'all'; }
+        else if (fin === 'hpl') { cpGroup = 'hpl'; cpFinish = 'all'; }
+        else if (fin === 'gloss') { cpGroup = 'all'; cpFinish = 'gloss'; }
+        else { cpGroup = 'all'; cpFinish = 'all'; }
+        form.querySelector('[data-paint-note]').hidden = fin !== 'paint';
+        cpApply();
+    }
+    form.querySelector('[data-cp-groups]').addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-group]'); if (!b) return;
+        cpGroup = b.dataset.group; cpApply();
+    });
+    form.querySelector('[data-cp-finishes]').addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-cfinish]'); if (!b) return;
+        cpFinish = b.dataset.cfinish; cpApply();
+    });
+
     function sum(key, text) {
         var row = document.querySelector('[data-sum="' + key + '"]');
         if (!row) return;
@@ -80,6 +111,7 @@
 
     function refresh() {
         syncRoom();
+        cpFollowFinish();
         sum('room', lab('room'));
         var size = form.size_m && form.size_m.value ? ' · ' + form.size_m.value + ' m' : '';
         sum('layout', (lab('layout') || '') + size);
@@ -158,6 +190,7 @@
     });
 
     // "#upload" (from the homepage) jumps straight to the upload step.
+    cpApply();
     refresh();
     if (location.hash === '#upload') go(4); else go(0);
     window.scrollTo(0, 0);

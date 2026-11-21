@@ -80,12 +80,4 @@ return [
         'kitchen' => 'kitchen', 'wardrobe' => 'wardrobe', 'living' => 'tv', 'bedroom' => 'bed',
         'office' => 'office', 'bath' => 'bath', 'whole' => 'home', 'other' => 'puzzle',
     ],
-    'colour_swatches' => [
-        'white' => '#f4f3ef',
-        'light' => 'linear-gradient(135deg,#d9d6cf,#c4bdb0)',
-        'dark' => 'linear-gradient(135deg,#3a3d3f,#16181a)',
-        'woodlight' => 'linear-gradient(135deg,#e2c89c,#c9a36b)',
-        'wooddark' => 'linear-gradient(135deg,#7a4b2c,#3f2414)',
-        'colour' => 'linear-gradient(135deg,#2f6f57,#2b4f86)',
-    ],
 ];

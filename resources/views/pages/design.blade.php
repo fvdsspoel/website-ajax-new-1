@@ -6,7 +6,7 @@
 @php
     $d = __('site.design');
     $steps = $d['steps'];
-    $swatches = config('ajax.colour_swatches');
+    $boardColours = \App\Support\BoardColours::all();
     $layoutSets = $d['layouts'];
     $i18n = ['step' => $d['step'], 'of' => $d['of'], 'sending' => $d['sending'], 'submit' => $d['submit'], 'error' => $d['error'], 'too_big' => $d['file_too_big'], 'bad_type' => $d['file_type'], 'too_many' => $d['too_many'], 'required' => $d['required']];
     $topSwatch = ['sintered' => 'linear-gradient(135deg,#fff,#e9e9e9 40%,#bdbdbd 41%,#fff 43%,#f2f2f2)', 'marble' => 'linear-gradient(135deg,#f6f3ee,#d9d2c5 45%,#9e9689 47%,#efe9df)', 'granite' => 'radial-gradient(circle at 30% 30%,#7b7b7b,#2c2c2c 60%)', 'board' => 'linear-gradient(135deg,#d9c3a0,#b38c5a)', 'none' => 'repeating-linear-gradient(45deg,#eee 0 4px,#fff 4px 8px)'];
@@ -102,14 +102,34 @@
                             </div>
                         @endforeach
                     </div>
-                    <p class="subq">{{ $d['q_colour'] }} <a href="{{ route('colours') }}" target="_blank" class="link-arrow" style="font-size:14px;margin-left:8px">{{ __('site.colours.title') }} @include('partials.icon', ['name' => 'arrow'])</a></p>
-                    <div class="swatches">
-                        @foreach ($d['colours'] as $key => $label)
-                            <div class="swatch">
-                                <input type="radio" name="colour" value="{{ $key }}" id="colour-{{ $key }}" data-label="{{ $label }}">
-                                <label for="colour-{{ $key }}"><i style="background:{{ $swatches[$key] }}"></i>{{ $label }}</label>
+                    <div class="colour-pick" data-colour-pick>
+                        <p class="subq">{{ $d['q_colour'] }} <a href="{{ route('colours') }}" target="_blank" class="link-arrow" style="font-size:14px;margin-left:8px">{{ __('site.colours.title') }} @include('partials.icon', ['name' => 'arrow'])</a></p>
+                        <p class="hint" style="margin:-4px 0 12px">{{ $d['colour_hint'] }}</p>
+                        <p class="hint colour-paint" data-paint-note hidden>{{ $d['colour_paint'] }}</p>
+                        <div class="cp-tabs" data-cp-groups>
+                            <button type="button" class="filter filter--sm" data-group="all" aria-pressed="false">{{ __('site.colours.finishes.all') }}</button>
+                            @foreach (__('site.colours.tabs') as $g => $glabel)
+                                <button type="button" class="filter filter--sm" data-group="{{ $g }}" aria-pressed="{{ $g === 'melamine' ? 'true' : 'false' }}">{{ $glabel }}</button>
+                            @endforeach
+                        </div>
+                        <div class="cp-tabs cp-tabs--finish" data-cp-finishes>
+                            @foreach (__('site.colours.finishes') as $f => $flabel)
+                                <button type="button" class="filter filter--sm" data-cfinish="{{ $f }}" aria-pressed="{{ $f === 'all' ? 'true' : 'false' }}">{{ $flabel }}</button>
+                            @endforeach
+                        </div>
+                        <div class="cp-grid">
+                            <div class="cp" data-group="any" data-cfinish="any">
+                                <input type="radio" name="colour" value="advise" id="colour-advise" data-label="{{ $d['colour_advise'] }}">
+                                <label for="colour-advise"><i class="cp-chip cp-chip--advise" aria-hidden="true">?</i><b>{{ $d['colour_advise'] }}</b></label>
                             </div>
-                        @endforeach
+                            @foreach ($boardColours as $code => $col)
+                                @php $cname = $col['name'].($col['finish'] === 'gloss' && ! str_contains($col['name'], 'Gloss') ? ' Gloss' : ''); @endphp
+                                <div class="cp" data-group="{{ $col['group'] }}" data-cfinish="{{ $col['finish'] }}">
+                                    <input type="radio" name="colour" value="{{ $code }}" id="colour-{{ $loop->index }}" data-label="{{ $cname }} · {{ __('site.colours.tabs.'.$col['group']) }}">
+                                    <label for="colour-{{ $loop->index }}" title="{{ $cname }} · {{ $code }}"><i class="cp-chip @if ($col['finish'] === 'gloss') is-gloss @endif" style="background:{{ $col['hex'] }}">@if (! empty($col['image']))<img src="{{ asset($col['image']) }}" alt="" loading="lazy">@endif</i><b>{{ $cname }}</b><small>{{ $code }}</small></label>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                     <div data-top-block>
                         <p class="subq">{{ $d['q_top'] }}</p>

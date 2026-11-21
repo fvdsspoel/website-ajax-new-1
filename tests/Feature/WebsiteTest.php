@@ -51,10 +51,13 @@ class WebsiteTest extends TestCase
         $this->post('/design-your-space', [
             'name' => 'Ana Cruz', 'mobile' => '09171234567', 'city' => 'Sta. Rosa, Laguna',
             'room' => 'kitchen', 'layout' => 'l_shape', 'size_m' => '4.2', 'style' => 'handleless',
-            'finish' => 'melamine', 'colour' => 'wooddark', 'top' => 'sintered', 'next' => 'measure',
+            'finish' => 'melamine', 'colour' => 'MP.Y2146', 'top' => 'sintered', 'next' => 'measure',
             'visit_date' => now()->addDays(3)->toDateString(), 'visit_time' => 'morning', 'prefer' => 'viber', 'when' => 'asap',
             'files' => [UploadedFile::fake()->image('plan.jpg', 800, 600)],
         ], ['Accept' => 'application/json'])->assertOk()->assertJson(['success' => true]);
+
+        // only colours we really have (or "advise me") are accepted
+        $this->post('/design-your-space', ['name' => 'X', 'mobile' => '0917', 'colour' => 'wooddark'], ['Accept' => 'application/json'])->assertStatus(422);
 
         Http::assertSent(function (HttpRequest $r) {
             $body = $r->body();
@@ -62,6 +65,7 @@ class WebsiteTest extends TestCase
                 && $r->isMultipart()
                 && str_contains($body, 'Ana Cruz')
                 && str_contains($body, 'Layout: L-shape')
+                && str_contains($body, 'Colour: Cedar — Melamine boards, wood (MP.Y2146)')
                 && str_contains($body, 'Next step: Measure at my place')
                 && str_contains($body, 'name="design_config[source]"')
                 && str_contains($body, 'website_design_selector')
