@@ -104,6 +104,7 @@
                             </div>
                         @endforeach
                     </div>
+                    <p class="hint colour-paint" data-board-info hidden>{{ $d['board_info'] }}</p>
                     <p class="subq">{{ $d['finish_label'] }}</p>
                     <div class="options options--3">
                         @foreach ($d['finishes'] as $key => $f)

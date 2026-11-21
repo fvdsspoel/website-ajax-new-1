@@ -117,6 +117,7 @@
         sum('layout', (lab('layout') || '') + size);
         sum('style', lab('style'));
         sum('board', lab('board'));
+        form.querySelector('[data-board-info]').hidden = ['pvc', 'aluminium'].indexOf(val('board')) < 0;
         sum('finish', lab('finish'));
         sum('colour', lab('colour'));
         sum('top', lab('top'));

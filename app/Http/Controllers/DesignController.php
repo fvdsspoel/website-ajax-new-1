@@ -64,11 +64,14 @@ class DesignController extends Controller
 
         $lines = array_filter([
             '[Website design selector]',
+            in_array($v['board'] ?? null, ['pvc', 'aluminium'], true)
+                ? 'INFO REQUEST: please send this customer information about '.$name($en('board_options', $v['board'])).' (coming soon)'
+                : null,
             'Wants: '.($en('rooms', $v['room'] ?? null) ?? 'not chosen'),
             isset($v['layout']) ? 'Layout: '.$en('layouts.'.$layoutSet, $v['layout']) : null,
             isset($v['size_m']) ? 'Wall length about: '.$v['size_m'].' m' : null,
             isset($v['style']) ? 'Style: '.$name($en('styles', $v['style'])) : null,
-            isset($v['board']) ? 'Board: '.$name($en('board_options', $v['board'])).(in_array($v['board'], ['pvc', 'aluminium'], true) ? ' (coming soon — customer is interested)' : '') : null,
+            isset($v['board']) ? 'Board: '.$name($en('board_options', $v['board'])).(in_array($v['board'], ['pvc', 'aluminium'], true) ? ' (coming soon — info request)' : '') : null,
             isset($v['finish']) ? 'Finish: '.$name($en('finishes', $v['finish'])) : null,
             isset($v['colour']) ? 'Colour: '.($v['colour'] === 'advise' ? 'Not sure yet — advise me' : BoardColours::describe($v['colour'])) : null,
             isset($v['top']) ? 'Countertop: '.$en('tops', $v['top']) : null,
@@ -95,6 +98,7 @@ class DesignController extends Controller
                 'length' => $v['size_m'] ?? null,
                 'style' => $v['style'] ?? null,
                 'board' => $v['board'] ?? null,
+                'info_request' => in_array($v['board'] ?? null, ['pvc', 'aluminium'], true) ? $v['board'].'_board' : null,
                 'finish' => $v['finish'] ?? null,
                 'colour' => $v['colour'] ?? null,
                 'countertop' => $v['top'] ?? null,

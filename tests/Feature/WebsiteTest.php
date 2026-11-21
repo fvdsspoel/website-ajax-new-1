@@ -75,6 +75,17 @@ class WebsiteTest extends TestCase
         });
     }
 
+    public function test_a_pvc_or_aluminium_board_is_sent_as_an_info_request_for_sales(): void
+    {
+        Http::fake(['crm.test/*' => Http::response(['ok' => true, 'id' => 2])]);
+
+        $this->post('/design-your-space', ['name' => 'Carlo Dizon', 'mobile' => '09170000001', 'room' => 'kitchen', 'board' => 'pvc'], ['Accept' => 'application/json'])
+            ->assertOk()->assertJson(['success' => true]);
+
+        Http::assertSent(fn (HttpRequest $r) => str_contains($r['message'], 'INFO REQUEST: please send this customer information about PVC board (coming soon)')
+            && $r['design_config']['info_request'] === 'pvc_board');
+    }
+
     public function test_a_lead_the_crm_does_not_take_is_kept_with_its_files(): void
     {
         Storage::fake('local');
