@@ -103,12 +103,11 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
 }
 .site-header .wrap { display: flex; align-items: center; gap: 18px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; flex: none; }
-.brand img { height: 34px; width: auto; }
+.brand-tile { width: 40px; height: 40px; flex: none; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(140deg, var(--green-2), var(--green)); box-shadow: 0 4px 14px rgba(30, 138, 74, .35); }
+.brand-tile svg { width: 21px; height: auto; margin-top: -1px; }
 .brand-word { display: flex; flex-direction: column; line-height: 1; }
-.brand-word strong { font-size: 21px; letter-spacing: .14em; font-weight: 800; }
-.brand-word span { font-size: 9.5px; letter-spacing: .28em; text-transform: uppercase; opacity: .75; margin-top: 4px; }
-.brand-logo { filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .25)); }
-.site-header.is-solid .brand-logo, body.page-solid .brand-logo { filter: none; }
+.brand-word strong { font-size: 25px; font-weight: 800; letter-spacing: -.035em; }
+.brand-word span { font-size: 11.5px; font-weight: 500; letter-spacing: 0; opacity: .7; margin-top: 3px; }
 
 .main-nav { display: none; }
 .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
@@ -619,8 +618,9 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
 /* Phones: a narrower header and a darker hero so the text always reads well. */
 @media (max-width: 480px) {
   .brand-word span { display: none; }
-  .brand-word strong { font-size: 19px; letter-spacing: .1em; }
-  .brand img { height: 28px; }
+  .brand-word strong { font-size: 22px; }
+  .brand-tile { width: 34px; height: 34px; border-radius: 10px; }
+  .brand-tile svg { width: 18px; }
   .site-header .wrap { gap: 10px; }
   .header-actions { gap: 8px; }
   .lang-toggle a { padding: 4px 7px; font-size: 11px; }
@@ -662,6 +662,6 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
 @media (min-width: 1280px) and (max-width: 1760px) {
   .main-nav { margin-left: 10px; }
   .main-nav a { padding: 8px 8px; font-size: 13.5px; }
-  .brand-word span { display: none; }
+  .site-header .brand-word span { display: none; }
   .header-actions { gap: 8px; }
 }

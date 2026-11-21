@@ -90,8 +90,7 @@
     <header class="site-header" id="site-header">
         <div class="wrap">
             <a href="{{ route('home') }}" class="brand" aria-label="Ajax Trading Corporation — {{ __('site.nav.home') }}">
-                <img class="brand-logo" src="{{ asset('images/site/mark.png') }}" alt="" width="46" height="40">
-                <span class="brand-word"><strong>AJAX</strong><span>Trading Corporation</span></span>
+                @include('partials.logo')
             </a>
 
             <nav class="main-nav" id="main-nav" aria-label="Main">
@@ -132,8 +131,7 @@
             <div class="footer-grid">
                 <div>
                     <a href="{{ route('home') }}" class="brand" style="color:#fff">
-                        <img src="{{ asset('images/site/mark.png') }}" alt="" width="46" height="40">
-                        <span class="brand-word"><strong>AJAX</strong><span>Trading Corporation</span></span>
+                        @include('partials.logo')
                     </a>
                     <p class="footer-tagline">{{ __('site.footer.tagline') }}</p>
                     <p class="footer-area">@include('partials.icon', ['name' => 'truck']) {{ __('site.footer.area') }}</p>
