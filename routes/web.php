@@ -39,7 +39,18 @@ Route::get('/lang/{locale}', function (Request $request, string $locale) {
     if (array_key_exists($locale, config('company.locales'))) {
         $request->session()->put('locale', $locale);
     }
-    return redirect()->back(fallback: route('home'));
+    // Back to the same page, but with any old ?lang= removed: it would switch the language straight back.
+    $back = url()->previous();
+    $host = parse_url($back, PHP_URL_HOST);
+    if (! $host || $host !== $request->getHost()) {
+        return redirect()->route('home');
+    }
+    $parts = parse_url($back);
+    parse_str($parts['query'] ?? '', $query);
+    unset($query['lang']);
+    $path = ($parts['path'] ?? '/').($query ? '?'.http_build_query($query) : '');
+
+    return redirect($path);
 })->name('lang.switch');
 
 // Old URLs (old live site and the September test build) → new pages (301),

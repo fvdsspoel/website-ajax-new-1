@@ -147,4 +147,14 @@ class WebsiteTest extends TestCase
             $this->assertSame([], array_values(array_diff($en, array_keys($flat(require lang_path($l.'/site.php'))))), "Missing in $l");
         }
     }
+
+    public function test_the_language_buttons_work_even_when_the_page_had_lang_in_its_address(): void
+    {
+        $this->get('/projects?lang=en&type=kitchen');
+        $this->from(url('/projects?lang=en&type=kitchen'))->get('/lang/tl')
+            ->assertRedirect('/projects?type=kitchen');
+        $this->get('/projects?type=kitchen')->assertSee('lang="tl"', false);
+        $this->from('https://evil.example/x')->get('/lang/ceb')->assertRedirect(route('home'));
+        $this->get('/')->assertSee('lang="ceb"', false);
+    }
 }
