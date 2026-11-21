@@ -100,7 +100,7 @@ class BackOfficeTest extends TestCase
         $this->get('/admin/design-pictures')->assertRedirect('/admin/login');
 
         $owner = $this->owner();
-        $this->actingAs($owner)->get('/admin/design-pictures')->assertOk()->assertSee('Wardrobe / closet', false)->assertSee('Bedroom')->assertSee('Drawing');
+        $this->actingAs($owner)->get('/admin/design-pictures')->assertOk()->assertSee('Wardrobe / closet', false)->assertSee('Bedroom')->assertSee('Sample photo');
 
         $img = \Illuminate\Http\UploadedFile::fake()->image('dark-wardrobe.jpg', 1600, 900);
         $this->actingAs($owner)->post('/admin/design-pictures', ['set' => 'wardrobe', 'style' => 'dark', 'image' => $img])->assertRedirect();
@@ -112,6 +112,8 @@ class BackOfficeTest extends TestCase
 
         $this->actingAs($owner)->delete('/admin/design-pictures', ['set' => 'wardrobe', 'style' => 'dark'])->assertRedirect();
         $this->assertFileDoesNotExist($file);
+        // without an upload the sample photo is back
+        $this->get('/design-your-space')->assertSee('images/design/styles/wardrobe-dark.webp', false);
 
         // Only real room types / styles are accepted.
         $this->actingAs($owner)->post('/admin/design-pictures', ['set' => '../../x', 'style' => 'dark', 'image' => $img])->assertSessionHasErrors('set');

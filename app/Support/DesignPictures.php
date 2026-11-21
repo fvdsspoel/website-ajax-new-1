@@ -40,18 +40,31 @@ class DesignPictures
         return is_file($f) ? $f : null;
     }
 
-    /** URL of an uploaded picture for this tile, or null → the clean drawing is shown (the default). */
-    public static function url(string $set, string $style): ?string
+    /** Sample photo shipped with the website (AI-made general picture, approved by the owner 21 Nov 2026). */
+    public static function bundledFile(string $set, string $style): ?string
     {
-        $f = self::uploadedFile($set, $style);
+        $f = public_path("images/design/styles/{$set}-{$style}.webp");
 
-        return $f ? asset("uploads/design/{$set}-{$style}.jpg").'?v='.filemtime($f) : null;
+        return is_file($f) ? $f : null;
     }
 
-    /** Where the current picture comes from: upload | sketch. */
+    /** URL of the picture for this tile: an uploaded photo first, then the sample photo; null → the drawing. */
+    public static function url(string $set, string $style): ?string
+    {
+        if ($f = self::uploadedFile($set, $style)) {
+            return asset("uploads/design/{$set}-{$style}.jpg").'?v='.filemtime($f);
+        }
+        if ($f = self::bundledFile($set, $style)) {
+            return asset("images/design/styles/{$set}-{$style}.webp").'?v='.filemtime($f);
+        }
+
+        return null;
+    }
+
+    /** Where the current picture comes from: upload | sample | sketch. */
     public static function source(string $set, string $style): string
     {
-        return self::uploadedFile($set, $style) ? 'upload' : 'sketch';
+        return self::uploadedFile($set, $style) ? 'upload' : (self::bundledFile($set, $style) ? 'sample' : 'sketch');
     }
 
     /** Save an upload as a 4:3 JPEG (max 1200 px wide); falls back to the original file if GD is missing. */

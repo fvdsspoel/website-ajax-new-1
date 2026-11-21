@@ -4,7 +4,7 @@
 <div class="admin-header">
     <div>
         <h1>Design pictures</h1>
-        <p class="lead">The pictures in step 3 "Which style do you like?" of <a href="{{ route('design') }}" target="_blank" rel="noopener">Design your space</a>. Each room type has its own six styles. Every tile shows a clean drawing by default. Only upload a photo if it shows exactly this furniture in exactly this style — it is cropped to the tile shape and goes live straight away; Remove brings the drawing back.</p>
+        <p class="lead">The pictures in step 3 "Which style do you like?" of <a href="{{ route('design') }}" target="_blank" rel="noopener">Design your space</a>. Each room type has its own six styles. Every tile shows a sample photo (or a drawing). Upload a real Ajax photo only if it shows exactly this furniture in exactly this style — it is cropped to the tile shape and replaces the sample straight away; Remove brings the sample back.</p>
     </div>
 </div>
 <div class="sec-tabs">
@@ -23,7 +23,7 @@
                     </div>
                     <div class="dp-body">
                         <b>{{ $name }}</b>
-                        <span class="tag {{ $src === 'upload' ? 'tag--changed' : '' }}">{{ ['upload' => 'Uploaded photo', 'sketch' => 'Drawing'][$src] }}</span>
+                        <span class="tag {{ $src === 'upload' ? 'tag--changed' : '' }}">{{ ['upload' => 'Uploaded photo', 'sample' => 'Sample photo', 'sketch' => 'Drawing'][$src] }}</span>
                         <form method="POST" action="{{ route('admin.design.store') }}" enctype="multipart/form-data" class="dp-form">
                             @csrf
                             <input type="hidden" name="set" value="{{ $set }}"><input type="hidden" name="style" value="{{ $style }}">
