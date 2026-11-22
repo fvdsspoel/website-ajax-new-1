@@ -14,7 +14,7 @@
                 <h3>{{ __('site.showroom.name') }}</h3>
                 <div class="info-row">@include('partials.icon', ['name' => 'pin'])<div><strong>{{ __('site.showroom.floor') }}</strong>{{ config('company.address') }}</div></div>
                 <div class="info-row">@include('partials.icon', ['name' => 'clock'])<div><strong>{{ __('site.showroom.hours') }}</strong>{{ config('company.hours') }}</div></div>
-                <div class="info-row">@include('partials.icon', ['name' => 'phone'])<div><strong>{{ __('site.showroom.call') }}</strong><a href="{{ $tel }}">{{ config('company.phone_primary') }}</a> · {{ config('company.phone_secondary') }}@if (config('company.phone_fm')) · {{ config('company.phone_fm') }}@endif</div></div>
+                <div class="info-row">@include('partials.icon', ['name' => 'phone'])<div><strong>{{ __('site.showroom.call') }}</strong><a href="{{ $tel }}">{{ config('company.phone_primary') }}</a> · {{ config('company.phone_secondary') }}@foreach (config('company.phones_more', []) as $more) · {{ $more }}@endforeach</div></div>
                 <div class="info-row">@include('partials.icon', ['name' => 'truck'])<div><strong>{{ __('site.showroom.area_title') }}</strong>{{ __('site.showroom.area') }}</div></div>
                 <div style="display:flex;flex-wrap:wrap;gap:10px">
                     <a href="{{ config('company.map_url') }}" target="_blank" rel="noopener" class="btn btn--primary">@include('partials.icon', ['name' => 'pin']) {{ __('site.showroom.directions') }}</a>

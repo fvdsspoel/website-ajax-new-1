@@ -3,8 +3,8 @@
 return [
     'phone_primary' => env('COMPANY_PHONE_PRIMARY', '0994 364 8582'),
     'phone_secondary' => env('COMPANY_PHONE_SECONDARY', '0992 149 6385'),
-    // Third line (FM) — on the Facebook page and the Google Business Profile.
-    'phone_fm' => env('COMPANY_PHONE_FM', '0945 603 5520'),
+    // (22 Nov 2026) all the numbers to reach Ajax, after the two main ones above (no names, Sir Ferdinand).
+    'phones_more' => array_values(array_filter(array_map('trim', explode(',', (string) env('COMPANY_PHONES_MORE', '0953 769 8630, 0962 477 0818, 0934 620 1976'))))),
     'address' => env('COMPANY_ADDRESS', '281 Purok 6, Santisimo Road, Brgy. Soledad, San Pablo City, Laguna'),
     // Small office line (Makati). Main address stays the San Pablo factory & showroom.
     'office_address' => env('COMPANY_OFFICE_ADDRESS', 'Unit 2201, 22/F Cityland Pasong Tamo Tower, 2210 Don Chino Roces Ave, Makati City'),

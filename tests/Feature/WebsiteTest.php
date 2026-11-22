@@ -229,4 +229,19 @@ class WebsiteTest extends TestCase
         $this->from('https://evil.example/x')->get('/lang/ceb')->assertRedirect(route('home'));
         $this->get('/')->assertSee('lang="ceb"', false);
     }
+
+    /** (22 Nov 2026) all the numbers to reach Ajax, the two main ones first, without names. */
+    public function test_the_site_shows_all_five_contact_numbers_with_the_main_ones_first(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+        $order = ['0994 364 8582', '0992 149 6385', '0953 769 8630', '0962 477 0818', '0934 620 1976'];
+        $pos = array_map(fn ($n) => strpos($html, $n), $order);
+        foreach ($pos as $i => $p) {
+            $this->assertNotFalse($p, $order[$i]);
+        }
+        $this->assertSame($pos, collect($pos)->sort()->values()->all());
+        $this->assertStringNotContainsString('0945 603 5520', $html);
+        $this->get('/contact')->assertSee('0934 620 1976');
+        $this->get('/showroom')->assertSee('0962 477 0818');
+    }
 }

@@ -55,7 +55,7 @@
         'url' => 'https://www.ajaxtradingcorp.com',
         'logo' => asset('images/site/logo.png'),
         'image' => asset('images/site/og-cover.jpg'),
-        'telephone' => array_values(array_filter([config('company.phone_primary'), config('company.phone_secondary'), config('company.phone_fm')])),
+        'telephone' => array_values(array_filter(array_merge([config('company.phone_primary'), config('company.phone_secondary')], config('company.phones_more', [])))),
         'address' => [
             '@type' => 'PostalAddress',
             'streetAddress' => '281 Purok 6, Santisimo Road, Brgy. Soledad',
@@ -177,7 +177,7 @@
                     <h3>{{ __('site.footer.contact') }}</h3>
                     <ul>
                         <li>{{ config('company.address') }}</li>
-                        <li><a href="{{ $tel }}">{{ config('company.phone_primary') }}</a> · <a href="tel:+63{{ ltrim(preg_replace('/\D+/', '', config('company.phone_secondary')), '0') }}">{{ config('company.phone_secondary') }}</a>@if (config('company.phone_fm')) · <a href="tel:+63{{ ltrim(preg_replace('/\D+/', '', config('company.phone_fm')), '0') }}">{{ config('company.phone_fm') }}</a>@endif</li>
+                        <li><a href="{{ $tel }}">{{ config('company.phone_primary') }}</a> · <a href="tel:+63{{ ltrim(preg_replace('/\D+/', '', config('company.phone_secondary')), '0') }}">{{ config('company.phone_secondary') }}</a>@foreach (config('company.phones_more', []) as $more) · <a href="tel:+63{{ ltrim(preg_replace('/\D+/', '', $more), '0') }}">{{ $more }}</a>@endforeach</li>
                         @if (config('company.email'))
                             <li><a href="mailto:{{ config('company.email') }}">{{ config('company.email') }}</a></li>
                         @endif
