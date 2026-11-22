@@ -201,3 +201,42 @@
     if (location.hash === '#upload') go(4); else go(0);
     window.scrollTo(0, 0);
 })();
+
+// (23 November 2026) A visitor who started a design and stops without leaving a name or number: after a quiet
+// minute, or when about to leave the page, Maya opens the chat and offers help — here, or a design expert.
+(function () {
+    var form = document.getElementById('designer');
+    if (!form) return;
+    var touched = false, done = false, timer = null, QUIET = 60000;
+    function hasContact() {
+        var n = document.getElementById('name'), m = document.getElementById('mobile');
+        return (n && n.value.trim() !== '') || (m && m.value.trim() !== '');
+    }
+    function context() {
+        var parts = [];
+        form.querySelectorAll('input[type=radio]:checked').forEach(function (r) {
+            if (r.name !== 'next' && r.dataset.label) parts.push(r.dataset.label);
+        });
+        var size = document.getElementById('size');
+        if (size && size.value) parts.push(size.value + ' m');
+        return parts.slice(0, 8).join(' · ');
+    }
+    function offer() {
+        if (!touched || done || hasContact() || !window.ajaxChat) return;
+        var d = document.getElementById('done');
+        if (d && !d.hidden) return;
+        window.ajaxChat.offer(context());
+    }
+    function quietAgain() {
+        clearTimeout(timer);
+        if (touched && !done) timer = setTimeout(offer, QUIET);
+    }
+    form.addEventListener('change', function () { touched = true; quietAgain(); });
+    form.addEventListener('input', quietAgain);
+    form.addEventListener('click', quietAgain);
+    form.addEventListener('submit', function () { done = true; clearTimeout(timer); });
+    // About to leave (desktop: the mouse goes up to the tabs or the address bar).
+    document.addEventListener('mouseout', function (e) {
+        if (!e.relatedTarget && e.clientY <= 0) offer();
+    });
+})();

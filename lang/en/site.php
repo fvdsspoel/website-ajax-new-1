@@ -424,6 +424,14 @@ return [
     ],
 
     'chat' => [
+        // (23 November 2026) Maya offers help on the design page when a visitor stops before leaving a name.
+        'nudge_text' => 'Hello, I\'m Maya from Ajax 👋 Planning a new space can take some thought. Would you like me to help you finish your design here, or shall one of our design experts contact you for a free consultation?',
+        'nudge_help' => 'Help me here',
+        'nudge_expert' => 'Have an expert contact me',
+        'nudge_no' => 'No, thank you',
+        'nudge_help_msg' => 'Hi Maya, can you help me with my design?',
+        'nudge_expert_msg' => 'I would like one of your design experts to contact me for a free consultation.',
+        'nudge_choices' => 'My choices so far',
         'open' => 'Chat with us',
         'title' => 'Maya · Ajax Sales',
         'subtitle' => 'Ask about kitchens, wardrobes, prices or a visit',

@@ -112,6 +112,7 @@
             panel.hidden = !open;
             toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
             chat.classList.toggle('is-open', open);
+            document.body.classList.toggle('chat-open', open);
             store.set('ajaxChatOpen', open ? '1' : '0');
             if (open) { dot.hidden = true; log.scrollTop = log.scrollHeight; setTimeout(function () { input.focus(); }, 50); }
         }
@@ -163,6 +164,43 @@
 
         if (started) startPolling();
         if (store.get('ajaxChatOpen') === '1') setOpen(true);
+
+        // Send a message as if the visitor typed it (the quick answers of Maya's offer).
+        function sendText(text) {
+            if (sending) return;
+            input.value = text;
+            form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit', { cancelable: true }));
+        }
+
+        // (23 November 2026) Maya offers help: a visitor who started a design and stopped before leaving a name.
+        // Shown once per visit, only when the chat has not started; nothing is sent until the visitor answers.
+        window.ajaxChat = {
+            started: function () { return started; },
+            isOpen: function () { return !panel.hidden; },
+            offer: function (context) {
+                if (started || !panel.hidden || store.get('ajaxMayaOffer') === '1' || !t.nudge_text) return false;
+                store.set('ajaxMayaOffer', '1');
+                setOpen(true);
+                addMessage({ from: 'ajax', name: 'Maya', text: t.nudge_text });
+                var box = document.createElement('div');
+                box.className = 'chat-quick';
+                var extra = context ? '\n(' + t.nudge_choices + ': ' + context + ')' : '';
+                [['help', t.nudge_help, t.nudge_help_msg + extra], ['expert', t.nudge_expert, t.nudge_expert_msg + extra], ['no', t.nudge_no, null]].forEach(function (b) {
+                    var btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'chat-quick-btn chat-quick-btn--' + b[0];
+                    btn.textContent = b[1];
+                    btn.addEventListener('click', function () {
+                        box.remove();
+                        if (b[2]) { sendText(b[2]); } else { setOpen(false); }
+                    });
+                    box.appendChild(btn);
+                });
+                log.appendChild(box);
+                log.scrollTop = log.scrollHeight;
+                return true;
+            }
+        };
     }
 
     // Filter chips (portfolio + accessories): <button data-filter="x"> over [data-category] items

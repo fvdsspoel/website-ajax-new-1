@@ -759,3 +759,15 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
 @media (min-width: 640px) { .options--boards .opt:last-child:nth-child(3n+1) { grid-column: 1 / -1; } }
 .opt--plan .opt-img.has-photo { padding: 0; background: #eee; }
 .opt--plan .opt-img.has-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* (23 November 2026) Maya's offer on the design page: quick answers under her message. */
+.chat-quick { display: flex; flex-wrap: wrap; gap: 6px; align-self: flex-start; margin: 2px 0 6px; }
+.chat-quick-btn { border: 1px solid var(--line); background: var(--white); color: inherit; border-radius: 999px; padding: 7px 12px; font: inherit; font-size: .85rem; cursor: pointer; }
+.chat-quick-btn:hover, .chat-quick-btn:focus-visible { border-color: currentColor; }
+.chat-quick-btn--expert { background: var(--green, #2e7d32); border-color: var(--green, #2e7d32); color: #fff; }
+
+/* (23 November 2026) On a phone the design page hides the floating buttons; an open chat (Maya's offer) still shows. */
+@media (max-width: 999px) {
+  .page-design.chat-open .fab-dock { display: block; }
+  .page-design.chat-open .fab-dock .fab-mini, .page-design.chat-open .fab-dock .float-chat-btn { display: none; }
+}

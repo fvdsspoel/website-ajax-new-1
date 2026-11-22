@@ -250,7 +250,10 @@
         </div>
         @endif
     </div>
-    <script type="application/json" id="chat-i18n">{!! json_encode(['you' => __('site.chat.you'), 'human' => __('site.chat.human')], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
+    <script type="application/json" id="chat-i18n">{!! json_encode(['you' => __('site.chat.you'), 'human' => __('site.chat.human'),
+        'nudge_text' => __('site.chat.nudge_text'), 'nudge_help' => __('site.chat.nudge_help'), 'nudge_expert' => __('site.chat.nudge_expert'),
+        'nudge_no' => __('site.chat.nudge_no'), 'nudge_help_msg' => __('site.chat.nudge_help_msg'), 'nudge_expert_msg' => __('site.chat.nudge_expert_msg'),
+        'nudge_choices' => __('site.chat.nudge_choices')], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 
     <script src="{{ asset('js/app.js') }}?v={{ filemtime(public_path('js/app.js')) }}" defer></script>
     <script src="{{ asset('js/ui.js') }}?v={{ filemtime(public_path('js/ui.js')) }}" defer></script>

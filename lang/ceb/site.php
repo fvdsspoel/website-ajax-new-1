@@ -427,6 +427,14 @@ return [
     ],
 
     'chat' => [
+        // (23 November 2026) Maya offers help on the design page when a visitor stops before leaving a name.
+        'nudge_text' => 'Hello, ako si Maya sa Ajax 👋 Dili sayon ang pagplano sa bag-ong space. Gusto ba nimo nga tabangan tika nga mahuman ang imong design dinhi, o ipa-contact ka namo sa usa sa among design experts para sa libre nga konsultasyon?',
+        'nudge_help' => 'Tabangi ko dinhi',
+        'nudge_expert' => 'Ipa-contact sa expert',
+        'nudge_no' => 'Dili na, salamat',
+        'nudge_help_msg' => 'Hi Maya, matabangan ba ko nimo sa akong design?',
+        'nudge_expert_msg' => 'Gusto nako nga ma-contact sa usa sa inyong design experts para sa libre nga konsultasyon.',
+        'nudge_choices' => 'Akong mga napili',
         'open' => 'Chat kanamo',
         'title' => 'Maya · Ajax Sales',
         'subtitle' => 'Pangutana bahin sa kitchen, wardrobe, presyo o pagbisita',
