@@ -227,14 +227,25 @@
         if (d && !d.hidden) return;
         window.ajaxChat.offer(context());
     }
+    function onContactStep() {
+        var last = form.querySelector('.pane[data-step="5"]');
+        return !!(last && last.classList.contains('is-active'));
+    }
     function quietAgain() {
         clearTimeout(timer);
-        if (touched && !done) timer = setTimeout(offer, QUIET);
+        // On the last step ("Where can we reach you?") a client who hesitates is asked sooner: the second chance.
+        if (touched && !done) timer = setTimeout(offer, onContactStep() ? 25000 : QUIET);
     }
     form.addEventListener('change', function () { touched = true; quietAgain(); });
     form.addEventListener('input', quietAgain);
     form.addEventListener('click', quietAgain);
     form.addEventListener('submit', function () { done = true; clearTimeout(timer); });
+    // On a phone: the client went to another app or tab and comes back without a name — Maya asks then.
+    var leftAt = 0;
+    document.addEventListener('visibilitychange', function () {
+        if (document.hidden) { leftAt = Date.now(); return; }
+        if (leftAt && Date.now() - leftAt > 5000) setTimeout(offer, 800);
+    });
     // About to leave (desktop: the mouse goes up to the tabs or the address bar).
     document.addEventListener('mouseout', function (e) {
         if (!e.relatedTarget && e.clientY <= 0) offer();
