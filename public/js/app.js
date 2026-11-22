@@ -48,11 +48,21 @@
             set: function (k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
         };
 
+        var pending = []; // visitor messages shown straight away, still waiting for their id
+
         function addMessage(m) {
             if (m.id) {
                 lastId = Math.max(lastId, m.id);
                 if (seen[m.id]) return;
                 seen[m.id] = true;
+                // The server sends our own message back (on poll or send): it is already on screen.
+                if (m.from === 'visitor') {
+                    for (var i = 0; i < pending.length; i++) {
+                        if (pending[i] === m.text) { pending.splice(i, 1); return; }
+                    }
+                }
+            } else if (m.from === 'visitor') {
+                pending.push(m.text);
             }
             var div = document.createElement('div');
             div.className = 'msg ' + (m.from === 'visitor' ? 'msg--me' : 'msg--ajax');
@@ -82,6 +92,7 @@
         }
 
         function poll() {
+            if (sending) return; // the send answer brings the new messages itself
             fetch(chat.dataset.pollUrl + '?after=' + lastId, { headers: { 'Accept': 'application/json' }, credentials: 'same-origin' })
                 .then(function (r) { return r.ok ? r.json() : null; })
                 .then(function (d) { if (d) { errorEl.hidden = true; handle(d); } })
@@ -142,9 +153,7 @@
             })
                 .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
                 .then(function (d) {
-                    // server echoes the visitor's message with its id; skip re-drawing it
-                    (d.messages || []).forEach(function (m) { if (m.from === 'visitor' && m.text === text) seen[m.id] = true; });
-                    handle(d);
+                    handle(d); // our own message comes back with its id and is matched to the one on screen
                     started = true;
                     startPolling();
                 })

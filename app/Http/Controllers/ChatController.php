@@ -71,8 +71,9 @@ class ChatController extends Controller
         try {
             $request = Http::withHeaders(['X-Api-Key' => $key])
                 ->acceptJson()
-                // Maya can take a few seconds to write a reply.
-                ->timeout($method === 'post' ? 45 : 10);
+                // Maya can take a few seconds to write a reply (and the CRM
+                // tries the AI twice if the first try fails).
+                ->timeout($method === 'post' ? 60 : 10);
 
             $response = $method === 'post'
                 ? $request->asForm()->post("{$base}/{$path}", $payload)
