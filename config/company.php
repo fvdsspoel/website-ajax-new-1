@@ -14,7 +14,7 @@ return [
 
     // Leave empty to hide the email line — the live site's addresses are
     // Cloudflare-obfuscated, so set the real one in .env rather than guess.
-    'email' => env('COMPANY_EMAIL', 'sales.ajaxtradingcorporation@gmail.com'),
+    'email' => env('COMPANY_EMAIL', 'ajaxtradingcorp2024@gmail.com'),
 
     // Chat channels. Messenger page ID is the live site's; Viber and
     // WhatsApp default to the primary number in international format.
