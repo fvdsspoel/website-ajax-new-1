@@ -32,6 +32,15 @@ Route::post('/contact', [QuoteController::class, 'store'])->middleware('throttle
 
 // Live chat window → Maya in the CRM (see ChatController).
 Route::post('/chat/send', [ChatController::class, 'send'])->middleware('throttle:20,1')->name('chat.send');
+// (24 November 2026) The website counts itself: a step of the design page, a tap on Call / Messenger / Viber / WhatsApp.
+Route::post('/t', function (Request $request) {
+    $event = (string) $request->input('e');
+    if (in_array($event, ['design_step', 'call_click', 'messenger_click', 'viber_click', 'whatsapp_click'], true)) {
+        \App\Support\SiteStats::event($request, $event, is_string($request->input('d')) ? mb_substr($request->input('d'), 0, 60) : null);
+    }
+
+    return response()->noContent();
+})->middleware('throttle:60,1')->name('track');
 Route::get('/chat/poll', [ChatController::class, 'poll'])->middleware('throttle:60,1')->name('chat.poll');
 
 // EN / TL toggle — stores the choice and returns the visitor to the same page.

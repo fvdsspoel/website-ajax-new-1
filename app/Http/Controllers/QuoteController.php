@@ -48,6 +48,10 @@ class QuoteController extends Controller
             ]),
         ], $request->file('files', []));
 
+        if ($sent) {
+            \App\Support\SiteStats::event($request, 'quote_request', $v['interest'] ?? null);
+        }
+
         return back()->withInput($sent ? [] : $request->except('files'))->with($sent ? 'success' : 'error', true);
     }
 }

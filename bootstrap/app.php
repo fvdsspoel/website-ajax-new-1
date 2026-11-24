@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
             \App\Http\Middleware\ApplySiteTexts::class,
+            \App\Http\Middleware\CountVisit::class,
         ]);
         $middleware->redirectGuestsTo(fn () => route('admin.login'));
     })

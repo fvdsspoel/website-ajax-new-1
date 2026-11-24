@@ -1,4 +1,21 @@
 // Ajax public site — small, dependency-free behaviours.
+// (24 November 2026) The website counts itself: a step in the design page, a tap on Call / Messenger / Viber / WhatsApp.
+// No cookies; the server keeps only a code of the day (see App\Support\SiteStats).
+window.ajaxTrack = function (event, detail) {
+    try {
+        var meta = document.querySelector('meta[name="csrf-token"]');
+        var body = 'e=' + encodeURIComponent(event) + (detail ? '&d=' + encodeURIComponent(detail) : '');
+        fetch('/t', { method: 'POST', keepalive: true, credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRF-TOKEN': meta ? meta.content : '', 'X-Requested-With': 'XMLHttpRequest' }, body: body }).catch(function () {});
+    } catch (e) { /* counting never gets in the way */ }
+};
+document.addEventListener('click', function (ev) {
+    var a = ev.target && ev.target.closest ? ev.target.closest('a[href]') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var kind = /^tel:/i.test(href) ? 'call_click' : /m\.me\/|messenger\.com/i.test(href) ? 'messenger_click' : /^viber:/i.test(href) ? 'viber_click' : /wa\.me\/|whatsapp/i.test(href) ? 'whatsapp_click' : null;
+    if (kind) window.ajaxTrack(kind, location.pathname);
+}, true);
 (function () {
     // Mobile nav
     var toggle = document.querySelector('.nav-toggle');

@@ -25,6 +25,9 @@
         next.hidden = last; submit.hidden = !last;
         skip.hidden = cur === 0 || last;   // the room must be chosen; the contact step is sent, not skipped
         if (last) review();
+        // Which steps visitors reach (once per step per visit), for the social app's Website page.
+        if (!go.seen) go.seen = {};
+        if (!go.seen[cur] && window.ajaxTrack) { go.seen[cur] = true; window.ajaxTrack('design_step', String(cur + 1)); }
         if (window.innerWidth < 1000) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 

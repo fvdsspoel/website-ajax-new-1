@@ -28,6 +28,11 @@ class ChatController extends Controller
             'page' => 'nullable|string|max:255',
         ]);
 
+        // The first message of a visitor: a chat started (counted for the social app's Website page).
+        if (! $request->session()->has('chat_token')) {
+            \App\Support\SiteStats::event($request, 'chat_started');
+        }
+
         return $this->forward('post', 'send', [
             'token' => $this->token($request),
             'text' => $data['text'],

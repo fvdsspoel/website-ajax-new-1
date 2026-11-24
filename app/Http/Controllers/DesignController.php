@@ -112,6 +112,10 @@ class DesignController extends Controller
             ], fn ($x) => $x !== null && $x !== ''),
         ], $request->file('files', []));
 
+        if ($sent) {
+            \App\Support\SiteStats::event($request, 'design_request', $v['room'] ?? null);
+        }
+
         return response()->json([
             'success' => $sent,
             'message' => $sent ? __('site.design.success_title') : __('site.design.error'),
