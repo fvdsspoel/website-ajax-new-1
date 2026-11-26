@@ -12,6 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Before the routes: /index.php is not a page of its own (Search Console, 26 November 2026).
+        $middleware->prepend(\App\Http\Middleware\CleanUrl::class);
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
             \App\Http\Middleware\ApplySiteTexts::class,

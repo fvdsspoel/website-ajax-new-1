@@ -8,8 +8,8 @@
     @php
         // One clean address per language for Google: English = no ?lang, Tagalog/Bisaya = ?lang=tl / ?lang=ceb.
         $loc = app()->getLocale();
-        $base = url()->current();
-        $canonical = $loc === 'en' ? $base : $base.'?lang='.$loc;
+        $base = \App\Support\Seo::url();
+        $canonical = \App\Support\Seo::url(null, $loc);
         $ogLocale = ['en' => 'en_PH', 'tl' => 'tl_PH', 'ceb' => 'cx_PH'][$loc] ?? 'en_PH';
     @endphp
     <title>@yield('title', __('site.seo.home.title'))</title>

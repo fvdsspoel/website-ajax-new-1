@@ -244,4 +244,17 @@ class WebsiteTest extends TestCase
         $this->get('/contact')->assertSee('0934 620 1976');
         $this->get('/showroom')->assertSee('0962 477 0818');
     }
+
+    public function test_one_fixed_address_per_page_for_google(): void
+    {
+        config(['app.url' => 'https://www.ajaxtradingcorp.com']);
+        $this->get('/about-us')->assertOk()
+            ->assertSee('<link rel="canonical" href="https://www.ajaxtradingcorp.com/about-us">', false)
+            ->assertSee('hreflang="tl-PH" href="https://www.ajaxtradingcorp.com/about-us?lang=tl"', false);
+        $this->get('http://ajaxtradingcorp.com/about-us')->assertSee('<link rel="canonical" href="https://www.ajaxtradingcorp.com/about-us">', false);
+        $this->get('/?lang=tl')->assertSee('<link rel="canonical" href="https://www.ajaxtradingcorp.com/?lang=tl">', false);
+        $this->get('/index.php')->assertRedirect('https://www.ajaxtradingcorp.com/')->assertStatus(301);
+        $this->get('/index.php/about-us?lang=tl')->assertRedirect('https://www.ajaxtradingcorp.com/about-us?lang=tl');
+        $this->get('/sitemap.xml')->assertSee('<loc>https://www.ajaxtradingcorp.com/</loc>', false)->assertSee('<loc>https://www.ajaxtradingcorp.com/about-us?lang=tl</loc>', false);
+    }
 }

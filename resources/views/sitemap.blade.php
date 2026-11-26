@@ -1,7 +1,7 @@
 {!! '<'.'?xml version="1.0" encoding="UTF-8"?>' !!}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 @foreach ($names as $name => $priority)
-@php $u = route($name); @endphp
+@php $u = \App\Support\Seo::url(\App\Support\Seo::routePath($name)); @endphp
 @foreach (['' => 'en-PH', '?lang=tl' => 'tl-PH', '?lang=ceb' => 'ceb'] as $q => $code)
     <url>
         <loc>{{ $u.$q }}</loc>
