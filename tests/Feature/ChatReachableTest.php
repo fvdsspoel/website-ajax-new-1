@@ -54,4 +54,15 @@ class ChatReachableTest extends TestCase
         $this->post('/chat/notify', ['endpoint' => 'https://fcm.googleapis.com/fcm/send/x', 'p256dh' => 'p', 'auth' => 'a'])->assertOk()->assertJsonPath('ok', true);
         Http::assertSent(fn ($req) => str_ends_with($req->url(), '/subscribe') && $req['endpoint'] === 'https://fcm.googleapis.com/fcm/send/x' && strlen($req['token']) === 40);
     }
+
+    public function test_a_tap_on_an_advisor_button_is_sent_with_its_action(): void
+    {
+        Http::swap(new \Illuminate\Http\Client\Factory);
+        Http::fake(['crm.test/api/webchat/send' => Http::response(['messages' => [['id' => 9, 'from' => 'ajax', 'name' => 'Maya', 'text' => 'Tap below', 'actions' => [['id' => 'call', 'label' => '📞 Call me back']], 'secret' => 'x']], 'human' => false, 'link' => 'AB12CD34EF'])]);
+        $r = $this->post('/chat/send', ['text' => '📞 Call me back', 'action' => 'call'])->assertOk();
+        $this->assertSame('call', $r->json('messages.0.actions.0.id'));
+        $this->assertNull($r->json('messages.0.secret'), 'only the known fields go to the page');
+        Http::assertSent(fn ($req) => str_ends_with($req->url(), '/send') && ($req['action'] ?? null) === 'call');
+        $this->post('/chat/send', ['text' => 'x', 'action' => 'hack'])->assertStatus(302);
+    }
 }

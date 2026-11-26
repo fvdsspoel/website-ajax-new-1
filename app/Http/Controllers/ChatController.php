@@ -41,6 +41,7 @@ class ChatController extends Controller
             'text' => 'required|string|max:2000',
             'after' => 'nullable|integer|min:0',
             'page' => 'nullable|string|max:255',
+            'action' => 'nullable|in:call,chat', // (26 November 2026) Maya's advisor buttons
         ]);
 
         // The first message of a visitor: a chat started (counted for the social app's Website page).
@@ -54,7 +55,7 @@ class ChatController extends Controller
             'after' => $data['after'] ?? 0,
             'page' => $data['page'] ?? null,
             'locale' => app()->getLocale(),
-        ]);
+        ] + (! empty($data['action']) ? ['action' => $data['action']] : []));
     }
 
     public function poll(Request $request): JsonResponse
@@ -147,7 +148,7 @@ class ChatController extends Controller
             }
 
             return response()->json([
-                'messages' => $response->json('messages', []),
+                'messages' => collect((array) $response->json('messages', []))->map(fn ($m) => is_array($m) ? array_intersect_key($m, array_flip(['id', 'from', 'name', 'text', 'at', 'actions'])) : $m)->all(),
                 'human' => (bool) $response->json('human', false),
                 // (26 November 2026) the chat's code for "Continue on Messenger / WhatsApp".
                 'link' => is_string($response->json('link')) && preg_match('/^[A-Z0-9]{10}$/', $response->json('link')) ? $response->json('link') : null,

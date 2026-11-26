@@ -99,6 +99,22 @@ document.addEventListener('click', function (ev) {
             p.textContent = m.text;
             div.appendChild(name);
             div.appendChild(p);
+            // (26 November 2026) Maya's "Call me back / Talk to an advisor" buttons under her message.
+            if (m.actions && m.actions.length) {
+                var acts = document.createElement('div');
+                acts.className = 'msg-actions';
+                m.actions.forEach(function (a) {
+                    var b = document.createElement('button');
+                    b.type = 'button';
+                    b.textContent = a.label;
+                    b.addEventListener('click', function () {
+                        log.querySelectorAll('.msg-actions').forEach(function (x) { x.remove(); });
+                        postText(a.label, a.id);
+                    });
+                    acts.appendChild(b);
+                });
+                div.appendChild(acts);
+            }
             log.appendChild(div);
             log.scrollTop = log.scrollHeight;
             if (m.from !== 'visitor' && panel.hidden && (!m.id || m.id > seenId)) showNew();
@@ -209,16 +225,22 @@ document.addEventListener('click', function (ev) {
             e.preventDefault();
             var text = input.value.trim();
             if (!text || sending) return;
+            input.value = '';
+            input.style.height = 'auto';
+            postText(text, null);
+        });
+
+        function postText(text, action) {
+            if (sending) return;
             sending = true;
             errorEl.hidden = true;
             // show the visitor's message straight away
             addMessage({ from: 'visitor', text: text });
-            input.value = '';
-            input.style.height = 'auto';
             typing.hidden = false;
 
             var body = new URLSearchParams();
             body.set('text', text);
+            if (action) body.set('action', action);
             body.set('after', String(lastId));
             body.set('page', location.pathname);
 
@@ -236,7 +258,7 @@ document.addEventListener('click', function (ev) {
                 })
                 .catch(function () { errorEl.hidden = false; })
                 .then(function () { typing.hidden = true; sending = false; });
-        });
+        }
 
         if (started) startPolling();
         if (store.get('ajaxChatOpen') === '1') setOpen(true);
