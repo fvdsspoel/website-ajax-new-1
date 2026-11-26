@@ -447,6 +447,12 @@ return [
         'close' => 'Sirad-i ang chat',
         'or' => 'Mas gusto nimo motawag?',
         'you' => 'Ikaw',
+        'new_reply' => 'Naay bag-ong tubag ang Ajax',
+        'continue' => 'Padayon sa:',
+        'notify' => 'Pahibaloa ko sa tubag',
+        'notify_on' => '✓ Pahibaloon ka namo sa tubag',
+        'notify_denied' => 'Naka-block ang notifications sa imong browser.',
+        'wa_text' => 'Hi Ajax! Padayonon nako akong chat sa website (code: :code)',
     ],
 
     'footer' => [

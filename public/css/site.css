@@ -771,3 +771,19 @@ svg { width: 1.25em; height: 1.25em; flex: none; }
   .page-design.chat-open .fab-dock { display: block; }
   .page-design.chat-open .fab-dock .fab-mini, .page-design.chat-open .fab-dock .float-chat-btn { display: none; }
 }
+
+/* (26 November 2026) a reply came while the visitor was away: the chat button says so — on a phone as a bubble above the bar */
+.chat.has-new .float-chat-btn { background: linear-gradient(135deg, #34c26b, var(--green)); color: var(--white); }
+@media (max-width: 719px) {
+  .chat.has-new .float-chat-label { display: block; position: absolute; right: 0; bottom: 58px; white-space: nowrap; padding: 8px 12px; border-radius: 999px;
+    background: var(--green); color: var(--white); font-size: 12.5px; font-weight: 800; box-shadow: 0 10px 24px -8px rgba(0, 0, 0, .5); }
+}
+/* "Continue on" Messenger / WhatsApp / Viber, and "Notify me of the answer", under the conversation */
+.chat-continue { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px 14px 4px; font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); }
+.chat-continue a, .chat-continue button { display: inline-flex; align-items: center; gap: 5px; height: 30px; padding: 0 11px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--white); color: var(--ink); font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; }
+.chat-continue a:hover, .chat-continue button:hover { border-color: var(--green); color: var(--green); }
+.chat-continue svg { width: 15px; height: 15px; }
+.chat-continue #chat-notify { border-color: var(--gold); }
+.chat-continue #chat-notify-on { color: var(--green); font-weight: 700; }
+.chat-continue[hidden], .chat-continue [hidden] { display: none; }

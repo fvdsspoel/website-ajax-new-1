@@ -444,6 +444,12 @@ return [
         'close' => 'Close chat',
         'or' => 'Prefer to call?',
         'you' => 'You',
+        'new_reply' => 'New reply from Ajax',
+        'continue' => 'Continue on:',
+        'notify' => 'Notify me of the answer',
+        'notify_on' => '✓ We will notify you of the answer',
+        'notify_denied' => 'Notifications are blocked in your browser.',
+        'wa_text' => 'Hi Ajax! I am continuing my website chat (code: :code)',
     ],
 
     'footer' => [

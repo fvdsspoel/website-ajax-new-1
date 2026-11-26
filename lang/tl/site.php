@@ -446,6 +446,12 @@ return [
         'close' => 'Isara ang chat',
         'or' => 'Mas gusto mong tumawag?',
         'you' => 'Ikaw',
+        'new_reply' => 'May bagong sagot ang Ajax',
+        'continue' => 'Ituloy sa:',
+        'notify' => 'Abisuhan ako sa sagot',
+        'notify_on' => '✓ Aabisuhan ka namin sa sagot',
+        'notify_denied' => 'Naka-block ang notifications sa browser mo.',
+        'wa_text' => 'Hi Ajax! Itutuloy ko ang chat ko sa website (code: :code)',
     ],
 
     'footer' => [

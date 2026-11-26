@@ -42,6 +42,8 @@ Route::post('/t', function (Request $request) {
     return response()->noContent();
 })->middleware('throttle:60,1')->name('track');
 Route::get('/chat/poll', [ChatController::class, 'poll'])->middleware('throttle:60,1')->name('chat.poll');
+// (26 November 2026) "Notify me of the answer": the visitor's phone or computer (Web Push), passed on to the CRM.
+Route::post('/chat/notify', [ChatController::class, 'notify'])->middleware('throttle:10,1')->name('chat.notify');
 
 // EN / TL toggle — stores the choice and returns the visitor to the same page.
 Route::get('/lang/{locale}', function (Request $request, string $locale) {

@@ -66,6 +66,15 @@ document.addEventListener('click', function (ev) {
         };
 
         var pending = []; // visitor messages shown straight away, still waiting for their id
+        // (26 November 2026) the chat is remembered 30 days: a reply that came while the visitor was away shows as "New reply".
+        var keep = {
+            get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+            set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+        };
+        var seenId = parseInt(keep.get('ajaxChatSeen') || '0', 10) || 0;
+        var label = chat.querySelector('.float-chat-label');
+        function markSeen() { if (lastId > seenId) { seenId = lastId; keep.set('ajaxChatSeen', String(seenId)); } }
+        function showNew() { dot.hidden = false; if (label && t.new_reply) { label.textContent = t.new_reply; chat.classList.add('has-new'); } }
 
         function addMessage(m) {
             if (m.id) {
@@ -92,7 +101,8 @@ document.addEventListener('click', function (ev) {
             div.appendChild(p);
             log.appendChild(div);
             log.scrollTop = log.scrollHeight;
-            if (m.from !== 'visitor' && panel.hidden) dot.hidden = false;
+            if (m.from !== 'visitor' && panel.hidden && (!m.id || m.id > seenId)) showNew();
+            if (!panel.hidden) markSeen();
         }
 
         function note(text) {
@@ -103,8 +113,54 @@ document.addEventListener('click', function (ev) {
             log.scrollTop = log.scrollHeight;
         }
 
+        // (26 November 2026) keep the visitor reachable: Messenger / WhatsApp carry the chat's code; or a notification.
+        var cont = document.getElementById('chat-continue');
+        var notifyBtn = document.getElementById('chat-notify');
+        var notifyOn = document.getElementById('chat-notify-on');
+        var pushKey = chat.dataset.pushKey || '';
+        var linkCode = null;
+        var canPush = !!(pushKey && 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window);
+        function showContinue(code) {
+            if (!cont || !code || code === linkCode) return;
+            linkCode = code;
+            var m = document.getElementById('chat-go-messenger'), w = document.getElementById('chat-go-whatsapp');
+            if (m) m.href = m.dataset.base + (m.dataset.base.indexOf('?') >= 0 ? '&' : '?') + 'ref=wc_' + code;
+            if (w) w.href = w.dataset.base + '?text=' + encodeURIComponent((t.wa_text || '').replace(':code', code));
+            cont.hidden = false;
+            if (keep.get('ajaxChatNotify') === '1') { notifyOn.hidden = false; }
+            else if (canPush && Notification.permission !== 'denied') { notifyBtn.hidden = false; }
+        }
+        function b64ToBytes(s) {
+            var pad = '='.repeat((4 - s.length % 4) % 4), raw = atob((s + pad).replace(/-/g, '+').replace(/_/g, '/')), out = new Uint8Array(raw.length);
+            for (var i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+            return out;
+        }
+        if (notifyBtn) notifyBtn.addEventListener('click', function () {
+            notifyBtn.disabled = true;
+            navigator.serviceWorker.register('/sw.js').then(function (reg) {
+                return Notification.requestPermission().then(function (perm) {
+                    if (perm !== 'granted') throw new Error('denied');
+                    return navigator.serviceWorker.ready.then(function (ready) {
+                        return ready.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(pushKey) });
+                    });
+                });
+            }).then(function (sub) {
+                var j = sub.toJSON(), body = new URLSearchParams();
+                body.set('endpoint', j.endpoint); body.set('p256dh', j.keys.p256dh); body.set('auth', j.keys.auth);
+                return fetch(chat.dataset.notifyUrl, { method: 'POST', credentials: 'same-origin', body: body.toString(),
+                    headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': chat.dataset.csrf, 'Content-Type': 'application/x-www-form-urlencoded' } })
+                    .then(function (r) { if (!r.ok) throw new Error(r.status); });
+            }).then(function () {
+                keep.set('ajaxChatNotify', '1'); notifyBtn.hidden = true; notifyOn.hidden = false;
+            }).catch(function (e) {
+                notifyBtn.disabled = false;
+                if (String(e && e.message) === 'denied') { notifyBtn.hidden = true; note(t.notify_denied); }
+            });
+        });
+
         function handle(data) {
             (data.messages || []).forEach(addMessage);
+            if (data.link) showContinue(data.link);
             if (data.human && !humanShown) { humanShown = true; note(t.human); }
         }
 
@@ -131,7 +187,10 @@ document.addEventListener('click', function (ev) {
             chat.classList.toggle('is-open', open);
             document.body.classList.toggle('chat-open', open);
             store.set('ajaxChatOpen', open ? '1' : '0');
-            if (open) { dot.hidden = true; log.scrollTop = log.scrollHeight; setTimeout(function () { input.focus(); }, 50); }
+            if (open) {
+                dot.hidden = true; chat.classList.remove('has-new'); if (label && t.open) label.textContent = t.open;
+                markSeen(); log.scrollTop = log.scrollHeight; setTimeout(function () { input.focus(); }, 50);
+            }
         }
 
         toggleBtn.addEventListener('click', function () { setOpen(panel.hidden); });
@@ -181,6 +240,11 @@ document.addEventListener('click', function (ev) {
 
         if (started) startPolling();
         if (store.get('ajaxChatOpen') === '1') setOpen(true);
+        // A tap on the notification opens the website with ?chat=open.
+        if (/[?&]chat=open\b/.test(location.search)) {
+            setOpen(true);
+            try { history.replaceState(null, '', location.pathname + location.search.replace(/[?&]chat=open\b/, '').replace(/^&/, '?') + location.hash); } catch (e) {}
+        }
 
         // Send a message as if the visitor typed it (the quick answers of Maya's offer).
         function sendText(text) {

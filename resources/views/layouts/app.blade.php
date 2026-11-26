@@ -218,7 +218,9 @@
              data-send-url="{{ route('chat.send') }}"
              data-poll-url="{{ route('chat.poll') }}"
              data-csrf="{{ csrf_token() }}"
-             data-started="{{ session()->has('chat_token') ? '1' : '0' }}">
+             data-notify-url="{{ route('chat.notify') }}"
+             data-push-key="{{ \App\Http\Controllers\ChatController::pushKey() }}"
+             data-started="{{ \App\Http\Controllers\ChatController::tokenOf(request()) ? '1' : '0' }}">
             <section class="chat-panel" id="chat-panel" role="dialog" aria-modal="false" aria-labelledby="chat-title" hidden>
                 <header class="chat-head">
                     <span class="chat-avatar" aria-hidden="true">M</span>
@@ -233,6 +235,15 @@
                 </div>
                 <p class="chat-typing" id="chat-typing" hidden>{{ __('site.chat.typing') }}</p>
                 <p class="chat-error" id="chat-error" role="alert" hidden>{{ __('site.chat.error') }}</p>
+                {{-- (26 November 2026) keep the visitor reachable: go on in Messenger / WhatsApp / Viber, or be notified of the answer --}}
+                <div class="chat-continue" id="chat-continue" hidden>
+                    <span>{{ __('site.chat.continue') }}</span>
+                    <a id="chat-go-messenger" href="{{ config('company.messenger_url') }}" data-base="{{ config('company.messenger_url') }}" target="_blank" rel="noopener" data-track="Contact">@include('partials.icon', ['name' => 'messenger']) Messenger</a>
+                    <a id="chat-go-whatsapp" href="https://wa.me/{{ config('company.whatsapp_number') }}" data-base="https://wa.me/{{ config('company.whatsapp_number') }}" target="_blank" rel="noopener" data-track="Contact">WhatsApp</a>
+                    <a id="chat-go-viber" href="viber://chat?number=%2B{{ config('company.viber_number') }}" data-track="Contact">@include('partials.icon', ['name' => 'viber']) Viber</a>
+                    <button type="button" id="chat-notify" hidden>🔔 {{ __('site.chat.notify') }}</button>
+                    <span id="chat-notify-on" hidden>{{ __('site.chat.notify_on') }}</span>
+                </div>
                 <form class="chat-form" id="chat-form">
                     <label for="chat-input" class="visually-hidden">{{ __('site.chat.placeholder') }}</label>
                     <textarea id="chat-input" rows="1" maxlength="2000" placeholder="{{ __('site.chat.placeholder') }}" autocomplete="off"></textarea>
@@ -254,7 +265,8 @@
     <script type="application/json" id="chat-i18n">{!! json_encode(['you' => __('site.chat.you'), 'human' => __('site.chat.human'),
         'nudge_text' => __('site.chat.nudge_text'), 'nudge_help' => __('site.chat.nudge_help'), 'nudge_expert' => __('site.chat.nudge_expert'),
         'nudge_no' => __('site.chat.nudge_no'), 'nudge_help_msg' => __('site.chat.nudge_help_msg'), 'nudge_expert_msg' => __('site.chat.nudge_expert_msg'),
-        'nudge_choices' => __('site.chat.nudge_choices')], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
+        'nudge_choices' => __('site.chat.nudge_choices'), 'new_reply' => __('site.chat.new_reply'), 'open' => __('site.chat.open'),
+        'wa_text' => __('site.chat.wa_text'), 'notify_denied' => __('site.chat.notify_denied')], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 
     <script src="{{ asset('js/app.js') }}?v={{ filemtime(public_path('js/app.js')) }}" defer></script>
     <script src="{{ asset('js/ui.js') }}?v={{ filemtime(public_path('js/ui.js')) }}" defer></script>
